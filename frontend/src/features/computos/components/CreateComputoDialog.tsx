@@ -1,0 +1,130 @@
+import { useState } from "react";
+import type { ComputoCreateResultDTO } from "../api";
+
+type Props = {
+  open: boolean;
+  onClose: () => void;
+  onCreated: (result: ComputoCreateResultDTO) => void;
+  createComputo: (
+    descripcion: string,
+    superficieMilli: number,
+    fechaInicio: string
+  ) => Promise<ComputoCreateResultDTO>;
+};
+
+export function CreateComputoDialog({
+  open,
+  onClose,
+  onCreated,
+  createComputo,
+}: Props) {
+  const [descripcion, setDescripcion] = useState("");
+  const [superficie, setSuperficie] = useState("");
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  if (!open) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    const desc = descripcion.trim();
+    if (!desc) {
+      setError("Descripción es obligatoria.");
+      return;
+    }
+    const sup = parseFloat(superficie.replace(",", "."));
+    if (isNaN(sup) || sup <= 0) {
+      setError("Superficie debe ser un número mayor a 0 (m²).");
+      return;
+    }
+    if (!fechaInicio) {
+      setError("Fecha de inicio es obligatoria.");
+      return;
+    }
+    const superficieMilli = Math.round(sup * 1000);
+    setLoading(true);
+    try {
+      const result = await createComputo(desc, superficieMilli, fechaInicio);
+      setDescripcion("");
+      setSuperficie("");
+      setFechaInicio("");
+      onCreated(result);
+      onClose();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error al crear el cómputo.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
+        <h2 className="mb-4 text-lg font-semibold text-slate-800">
+          Nuevo cómputo
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Descripción (comitente)
+            </label>
+            <input
+              type="text"
+              value={descripcion}
+              onChange={(e) => setDescripcion(e.target.value)}
+              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="Ej. Obra Casa López"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Superficie (m²)
+            </label>
+            <input
+              type="text"
+              inputMode="decimal"
+              value={superficie}
+              onChange={(e) => setSuperficie(e.target.value)}
+              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              placeholder="Ej. 120.50"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">
+              Fecha inicio del cómputo
+            </label>
+            <input
+              type="date"
+              value={fechaInicio}
+              onChange={(e) => setFechaInicio(e.target.value)}
+              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
+          {error && (
+            <p className="text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          )}
+          <div className="flex justify-end gap-2 pt-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded border border-slate-300 bg-white px-4 py-2 text-slate-700 hover:bg-slate-50"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded bg-primary px-4 py-2 text-white hover:bg-primary-dark disabled:opacity-50"
+            >
+              {loading ? "Creando…" : "Crear"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
