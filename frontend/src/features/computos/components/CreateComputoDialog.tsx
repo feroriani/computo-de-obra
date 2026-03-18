@@ -61,25 +61,25 @@ export function CreateComputoDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-        <h2 className="mb-4 text-lg font-semibold text-slate-800">
+      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800">
+        <h2 className="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100">
           Nuevo cómputo
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Descripción (comitente)
             </label>
             <input
               type="text"
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
-              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400"
               placeholder="Ej. Obra Casa López"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Superficie (m²)
             </label>
             <input
@@ -87,23 +87,23 @@ export function CreateComputoDialog({
               inputMode="decimal"
               value={superficie}
               onChange={(e) => setSuperficie(e.target.value)}
-              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400"
               placeholder="Ej. 120.50"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Fecha inicio del cómputo
             </label>
             <input
               type="date"
               value={fechaInicio}
               onChange={(e) => setFechaInicio(e.target.value)}
-              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
             />
           </div>
           {error && (
-            <p className="text-sm text-red-600" role="alert">
+            <p className="text-sm text-red-600 dark:text-red-400" role="alert">
               {error}
             </p>
           )}
@@ -111,14 +111,14 @@ export function CreateComputoDialog({
             <button
               type="button"
               onClick={onClose}
-              className="rounded border border-slate-300 bg-white px-4 py-2 text-slate-700 hover:bg-slate-50"
+              className="rounded border border-slate-300 bg-white px-4 py-2 text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="rounded bg-primary px-4 py-2 text-white hover:bg-primary-dark disabled:opacity-50"
+              className="rounded bg-primary px-4 py-2 text-white hover:bg-primary-dark disabled:opacity-50 dark:bg-teal-600 dark:hover:bg-teal-700"
             >
               {loading ? "Creando…" : "Crear"}
             </button>

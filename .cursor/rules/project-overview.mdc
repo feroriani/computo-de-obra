@@ -1,0 +1,13 @@
+---
+description: Escalas numéricas, stack y referencia al ROADMAP del proyecto Computo de obra
+alwaysApply: true
+---
+
+# Computo de obra – Visión general
+
+- **Fuente de verdad:** `ROADMAP.md` (pasos, API, entidades). Consultar y actualizar al avanzar.
+- **Escalas (no cambiar):** costos en **centavos**; cantidad y dosaje en **milli**. Cálculos en enteros.
+- **Stack:** Wails, Go (internal), React + Vite + Tailwind, SQLite (modernc.org/sqlite, sin CGO).
+- **Backend:** `internal/app` (bindings + DTOs), `internal/ports` (interfaces), `internal/usecase`, `internal/infra/sqlite` (repos + migraciones).
+- **Frontend:** `src/app/App.tsx` (rutas), `src/features/<feature>/` con `api.ts` que importa de `wailsjs` y reexporta tipos. Tema claro/oscuro (selector en barra; reglas de diseño en `frontend-react.mdc`).
+- Al añadir endpoints o DTOs: definir en puertos y `dto.go`, luego repo/use case y binding en App; en frontend, `api.ts` + tipos desde `wailsjs/go/models` (namespace `dto`).

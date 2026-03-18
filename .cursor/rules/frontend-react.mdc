@@ -1,0 +1,36 @@
+---
+description: Estructura del frontend React, bindings Wails, tipos por feature y reglas de diseño (tema, modales)
+globs: "frontend/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Frontend React
+
+- **Rutas:** definidas en `src/app/App.tsx` (HashRouter). Ej.: `/` lista, `/computo/:versionId` editor.
+- **Features:** `src/features/<feature>/` con `api.ts`, `pages/`, `components/`. En `api.ts`: importar funciones de `wailsjs/go/app/App` y tipos de `wailsjs/go/models` (namespace `dto`); reexportar tipos para el resto del feature.
+- **Tipos:** para datos que vienen del backend usar los tipos reexportados desde `api.ts` (o `dto.Xxx`). Para estado derivado que se construye en el frontend (p. ej. totales recalculados, listas editables) usar **interfaces locales** (shape-only), no instancias de las clases DTO generadas por Wails (evitar errores por métodos como `convertValues`).
+- **Formato:** costos en centavos → mostrar con `Intl.NumberFormat` dividiendo por 100. Milli (cantidad/dosaje) → dividir por 1000 para mostrar con decimales.
+- Los archivos en `frontend/wailsjs/` se generan con Wails; si se editan a mano (p. ej. al no tener `wails` en PATH), documentar que pueden sobrescribirse con `wails build` o `wails dev`.
+
+## Iconos
+
+- **Monocromáticos:** todos los iconos (selector de tema, acciones, botones, etc.) deben ser **monocromáticos**: un solo color, sin degradados ni múltiples tonos. Así se integran con el tema claro/oscuro y la paleta de la app.
+- **Implementación:** preferir SVG inline con `fill="currentColor"` o `stroke="currentColor"` para que hereden el color del texto (`text-slate-600`, `dark:text-slate-400`, etc.). No usar emojis como iconos. Si se usa una librería de iconos, elegir variantes outline/solid de un solo color y aplicar la misma convención (currentColor donde sea posible).
+- Aplicar esta regla a cualquier icono existente o que se añada en el futuro.
+
+## Tema y diseño (claro / oscuro)
+
+- **Tema:** la app soporta modo claro y modo oscuro. Tailwind usa `darkMode: "class"`; el tema se persiste en `localStorage` (clave `computo-theme`, valores `light` | `dark`). Contexto en `src/contexts/ThemeContext.tsx`, selector en `src/components/ThemeToggle.tsx`.
+- **Clases en modo oscuro:** todo componente visible (páginas, listas, tablas, modales, formularios) debe incluir variantes `dark:` para que se vea correctamente en ambos temas. No dejar pantallas o diálogos solo con estilos de modo claro.
+- **Modales/diálogos:** overlay `bg-black/50`; contenedor del contenido: `bg-white dark:bg-slate-800`, bordes `dark:border-slate-700` cuando aplique. Títulos: `text-slate-800 dark:text-slate-100`. Labels: `text-slate-700 dark:text-slate-300`.
+- **Inputs en modales:** `border-slate-300 dark:border-slate-600`, `dark:bg-slate-700`, `dark:text-slate-100`, `dark:placeholder-slate-400`. Botón secundario (Cancelar): `dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600`. Botón primario (Guardar/Crear): `dark:bg-teal-600 dark:hover:bg-teal-700` (o `bg-primary` con variante dark si se prefiere teal).
+- **Tablas y tarjetas:** fondo de tarjeta `dark:bg-slate-800`, cabecera de tabla `dark:bg-slate-700 dark:text-slate-200`, filas `dark:divide-slate-700`, hover `dark:hover:bg-slate-700`, texto de celdas `dark:text-slate-200`. Mensajes de error: `dark:text-red-400` o `dark:border-red-800 dark:bg-red-900/30 dark:text-red-200` en cajas.
+- **Enlaces de acción:** Editar/primary `dark:text-teal-400`; Eliminar/danger `dark:text-red-400`. Al añadir nuevos diálogos o pantallas, aplicar estas convenciones para mantener consistencia visual.
+
+## Scroll y performance (Wails/WebView)
+
+- **Layout base**: en `src/app/App.tsx` usar contenedor raíz `flex flex-col h-screen` y `<main className="flex-1 min-h-0 overflow-auto">` para que `flex-1` tenga altura real (evita recortes de paginadores/footers).
+- **Evitar `h-screen` anidado**: dentro de páginas renderizadas en `<main>`, preferir `h-full min-h-0` (no `h-screen`) para no “competir” con el header global.
+- **Scroll interno**: si hay listado + paginación visible, usar `flex` + `min-h-0` y dejar `overflow-y-auto` **solo** en el contenedor de filas/lista.
+- **Inputs en WebView**: si tipear se siente “trabado”, evitar `value/onChange` que actualice estado por tecla; preferir input **uncontrolled** + botón “Buscar” (submit) para disparar consultas.
+- **CSS caro**: `position: sticky` en tablas y sombras (`box-shadow`) en headers pueden causar jank en WebViews; preferir headers fuera del área scroll y `border-b` en vez de sombras.

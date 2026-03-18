@@ -1,0 +1,15 @@
+---
+description: Estructura y convenciones del backend Go (puertos, repos, DTOs, migraciones)
+globs: "**/*.go"
+alwaysApply: false
+---
+
+# Backend Go
+
+- **Puertos:** interfaces en `internal/ports/repositories.go`. Tipos de fila/input (p. ej. `ComputoListRow`, `ComputoHeader`) en el mismo archivo.
+- **DTOs:** solo en `internal/app/dto/dto.go`. Usar para lo que se expone al frontend (JSON). No mezclar DTOs con tipos de dominio en ports.
+- **Repos:** implementaciones en `internal/infra/sqlite/repositories/`. Un archivo por agregado (computo_repo.go, computo_rubro_repo.go, item_repo.go, etc.). Constructor `NewXxxRepo(db *sql.DB)`.
+- **Use cases:** `internal/usecase/computos/`. Reciben `context.Context` y los repos por interfaz (ports). Devuelven tipos de ports o DTOs; la conversión a DTO se hace en el use case o en App.
+- **App:** `internal/app/app.go`. Inyecta repos en Startup; cada método público llama al use case correspondiente y mapea a DTO si hace falta.
+- **Migraciones:** `internal/infra/sqlite/migrations/` con nombres `0001_*.sql`, `0002_*.sql`. Tabla `_schema_version` para aplicar solo pendientes. No modificar migraciones ya aplicadas; añadir nuevas.
+- **Escalas:** persistir y calcular en centavos (costos) y milli (cantidad, dosaje). UUID para PKs.

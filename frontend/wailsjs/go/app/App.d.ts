@@ -3,10 +3,104 @@
 import {dto} from '../models';
 import {sql} from '../models';
 
+export function BackupDB():Promise<void>;
+
+export function ComponenteManoObraCreate(arg1:string,arg2:string,arg3:number):Promise<string>;
+
+export function ComponenteManoObraDelete(arg1:string):Promise<void>;
+
+export function ComponenteManoObraGet(arg1:string):Promise<dto.ComponenteManoObraItemDTO>;
+
+export function ComponenteManoObraList():Promise<Array<dto.ComponenteManoObraItemDTO>>;
+
+export function ComponenteManoObraListPaged(arg1:string,arg2:number,arg3:number):Promise<dto.ComponenteManoObraPageDTO>;
+
+export function ComponenteManoObraUpdate(arg1:string,arg2:string,arg3:string,arg4:number):Promise<void>;
+
+export function ComponenteMaterialCreate(arg1:string,arg2:string,arg3:number):Promise<string>;
+
+export function ComponenteMaterialDelete(arg1:string):Promise<void>;
+
+export function ComponenteMaterialGet(arg1:string):Promise<dto.ComponenteMaterialItemDTO>;
+
+export function ComponenteMaterialList():Promise<Array<dto.ComponenteMaterialItemDTO>>;
+
+export function ComponenteMaterialListPaged(arg1:string,arg2:number,arg3:number):Promise<dto.ComponenteMaterialPageDTO>;
+
+export function ComponenteMaterialUpdate(arg1:string,arg2:string,arg3:string,arg4:number):Promise<void>;
+
+export function ComputoConfirm(arg1:string):Promise<void>;
+
 export function ComputoCreate(arg1:string,arg2:number,arg3:string):Promise<dto.ComputoCreateResultDTO>;
+
+export function ComputoCreateNewVersionFrom(arg1:string):Promise<dto.ComputoCreateResultDTO>;
+
+export function ComputoGet(arg1:string):Promise<dto.ComputoGetDTO>;
 
 export function ComputoList():Promise<Array<dto.ComputoListRowDTO>>;
 
+export function ComputoRubroItemsAdd(arg1:string,arg2:string,arg3:number):Promise<string>;
+
+export function ComputoRubroItemsSetCantidad(arg1:string,arg2:number):Promise<void>;
+
+export function ComputoRubroItemsTrash(arg1:string):Promise<void>;
+
+export function ComputoRubroTrashList(arg1:string):Promise<Array<dto.ComputoRubroItemTrashedDTO>>;
+
+export function ComputoRubroTrashRestore(arg1:string):Promise<void>;
+
+export function ComputoRubrosAdd(arg1:string,arg2:string):Promise<string>;
+
+export function ComputoRubrosReorder(arg1:string,arg2:Array<string>):Promise<void>;
+
+export function ComputoSetSuperficie(arg1:string,arg2:number):Promise<void>;
+
 export function DB():Promise<sql.DB>;
 
+export function ExportComputoCSVAndSave(arg1:string):Promise<void>;
+
 export function Greet(arg1:string):Promise<string>;
+
+export function ItemCatalogCreate(arg1:string,arg2:string):Promise<string>;
+
+export function ItemCatalogDelete(arg1:string):Promise<void>;
+
+export function ItemCatalogGet(arg1:string):Promise<dto.ItemCatalogItemDTO>;
+
+export function ItemCatalogList():Promise<Array<dto.ItemCatalogItemDTO>>;
+
+export function ItemCatalogListPaged(arg1:string,arg2:number,arg3:number):Promise<dto.ItemCatalogPageDTO>;
+
+export function ItemCatalogUpdate(arg1:string,arg2:string,arg3:string):Promise<void>;
+
+export function ItemCompositionAddManoObra(arg1:string,arg2:string,arg3:number):Promise<void>;
+
+export function ItemCompositionAddMaterial(arg1:string,arg2:string,arg3:number):Promise<void>;
+
+export function ItemCompositionDeleteManoObra(arg1:string,arg2:string):Promise<void>;
+
+export function ItemCompositionDeleteMaterial(arg1:string,arg2:string):Promise<void>;
+
+export function ItemCompositionListManoObra(arg1:string):Promise<Array<dto.ItemManoObraRowDTO>>;
+
+export function ItemCompositionListMaterials(arg1:string):Promise<Array<dto.ItemMaterialRowDTO>>;
+
+export function ItemCompositionSetManoObraDosaje(arg1:string,arg2:string,arg3:number):Promise<void>;
+
+export function ItemCompositionSetMaterialDosaje(arg1:string,arg2:string,arg3:number):Promise<void>;
+
+export function ManoObraAll(arg1:string):Promise<Array<dto.ManoObraObraRowDTO>>;
+
+export function MaterialsAll(arg1:string):Promise<Array<dto.MaterialObraRowDTO>>;
+
+export function RubroCatalogCreate(arg1:string):Promise<string>;
+
+export function RubroCatalogDelete(arg1:string):Promise<void>;
+
+export function RubroCatalogGet(arg1:string):Promise<dto.RubroCatalogItemDTO>;
+
+export function RubroCatalogList():Promise<Array<dto.RubroCatalogItemDTO>>;
+
+export function RubroCatalogListPaged(arg1:string,arg2:number,arg3:number):Promise<dto.RubroCatalogPageDTO>;
+
+export function RubroCatalogUpdate(arg1:string,arg2:string):Promise<void>;

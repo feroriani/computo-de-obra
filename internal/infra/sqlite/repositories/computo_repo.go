@@ -10,6 +10,11 @@ import (
 	"github.com/google/uuid"
 )
 
+const (
+	estadoBorrador   = "borrador"
+	estadoConfirmado = "confirmado"
+)
+
 // ComputoRepo implements ports.ComputoRepository using SQLite.
 type ComputoRepo struct {
 	db *sql.DB
@@ -79,6 +84,88 @@ func (r *ComputoRepo) List(ctx context.Context) ([]ports.ComputoListRow, error) 
 	return out, rows.Err()
 }
 
+// GetHeader returns the header of a computo version by version ID.
+func (r *ComputoRepo) GetHeader(ctx context.Context, versionID string) (*ports.ComputoHeader, error) {
+	query := `
+		SELECT v.id, v.series_id, s.codigo, v.version_n, v.estado, c.descripcion, c.superficie_milli, c.fecha_inicio
+		FROM computo_version v
+		JOIN computo_series s ON s.id = v.series_id
+		JOIN computo_comitente c ON c.version_id = v.id
+		WHERE v.id = ?
+	`
+	var h ports.ComputoHeader
+	var fechaInicio string
+	err := r.db.QueryRowContext(ctx, query, versionID).Scan(
+		&h.VersionID,
+		&h.SeriesID,
+		&h.Codigo,
+		&h.VersionN,
+		&h.Estado,
+		&h.Descripcion,
+		&h.SuperficieMilli,
+		&fechaInicio,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	if t, err := time.Parse("2006-01-02", fechaInicio); err == nil {
+		h.FechaInicio = t
+	}
+	return &h, nil
+}
+
+// UpdateSuperficie updates superficie_milli on computo_version and computo_comitente.
+// If the version is confirmado and has a snapshot, recomputes costo_m2_centavos from snapshot total_centavos.
+func (r *ComputoRepo) UpdateSuperficie(ctx context.Context, versionID string, superficieMilli int64) error {
+	if superficieMilli <= 0 {
+		return fmt.Errorf("superficie debe ser mayor a 0")
+	}
+	now := time.Now().UTC().Format("2006-01-02T15:04:05Z")
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	res, err := tx.ExecContext(ctx,
+		`UPDATE computo_version SET superficie_milli = ?, updated_at = ? WHERE id = ?`,
+		superficieMilli, now, versionID)
+	if err != nil {
+		return err
+	}
+	n, _ := res.RowsAffected()
+	if n == 0 {
+		return fmt.Errorf("versión no encontrada: %s", versionID)
+	}
+	if _, err := tx.ExecContext(ctx,
+		`UPDATE computo_comitente SET superficie_milli = ? WHERE version_id = ?`,
+		superficieMilli, versionID); err != nil {
+		return err
+	}
+
+	var totalCentavos int64
+	err = tx.QueryRowContext(ctx,
+		`SELECT total_centavos FROM computo_snapshot WHERE version_id = ?`, versionID).Scan(&totalCentavos)
+	if err == nil {
+		costoM2 := int64(0)
+		if superficieMilli > 0 {
+			costoM2 = (totalCentavos * 1000) / superficieMilli
+		}
+		if _, err := tx.ExecContext(ctx,
+			`UPDATE computo_snapshot SET costo_m2_centavos = ? WHERE version_id = ?`,
+			costoM2, versionID); err != nil {
+			return err
+		}
+	} else if err != sql.ErrNoRows {
+		return err
+	}
+
+	return tx.Commit()
+}
+
 // Create creates a new series and its first version (borrador).
 func (r *ComputoRepo) Create(ctx context.Context, in ports.ComputoCreateInput) (*ports.ComputoVersionRow, error) {
 	seriesID := uuid.New().String()
@@ -132,4 +219,201 @@ func (r *ComputoRepo) nextCodigo(ctx context.Context) (string, error) {
 		return "", err
 	}
 	return fmt.Sprintf("CO-%06d", n), nil
+}
+
+// Confirm sets the version to confirmado and persists snapshot (totals + rubros + lineas).
+func (r *ComputoRepo) Confirm(ctx context.Context, versionID string, totalMaterial, totalMO, totalCentavos, costoM2 int64, rubros []ports.SnapshotRubroData) error {
+	now := time.Now().UTC().Format("2006-01-02T15:04:05Z")
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// Only borrador can be confirmed
+	res, err := tx.ExecContext(ctx,
+		`UPDATE computo_version SET estado = ?, confirmed_at = ?, updated_at = ? WHERE id = ? AND estado = ?`,
+		estadoConfirmado, now, now, versionID, estadoBorrador)
+	if err != nil {
+		return err
+	}
+	affected, _ := res.RowsAffected()
+	if affected == 0 {
+		return fmt.Errorf("version not found or not borrador: %s", versionID)
+	}
+
+	if _, err := tx.ExecContext(ctx,
+		`INSERT INTO computo_snapshot (version_id, total_material_centavos, total_mo_centavos, total_centavos, costo_m2_centavos) VALUES (?, ?, ?, ?, ?)`,
+		versionID, totalMaterial, totalMO, totalCentavos, costoM2); err != nil {
+		return err
+	}
+
+	for _, rub := range rubros {
+		snapRubroID := uuid.New().String()
+		if _, err := tx.ExecContext(ctx,
+			`INSERT INTO computo_snapshot_rubro (id, version_id, rubro_id, rubro_nombre, orden, total_material_centavos, total_mo_centavos, total_centavos) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+			snapRubroID, versionID, rub.RubroID, rub.Nombre, rub.Orden, rub.TotalMaterialCentavos, rub.TotalMOCentavos, rub.TotalCentavos); err != nil {
+			return err
+		}
+		for _, lin := range rub.Lineas {
+			if _, err := tx.ExecContext(ctx,
+				`INSERT INTO computo_snapshot_linea (id, snapshot_rubro_id, item_id, tarea, unidad, cantidad_milli, unit_material_centavos, unit_mo_centavos, line_material_centavos, line_mo_centavos, line_total_centavos) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+				uuid.New().String(), snapRubroID, lin.ItemID, lin.Tarea, lin.Unidad, lin.CantidadMilli, lin.UnitMaterialCentavos, lin.UnitMOCentavos, lin.LineMaterialCentavos, lin.LineMOCentavos, lin.LineTotalCentavos); err != nil {
+				return err
+			}
+		}
+	}
+
+	return tx.Commit()
+}
+
+// GetSnapshotForVersion returns snapshot rubros with lineas for a confirmed version (for clone).
+func (r *ComputoRepo) GetSnapshotForVersion(ctx context.Context, versionID string) ([]ports.SnapshotRubroWithLineas, error) {
+	rubros, err := r.listSnapshotRubros(ctx, versionID)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]ports.SnapshotRubroWithLineas, 0, len(rubros))
+	for _, rub := range rubros {
+		lineas, err := r.listSnapshotLineas(ctx, rub.ID)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, ports.SnapshotRubroWithLineas{
+			ID:                    rub.ID,
+			RubroID:               rub.RubroID,
+			Nombre:                rub.Nombre,
+			Orden:                 rub.Orden,
+			TotalMaterialCentavos: rub.TotalMaterialCentavos,
+			TotalMOCentavos:       rub.TotalMOCentavos,
+			TotalCentavos:         rub.TotalCentavos,
+			Lineas:                lineas,
+		})
+	}
+	return out, nil
+}
+
+type snapshotRubroRow struct {
+	ID                    string
+	RubroID               string
+	Nombre                string
+	Orden                 int
+	TotalMaterialCentavos int64
+	TotalMOCentavos       int64
+	TotalCentavos         int64
+}
+
+func (r *ComputoRepo) listSnapshotRubros(ctx context.Context, versionID string) ([]snapshotRubroRow, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT id, rubro_id, rubro_nombre, orden, total_material_centavos, total_mo_centavos, total_centavos FROM computo_snapshot_rubro WHERE version_id = ? ORDER BY orden`,
+		versionID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []snapshotRubroRow
+	for rows.Next() {
+		var row snapshotRubroRow
+		if err := rows.Scan(&row.ID, &row.RubroID, &row.Nombre, &row.Orden, &row.TotalMaterialCentavos, &row.TotalMOCentavos, &row.TotalCentavos); err != nil {
+			return nil, err
+		}
+		out = append(out, row)
+	}
+	return out, rows.Err()
+}
+
+func (r *ComputoRepo) listSnapshotLineas(ctx context.Context, snapshotRubroID string) ([]ports.SnapshotLineaRow, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT item_id, tarea, unidad, cantidad_milli, unit_material_centavos, unit_mo_centavos, line_material_centavos, line_mo_centavos, line_total_centavos FROM computo_snapshot_linea WHERE snapshot_rubro_id = ?`,
+		snapshotRubroID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []ports.SnapshotLineaRow
+	for rows.Next() {
+		var row ports.SnapshotLineaRow
+		if err := rows.Scan(&row.ItemID, &row.Tarea, &row.Unidad, &row.CantidadMilli, &row.UnitMaterialCentavos, &row.UnitMOCentavos, &row.LineMaterialCentavos, &row.LineMOCentavos, &row.LineTotalCentavos); err != nil {
+			return nil, err
+		}
+		out = append(out, row)
+	}
+	return out, rows.Err()
+}
+
+// CreateNewVersionFrom clones a confirmed version into a new borrador (from snapshot).
+func (r *ComputoRepo) CreateNewVersionFrom(ctx context.Context, versionIDConfirmado string) (*ports.ComputoVersionRow, error) {
+	header, err := r.GetHeader(ctx, versionIDConfirmado)
+	if err != nil || header == nil {
+		return nil, fmt.Errorf("version not found: %s", versionIDConfirmado)
+	}
+	if header.Estado != estadoConfirmado {
+		return nil, fmt.Errorf("version is not confirmado: %s", versionIDConfirmado)
+	}
+
+	snap, err := r.GetSnapshotForVersion(ctx, versionIDConfirmado)
+	if err != nil {
+		return nil, err
+	}
+
+	var nextVersionN int
+	err = r.db.QueryRowContext(ctx,
+		`SELECT COALESCE(MAX(version_n), 0) + 1 FROM computo_version WHERE series_id = ?`, header.SeriesID).Scan(&nextVersionN)
+	if err != nil {
+		return nil, err
+	}
+
+	newVersionID := uuid.New().String()
+	now := time.Now().UTC().Format("2006-01-02T15:04:05Z")
+	fechaInicio := header.FechaInicio.Format("2006-01-02")
+
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	if _, err := tx.ExecContext(ctx,
+		`INSERT INTO computo_version (id, series_id, version_n, parent_version_id, estado, descripcion, superficie_milli, fecha_inicio, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		newVersionID, header.SeriesID, nextVersionN, versionIDConfirmado, estadoBorrador, header.Descripcion, header.SuperficieMilli, fechaInicio, now, now); err != nil {
+		return nil, err
+	}
+	if _, err := tx.ExecContext(ctx,
+		`INSERT INTO computo_comitente (version_id, descripcion, superficie_milli, fecha_inicio) VALUES (?, ?, ?, ?)`,
+		newVersionID, header.Descripcion, header.SuperficieMilli, fechaInicio); err != nil {
+		return nil, err
+	}
+
+	for _, rub := range snap {
+		computoRubroID := uuid.New().String()
+		if _, err := tx.ExecContext(ctx,
+			`INSERT INTO computo_rubro (id, version_id, rubro_id, orden, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`,
+			computoRubroID, newVersionID, rub.RubroID, rub.Orden, now, now); err != nil {
+			return nil, err
+		}
+		for _, lin := range rub.Lineas {
+			if _, err := tx.ExecContext(ctx,
+				`INSERT INTO computo_rubro_item (id, computo_rubro_id, item_id, cantidad_milli, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`,
+				uuid.New().String(), computoRubroID, lin.ItemID, lin.CantidadMilli, now, now); err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+
+	var codigo string
+	if err := r.db.QueryRowContext(ctx, `SELECT codigo FROM computo_series WHERE id = ?`, header.SeriesID).Scan(&codigo); err != nil {
+		return nil, err
+	}
+
+	return &ports.ComputoVersionRow{
+		VersionID: newVersionID,
+		SeriesID:  header.SeriesID,
+		Codigo:    codigo,
+		VersionN:  nextVersionN,
+		Estado:    estadoBorrador,
+	}, nil
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { listComputos, createComputo } from "../api";
 import type { ComputoListRowDTO, ComputoCreateResultDTO } from "../api";
 import { CreateComputoDialog } from "../components/CreateComputoDialog";
@@ -42,19 +42,27 @@ export function ComputosList() {
   };
 
   return (
-    <div className="min-h-screen bg-surface p-6">
+    <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-900">
       <div className="mx-auto max-w-5xl">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-slate-800">
+          <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100">
             Cómputos de obra
           </h1>
-          <button
+          <div className="flex items-center gap-3">
+            <Link
+              to="/catalogos"
+              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+            >
+              Catálogos
+            </Link>
+            <button
             type="button"
             onClick={() => setDialogOpen(true)}
             className="rounded bg-primary px-4 py-2 text-white hover:bg-primary-dark"
           >
             Nuevo cómputo
           </button>
+          </div>
         </div>
 
         {error && (
@@ -64,15 +72,15 @@ export function ComputosList() {
         )}
 
         {loading ? (
-          <p className="text-slate-500">Cargando…</p>
+          <p className="text-slate-500 dark:text-slate-400">Cargando…</p>
         ) : items.length === 0 ? (
-          <div className="rounded-lg border border-slate-200 bg-white p-8 text-center text-slate-500">
+          <div className="rounded-lg border border-slate-200 bg-white p-8 text-center text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
             No hay cómputos. Creá uno con &quot;Nuevo cómputo&quot;.
           </div>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow">
+          <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow dark:border-slate-700 dark:bg-slate-800">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-100 text-slate-700">
+              <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
                 <tr>
                   <th className="px-4 py-3 font-medium">Código</th>
                   <th className="px-4 py-3 font-medium">Versión</th>
@@ -85,23 +93,23 @@ export function ComputosList() {
                   <th className="px-4 py-3 font-medium" aria-label="Acciones" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                 {items.map((row) => (
                   <tr
                     key={row.version_id}
-                    className="hover:bg-slate-50"
+                    className="hover:bg-slate-50 dark:hover:bg-slate-700"
                   >
-                    <td className="px-4 py-2 font-mono text-slate-800">
+                    <td className="px-4 py-2 font-mono text-slate-800 dark:text-slate-200">
                       {row.codigo}
                     </td>
                     <td className="px-4 py-2 text-slate-600">v{row.version_n}</td>
-                    <td className="px-4 py-2 text-slate-800">
+                    <td className="px-4 py-2 text-slate-800 dark:text-slate-200">
                       {row.descripcion}
                     </td>
-                    <td className="px-4 py-2 text-slate-600">
+                    <td className="px-4 py-2 text-slate-600 dark:text-slate-400">
                       {row.fecha_inicio}
                     </td>
-                    <td className="px-4 py-2 text-slate-600">
+                    <td className="px-4 py-2 text-slate-600 dark:text-slate-400">
                       {formatM2(row.superficie_milli)}
                     </td>
                     <td className="px-4 py-2">
