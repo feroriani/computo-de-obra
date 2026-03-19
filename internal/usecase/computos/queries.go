@@ -154,3 +154,176 @@ func ManoObraAll(
 	}
 	return out, nil
 }
+
+// MaterialsByItem returns aggregated materials for a computo version, filtered by a specific item.
+// Output matches the calculations done in the frontend listados-by-ítem screen (quantity + total).
+func MaterialsByItem(
+	ctx context.Context,
+	rubroRepo ports.ComputoRubroRepository,
+	rubroItemRepo ports.ComputoRubroItemRepository,
+	itemID string,
+	itemCompRepo ports.ItemCompositionRepository,
+	compMaterialRepo ports.ComponenteMaterialRepository,
+	versionID string,
+) ([]dto.MaterialObraRowDTO, error) {
+	rubros, err := rubroRepo.ListByVersion(ctx, versionID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Sum item quantity across rubros in this version.
+	var itemQtyMilli int64
+	for _, rub := range rubros {
+		items, err := rubroItemRepo.ListByComputoRubro(ctx, rub.ID)
+		if err != nil {
+			return nil, err
+		}
+		for _, it := range items {
+			if it.ItemID != itemID {
+				continue
+			}
+			itemQtyMilli += it.CantidadMilli
+		}
+	}
+
+	// Mimic frontend behavior: if item quantity is 0, show an empty table.
+	if itemQtyMilli == 0 {
+		return []dto.MaterialObraRowDTO{}, nil
+	}
+
+	type agg struct {
+		descripcion   string
+		unidad        string
+		cantidadMilli int64
+		totalCentavos int64
+	}
+	byID := make(map[string]*agg)
+
+	mats, err := itemCompRepo.ListMaterials(ctx, itemID)
+	if err != nil {
+		return nil, err
+	}
+	for _, m := range mats {
+		comp, err := compMaterialRepo.Get(ctx, m.ComponenteID)
+		if err != nil {
+			return nil, err
+		}
+		if comp == nil {
+			continue
+		}
+
+		qtyMilli := (itemQtyMilli * m.DosajeMilli) / 1000
+		cost := (itemQtyMilli * m.DosajeMilli * comp.CostoCentavos) / 1_000_000
+
+		if byID[m.ComponenteID] == nil {
+			byID[m.ComponenteID] = &agg{descripcion: comp.Descripcion, unidad: comp.Unidad}
+		}
+		byID[m.ComponenteID].cantidadMilli += qtyMilli
+		byID[m.ComponenteID].totalCentavos += cost
+	}
+
+	ids := make([]string, 0, len(byID))
+	for id := range byID {
+		ids = append(ids, id)
+	}
+	sort.Slice(ids, func(i, j int) bool { return ids[i] < ids[j] })
+
+	out := make([]dto.MaterialObraRowDTO, 0, len(ids))
+	for _, id := range ids {
+		a := byID[id]
+		out = append(out, dto.MaterialObraRowDTO{
+			ComponenteID:  id,
+			Descripcion:   a.descripcion,
+			Unidad:        a.unidad,
+			CantidadMilli: a.cantidadMilli,
+			TotalCentavos: a.totalCentavos,
+		})
+	}
+	return out, nil
+}
+
+// ManoObraByItem returns aggregated labor for a computo version, filtered by a specific item.
+// Output matches the calculations done in the frontend listados-by-ítem screen (quantity + total).
+func ManoObraByItem(
+	ctx context.Context,
+	rubroRepo ports.ComputoRubroRepository,
+	rubroItemRepo ports.ComputoRubroItemRepository,
+	itemID string,
+	itemCompRepo ports.ItemCompositionRepository,
+	compManoObraRepo ports.ComponenteManoObraRepository,
+	versionID string,
+) ([]dto.ManoObraObraRowDTO, error) {
+	rubros, err := rubroRepo.ListByVersion(ctx, versionID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Sum item quantity across rubros in this version.
+	var itemQtyMilli int64
+	for _, rub := range rubros {
+		items, err := rubroItemRepo.ListByComputoRubro(ctx, rub.ID)
+		if err != nil {
+			return nil, err
+		}
+		for _, it := range items {
+			if it.ItemID != itemID {
+				continue
+			}
+			itemQtyMilli += it.CantidadMilli
+		}
+	}
+
+	if itemQtyMilli == 0 {
+		return []dto.ManoObraObraRowDTO{}, nil
+	}
+
+	type agg struct {
+		descripcion   string
+		unidad        string
+		cantidadMilli int64
+		totalCentavos int64
+	}
+	byID := make(map[string]*agg)
+
+	mos, err := itemCompRepo.ListManoObra(ctx, itemID)
+	if err != nil {
+		return nil, err
+	}
+	for _, mo := range mos {
+		comp, err := compManoObraRepo.Get(ctx, mo.ComponenteID)
+		if err != nil {
+			return nil, err
+		}
+		if comp == nil {
+			continue
+		}
+
+		qtyMilli := (itemQtyMilli * mo.DosajeMilli) / 1000
+		cost := (itemQtyMilli * mo.DosajeMilli * comp.CostoCentavos) / 1_000_000
+
+		if byID[mo.ComponenteID] == nil {
+			byID[mo.ComponenteID] = &agg{descripcion: comp.Descripcion, unidad: comp.Unidad}
+		}
+		byID[mo.ComponenteID].cantidadMilli += qtyMilli
+		byID[mo.ComponenteID].totalCentavos += cost
+	}
+
+	ids := make([]string, 0, len(byID))
+	for id := range byID {
+		ids = append(ids, id)
+	}
+	sort.Slice(ids, func(i, j int) bool { return ids[i] < ids[j] })
+
+	out := make([]dto.ManoObraObraRowDTO, 0, len(ids))
+	for _, id := range ids {
+		a := byID[id]
+		out = append(out, dto.ManoObraObraRowDTO{
+			ComponenteID:  id,
+			Descripcion:   a.descripcion,
+			Unidad:        a.unidad,
+			CantidadMilli: a.cantidadMilli,
+			TotalCentavos: a.totalCentavos,
+		})
+	}
+	return out, nil
+}

@@ -1,0 +1,674 @@
+﻿1;abrasivos y pastas;gl;15
+2;aceite de lino cocido;kg;2,25
+3;adhesivo p/parquet;lts;1,25
+4;adhesivo p/piso cerámico;kg;7,33
+5;adobe 10x20x40;kg;1,25
+6;aguarrás;u;1,25
+7;aislación hidráulica s/losas (incl. contrap. c/pend.);.;0
+8;aislación hidráulica y térmica b/tejas (TBA 10 mm);m2;0
+9;aislación hidráulica y térmica b/tejas (TBA 5 mm);.;0
+10;aislación térmica  (ISOLANT TBA 10 mm);ml;58,07
+11;aislación térmica  (ISOLANT TBA 5 mm);ml;35
+12;"aislación térmica lana de vidrio de 2""";m2;22
+13;aislación térmica (lana de vidrio 50 mm);m2;32
+14;aislación térmica s/losas (telgopor 20 mm);.;0
+15;alambre galvaniz. fino;kg;39
+16;alambre negro Nº16;kg;135
+17;antepecho de baldozas cerámicas;.;0
+18;antepecho de hormigón fratazado;.;0
+19;antepecho de ladrillos comunes de canto;.;0
+20;antióxido al cromato;lts;0
+21;antióxido rojo lata x 4 lts.;u;0
+22;aplicado a la cal completo b/losas;.;0
+23;Arco parabólico reticulado;m3;0
+24;arena gruesa lavada;m3;481
+25;arena gruesa;m3;1300
+26;asfalto plástico p/juntas de pavimento;kg;50
+29;azotado hidrófugo;m2;0
+30;azulejo 15x15 blanco;m2;0
+31;azulejos blancos 15x15 c/adhesivo;.;0
+32;azulejos blancos 15x15 c/jaharro;.;0
+33;baldosa cerámica roja 8 x 16;m2;0
+34;baldosa roja 20x20 tipo azotea;m2;0
+35;baldosones de granza lavada 50 x 50 cm;m2;387
+36;barandas de madera;ml;204
+37;barniz en cielorraso de machimbre;.;0
+38;barniz sintético;lts;60
+39;barniz sintético en carpint. de madera;.;0
+40;blanqueo a la cal en muros;.;0
+41;bloque de H° de 10 x 20 x 40;u;10
+42;bloque de H° de 20 x 20 x 40;u;22,84
+43;bovedilla cerámica 12,5x40x25;u;10,5
+44;bovedilla ceramica 16,5x40x25;u;14,74
+45;bovedilla cerámica 9,5x40x25;u;7,79
+46;cal hidratada en bolsa;bolsas;185
+47;camión volcador;h;0
+48;capa aisladora horizontal;.;0
+49;capa aisladora vertical;.;0
+50;capa aisladora vertical c/panderete ladrillos;.;0
+51;Carga de camión o contenedor;.;0
+52;carpeta fratazada p/cerámico (esp.=3 cm);.;0
+53;Carpinteria de aluminio xm2;m2;2398
+54;cartel de obra;gl;360
+55;cascotes de ladrillos;m3;0
+56;cemento blanco;kg;0
+57;cemento Portland x 50kg;bolsas;408
+58;cera en pasta;Kg;12
+59;cerámico esmaltado;m2;210
+60;cerámicos en paredes c/adhesivo;.;0
+61;cerámicos en paredes c/jaharro;.;0
+62;Cerramiento provisorio de chapas;.;0
+63;chapa acanalada F°C°;m2;0
+64;chapa acanalada HºGº;m2;104
+65;chapa Fº Cº s/estructura metálica;.;0
+66;chapa H°G° N°27, 3.05 x 1.10 m.;u;0
+67;chapa Hº Gº s/estructura metálica;.;0
+68;chapa Hº Gº s/tirant. y machim. s/aislac.;.;0
+69;cielorraso durlock 9,5 completo;m2;74,42
+70;cinta Isolant p/unión;ml;0
+71;"clavos 2""";kg;95
+72;"clavos cabeza de plomo 3""";u;0
+73;"clavos P.P. 1""";kg;0
+74;"clavos P.P. 2 1/2""";kg;57
+75;Compactación a mano;.;0
+76;Compactar;kg;53,48
+77;contenedor;u;2000
+78;contrap. sanitario sobre losa esp.= 15cm;.;0
+79;contrapiso s/T.N. (esp.=10 cm);.;0
+80;contrapiso s/T.N. (esp.=12 cm);.;0
+81;contrapiso s/T.N. armado (esp.=10 cm);.;0
+82;contrapiso sobre losa e=5cm;.;0
+83;Correa triangular reticulada;.;0
+84;de escaleras c/cerámico y nariz madera;.;0
+85;Demolición de cimientos;.;0
+86;Demolición de contrapisos en gral.;.;0
+87;Demolición de estructuras de H°A° en gral.;.;0
+88;Demolición de pisos en general;.;0
+89;Demolición de revestimientos en gral.;.;0
+90;Demolición de revoques en general;.;0
+91;Desmonte y terraplenamiento a máquina;.;0
+92;electrodos 2,5 mm;kg;365
+93;enlucido a la cal aplic. b/losas;.;0
+94;enlucido a la cal exterior;.;0
+95;enlucido de yeso aplic. b/losas;.;0
+96;enlucido de yeso en muros;.;0
+97;Entablonado madera pino cca;m2;0
+98;entonador (pomo 120 cm3);u;9
+99;escalera madera;m2;950
+100;esmalte epoxi;.;0
+101;esmalte s/chapas galvanizadas;.;0
+102;esmalte sintético en carpint. de madera;.;0
+103;esmalte sintético en carpint. metálica;.;0
+104;esmalte sintético en muros como zócalo;.;0
+105;esmalte sintético para tirantería de madera;.;0
+106;esmalte sintetico verde x 4 lts;u;0
+107;esmalte sintetico x 4 lts blanco;u;410
+108;espejo 3mm;m2;0
+109;espejos;.;0
+110;Excavación a mano de pozos romanos;.;0
+111;Excavación a mano p/cimientos y bases;.;0
+112;Excavación a mano p/pozos absorventes;.;0
+113;Excavación de zanjas a mano;.;0
+114;exterior a la cal completo;.;0
+115;exterior proyectable c/pistola;.;0
+116;ferrite rojo;kg;0
+117;fijador al agua;lts;89,5
+118;fondo p/chapa galvanizada tipo Galvite;lts;0
+119;"gancho ""J"" p/chapa galvanizada";u;0
+120;gancho p/chapa FºCº;u;0
+121;gas envasado x 10 kg;kg;0
+122;granito reconst. 4 cm. esp.;m2;2215
+123;Griferías global (130-150m2);gl;5470
+124;grueso a la cal exterior;.;0
+125;grueso a la cal interior;.;0
+126;grueso reforz. bajo revestimiento;.;0
+127;H°A° p/columnas resistentes;.;0
+128;H°A° p/dinteles;.;0
+129;H°A° p/escaleras (esp. prom.=18 cm);.;0
+130;H°A° p/losa alivianada c/boved. h=12,5 cm;.;0
+131;H°A° p/losa alivianada c/boved. h=16,5 cm;.;0
+132;H°A° p/losa alivianada c/boved. h=9,5 cm;.;0
+133;H°A° p/losas macizas;.;0
+134;H°A° p/tabiques;.;0
+135;H°A° p/tanque rectangular;.;0
+136;H°A° p/vigas resistentes;.;0
+137;H°A° p/vigas y columnas de encadenado;.;0
+138;herrajes completos;u;0
+139;hidrófugo x litro;lts;68,27
+140;hierro liso herrero;kg;0
+141;hierro planchuela;kg;0
+142;Hierro redondo aletado (ø 10mm Long 12m) (Por barra);u;134
+143;Hierro redondo aletado (ø 12mm Long 12m) (Por barra);u;193
+144;Hierro redondo aletado (ø 16mm Long 12m) (Por barra);u;288,61
+145;Hierro redondo aletado (ø 20mm Long 12m) (Por barra);u;531,65
+146;Hierro redondo aletado (ø 4,2mm Long 12m) (Por barra);u;34
+147;Hierro redondo aletado (ø 6mm Long 12m) (Por barra);u;64
+148;Hierro redondo aletado (ø 8mm Long 12m) (Por barra);u;107
+149;hierro torsionado;kg;38
+150;HºAº p/bases aisladas;.;0
+151;HºAº p/encadenado inferior;.;0
+152;HºAº p/platea de fundación;.;0
+153;HºAº p/vigas de arriostramiento;.;0
+154;HºAº p/vigas de fundación y/o porta muro;.;0
+155;impermeable p/tanq. y/o cámar. (s/ H° o rev. grueso);.;0
+156;Instalacion eléctrica global 130-150m2;gl;25000
+157;Instalacion gas global 130-150m2;gl;15468
+158;Instalacion sanitaria global 130-150m2;gl;36357
+159;interior a la cal completo;.;0
+160;interior proyectable c/pistola;.;0
+161;ladrillo común;u;2,4
+162;ladrillo común 0,20;u;0
+163;ladrillo común s/muros en panderete;.;0
+164;Ladrillo de techo (9x25x42cm) (Por unidad);.;0
+165;Ladrillo de techo poliestireno (10x100x42) x unidad;.;0
+166;Ladrillo de techo poliestireno (12x100x42) x unidad;u;59,6
+167;Ladrillo de techo poliestireno (16x100x42) x unidad;u;90
+168;Ladrillo de techo poliestireno (9x100x42) x unidad;u;46
+169;ladrillo hueco 6T  8x18x30;u;0
+170;ladrillo hueco 8T  12x19x30;u;5,45
+171;ladrillo hueco 9T 18x19x30;u;6,7
+172;ladrillo hueco portante 18x 18x40;u;6,97
+173;laja irregular;m2;0
+174;lajas irregulares s/muros;.;0
+175;latex p/canchas y piletas;lts;0
+176;Limpieza  gremios;h;32
+177;Limpieza de terreno a mano;.;0
+178;Limpieza de terreno a máquina;.;0
+179;"listones de pino 1/2"" x 2""";ml;8,7
+180;"listones pino 1x2""";ml;18
+181;"madera 1"" pino nacional";m2;0
+182;madera 1ra. pino cepillada;m2;0
+183;"madera dura 11/2""x2"" cepillada";m;0
+184;"madera dura 2""";m2;0
+185;"madera machimbrada pino 3/4""";m2;180
+186;malla Sima Q92;kg;50
+187;mampost. de bloques de Hº 10x20x40;u;0
+188;mampost. de bloques de Hº 20x20x40;u;0
+189;mampost. de ladrillo cerámico portante 12x19x33;u;13,65
+190;mampost. de ladrillo cerámico 8x18x33;u;7,25
+191;mampost. de ladrillo cerámico portante 18x19x33;u;37,75
+192;mampost. de ladrillo común de 0,15m/0,30m;.;0
+193;mampost. de ladrillo común en panderete;.;0
+194;mampost. de ladrillo común tipo adobón de 0.20m;u;4,58
+195;mampost. de ladrilo cerámico 18x18x33;.;9,71
+196;mampostería de adobe de barro;.;0
+197;mampostería de piedra;.;0
+198;maquina pulidora trifasica;hr;200
+199;masilla;kg;0
+200;material  de relleno;m3;220
+201;membrana b/tejas c/aislac. térmica TBA10;m2;0
+202;membrana b/tejas c/aislac. térmica TBA5;m2;0
+203;membrana c/aluminio 4 mm espesor;m2;10,25
+204;metal desplegado 0.75mx2.00m.;u;0
+205;mosaico calcareo amarillo o rojo;m2;0
+206;mosaico calcareo gris;m2;0
+207;mosaico granitico 30x30;m2;0
+208;motoniveladora;h;0
+210;pala cargadora;h;0
+211;panel OSB 15 mm;m2;215
+212;panel OSB 9 mm;m2;80
+213;papel lija mediana;u;15
+214;para canchas y piscinas en general;.;0
+215;parquet incienso comercial;m2;232
+216;pastina p/ceramicos color;kg;25,4
+217;Perfil chapa galv. Solera de 35 mm;u;0
+218;perla de telgopor;m3;1440
+219;piedra bola;m3;1009,35
+220;Piedra bola (seleccionada)  (Por m³);.;0
+221;Piedra partida 1-3 (Por m³);.;0
+222;"pino 1"" s/cepillar";m2;0
+223;pintura al agua bolsa 4 kg;u;0
+224;pintura al agua en cielorrasos;.;0
+225;pintura al agua en muros exteriores;.;0
+226;pintura al agua en muros interiores;.;0
+227;pintura al latex - lata 20 lts, para interiores;lts;63,75
+228;pintura al latex - lata 20 lts. Para exteriores;lts;100
+229;pintura al latex acrilico p/cielorrasos;lts;902
+230;pintura al látex cielorrasos;.;902
+231;pintura al látex exterior;.;0
+232;pintura al látex interior;.;0
+233;pintura asfáltica base acuosa (Ormiflex1 o similar);lts;21,1
+234;pintura asfáltica secado rapido;lts;103,75
+235;pintura de imprimación;lts;29,1
+236;pintura epoxi amarillo;lts;0
+237;pintura Impregnante Protector De Madera x lts;lts;154
+238;pintura siliconadas p/ladrillos;lts;0
+239;piso baldoza cerám. 20x20 p/azotea acces.;.;0
+240;piso cerámico esmaltado;.;0
+241;piso cerámico tipo staneff 7,5x15;.;0
+242;piso de baldosones de granza lavada 50 x 50 cm;.;0
+243;piso de cemento alisado term. a la llana;.;0
+244;piso de ladrillo común;.;0
+245;piso de laja irregular;.;0
+246;piso de parquet pegado s/carpeta cementicia;.;0
+247;piso flotante 8.3 mm + manta;m2;379,99
+248;piso mosaico calcareo liso;.;0
+249;piso mosaico calcáreo tipo vereda;.;0
+250;piso mosaico granítico pulido en obra;.;0
+251;placa spanacustic c/fibra vidrio 25 mm;m2;0
+252;plástico 100 micrones;m2;2,75
+253;policarbonato 4mm;m2;112
+254;policarbonato s/estruct. metal.;.;0
+255;poliestireno expandido 20 mm;m2;0
+256;puerta dos hojas en general;.;2200
+257;puerta dos hojas marco 1.10 x 2.05 m;u;2500
+258;puerta un hoja placa 0.70 x 2.05  m;u;740
+259;puerta una hoja en general;u;500
+260;puerta una hoja 1.00  x 2.05 m;u;1300
+261;pulido de piso granítico en obra;.;0
+262;Replanteo;.;0
+263;ripio lavado 1:3;m3;548
+264;ripio;m3;1161,14
+265;salpicado plástico blanco tipo Igam;kg;0
+266;"siding de madera (INGLES 1""x5"")";m2;170
+267;silicona p/vidrios;cm3;0
+268;sobre ladrillo visto;.;0
+269;STEEL PGC 100-0.9;ml;60
+270;STEEL PGC 150-0.9;ml;88
+271;STEEL PGC 70-0.9;ml;25
+272;STEEL PGC 90-0.9;ml;70,3
+273;STEEL PGU 100-0.9;ml;50,33
+274;STEEL PGU 150-0.9;ml;70,66
+275;STEEL PGU 200-1.24;ml;91,66
+276;STEEL PGU 70-0.9;ml;25
+277;STEEL PGU 90-0.9;ml;70,3
+278;STEEL PGC 200-1.24;ml;101,27
+279;suspendido a la cal;.;0
+280;suspendido a la cal c/enlucido de yeso;.;0
+281;suspendido de madera machimbrada;.;0
+282;suspendido de poliestireno expandido;.;0
+283;suspendido de yeso tipo durlock;.;0
+284;suspendido termoacústico;.;0
+285;tabique durlock 12,5 x 10 cm completo;m2;100
+286;tabique exterior durlock completo;m2;100
+287;tabique Exterior tipo Durlock 12,5 mm (esp.=10 cm);m2;100
+288;tabique sanitario durlock 12,5 x 10 cm completo;m2;100
+289;tabique Sanitario tipo Durlock 12,5 mm (esp.=10 cm);.;0
+290;tabique tipo Durlock 12,5 mm (esp.=10 cm);.;0
+291;Tablero electrico y cableado en general 130-150m2;gl;4298
+292;Techo de madera completo;m2;774
+293;teja colonial chica (25/m2);u;0
+294;teja colonial s/losa c/mezcla s/aisl.;.;0
+295;teja colonial s/tirant. y machim. s/aislac.;.;0
+296;teja colonial s/tirant. y tejuela s/aislac.;.;0
+297;teja francesa;u;0
+298;teja francesa s/losa c/mezcla s/aisl.;.;0
+299;teja francesa s/tirant. y machim. s/aislac.;.;0
+300;tejuela hueca 2,5x17x40;u;0
+301;Termotanque y artefactos;un;3350
+302;Terraplenamiento a mano c/aporte granular;.;0
+303;Terraplenamiento a mano s/aporte de material;.;0
+304;tipo salpicrete c/molinete manual;.;0
+305;"tirafondo 6,5 mm x 3""";u;0,8
+306;"tirante pino 2x3""";m;0
+307;"tirante pino 3""x3"" s/cepillar";m;116
+308;"tirante pino 3x6""";m;0
+309;tomado de juntas en mampost. de piedra;.;0
+310;tomado de juntas ladrillo visto;.;0
+311;Tornillo T3 Punta Aguja  6 X 1 1/2 pulg;u;0,27
+312;Tornillos 13 mm autoperforante;u;1,5
+313;Tornillos Para Techo Autoperforantes Chapa A Madera 14 X 2 pulg;u;1,5
+314;tornillos y tacos diam.8mm;u;0,92
+315;Triturados 20-30;m3;1633
+316;tyvek 1 x 30m;ml;36
+317;umbral de granito reconstituído;.;0
+318;umbral de madera dura;.;0
+319;ventana dos hojas en general;.;900
+320;ventana dos hojas marco met o mad.;u;1100
+321;vereda de hºsº fratazado (e=10 cm);.;0
+322;vibrocompactador a explosión;h;25
+323;vidrio armado;m2;0
+324;vidrio doble transparente;m2;0
+325;vidrio transparente 6 mm;m2;0
+326;vidrio triple transparente;m2;0
+327;vidrios armados;m2;0
+328;vidrios transparentes 3 mm;m2;0
+329;vidrios transparentes 4 mm;m2;0
+330;vidrios transparentes 6 mm;m2;0
+331;Viga y/o columna reticulada;m2;0
+332;Vigueta de hormigón pretensado  (x un) x 1.00 m;u;35
+333;Vigueta de hormigón pretensado  (x un) x 1.20 m;u;49,32
+334;Vigueta de hormigón pretensado  (x un) x 1.40 m;u;57,54
+335;Vigueta de hormigón pretensado  (x un) x 1.60 m;u;56
+336;Vigueta de hormigón pretensado  (x un) x 1.80 m;u;63
+337;Vigueta de hormigón pretensado  (x un) x 2.00 m;u;82,21
+338;Vigueta de hormigón pretensado  (x un) x 2.20 m;u;77
+339;Vigueta de hormigón pretensado  (x un) x 2.20 m;u;77
+340;Vigueta de hormigón pretensado  (x un) x 2.40 m;u;84
+341;Vigueta de hormigón pretensado  (x un) x 2.60 m;u;106,87
+342;Vigueta de hormigón pretensado  (x un) x 2.80 m;u;98
+343;Vigueta de hormigón pretensado  (x un) x 3.20 m;u;112
+344;Vigueta de hormigón pretensado  (x un) x 3.40 m;u;141,17
+345;Vigueta de hormigón pretensado  (x un) x 3.60 m;u;126
+346;Vigueta de hormigón pretensado  (x un) x 3.80 m;u;140
+347;Vigueta de hormigón pretensado  (x un) x 4.00 m;u;160
+348;Vigueta de hormigón pretensado  (x un) x 4.20 m;u;168
+349;Vigueta de hormigón pretensado  (x un) x 5.00 m;u;200
+350;Vigueta de hormigón pretensado  (x un) x 6.00 m;u;390,67
+351;Vigueta de hormigón pretensado  (x un) x 7.00 m;u;350
+352;Vigueta de hormigón pretensado  (x un) x 8.00 m;u;400
+353;Vigueta de hormigón pretensado Vigueta Pretensada Hormigón (por ml. estimado);ml;56,2
+354;viguetas pretensadas;m;56,2
+355;yeso blanco;kg;0
+356;zócalo baldoza cerám.p/azotea accesible;ml;0
+357;zocalo calcareo amarillo o rojo;ml;0
+358;zócalo calcáreo claro;ml;0
+359;zócalo cerámico esmaltado;ml;0
+360;zócalo cerámico tipo staneff 7,5x15;ml;0
+361;zócalo de H° 10 x 50;ml;0
+362;zócalo de ladrillo común de canto;ml;0
+363;zócalo de losetas de H° 10 x 50;ml;0
+364;zócalo de madera h = 7 cm;ml;29
+365;zocalo de pino 7 cm;ml;17,5
+366;zócalo ext. cemento impermeable (h=20 cm);ml;0
+367;zócalo ext. cemento rehundido (h=20 cm);ml;0
+369;zócalo granítico claro;ml;55
+370;"lana de vidrio de 2""";ml;28,57
+371;zocalo granitico 10 x 30;ml;0
+372;masilla Durlock;kg;29,75
+373;cinta de papel Durlock;ml;1,4
+374;Tornillo T2 6x1 Punta mecha;u;0,19
+375;Placas Durlock 12.5 mm;m2;53,47
+376;puerta corrediza placa 0.70 x 2.05 m;u;1250
+377;puerta una hoja placa 0.80 x 2.05  m;u;500
+378;puerta ventana corrediza dos hojas 2.05 x 2.05 m;u;4100
+379;ventana desplaz 1.27 x 1.58 m;u;4815
+380;ventana desplaz 1.00 x 0.60m;u;1440
+381;ventana desplaz 1.20 x 0.60m;u;1728
+382;ventana vidrio fijo 1.20 x 1.70 m;u;2040
+383;Placas Durlock VERDE 12.5 mm;m2;44,8
+385;chapa acanalada H°G° N°24  x 1.10 m( x metro cuadrado);m2;175
+387;"cenefa madera de pino 1"" x 6""";ml;14,7
+388;"cenefa madera de pino 1"" x 8""";ml;70
+389;"clavadera madera pino 2"" x 2""";ml;25
+390;"cabio madera pino LAM 2"" x 6""";ml;160
+392;"cabio madera pino 2"" x 4""";ml;19,66
+399;"cabio madera pino LAM 3"" x 6""";ml;168
+400;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u;0,26
+401;Tornillo Hexagonal mecha 10 x 3/4 pulg;u;1,25
+402;puerta una hoja c/vidrio 0.80 x 2.05  m;u;1950
+403;puerta ventana corrediza dos hojas 2.45 x 2.05m;u;5022
+404;ventana desplaz 0.80 x 0.68m;u;1305
+405;ventana desplaz 1.00 x 0.76m;u;1824
+406;ventana desplaz 1.20 x 0.53m;u;1526
+407;ventana desplaz 1.50 x 0.60 m;u;2160
+408;ventana vidrio fijo 0.60 x 0.76 m;u;456
+409;ventana vidrio fijo 1.20 x 1.27 m;u;1524
+410;ventana vidrio fijo 1.50 x 1.70 m;u;2550
+411;Placa cementicia SUPERBOARD 15mm (1.20x2.40m);m2;196,18
+412;chapa acanalada H°G° N°24  x 1.10 m ( x metro lineal);ml;150
+413;perlas de telgopor (bolsa x 1.7 kg);u;30
+414;puerta ventana corrediza dos hojas 1.60 x 2.05;u;3280
+415;puerta una hoja 0.80 x 2.05  m;u;1003,71
+416;puerta una hoja 1.10 x 2.05  m;u;5150
+417;ventana vidrio fijo 0.60 x 0.76 m;u;456
+418;ventana vidrio fijo 0.60 x 1.20 m;u;1008
+419;ventana vidrio fijo 0.60 x 1.50 m;u;900
+420;ventana vidrio fijo 1.60 x 1.50 m;u;2400
+421;ventana desplaz 1.00 x 0.90 m;u;2160
+422;ventana desplaz 1.00 x 1.00 m;u;2400
+423;Techado Plavicon fibrado (20 kg) (Tipo Plástico Color bco);lata;889
+424;Vigueta de hormigón pretensado  (x un) x 5.80 m;u;235
+425;malla Sima 15x25 (4mm);m2;38,5
+426;malla Sima 15x25 (6mm);m2;70
+427;"cabio madera pino LAM 2"" x 4""";ml;80
+428;Tornillo Fix Madera  8 X 3 pulg;u;1,04
+429;Tornillo Fix Madera  8 X 2 pulg;u;0,58
+430;"Tornillo tirafondo y arandela  5/16  x 1-1/4""";u;0,46
+431;"Tornillo tirafondo y arandela  3/8 x 2-3/4""";u;0,46
+432;Tarugo Fisher Fijacion N°12;u;1,36
+433;base coat (bolsa x 30 kg);kg;17
+434;Malla De Fibra De Vidrio En Rollo - (Rollo x50 m2);m2;16,38
+435;puerta corrediza placa 0.88 x 2.05 m;u;1350
+436;puerta ventana corrediza (tres hojas) 2.60  x 2.20 m;u;3000
+437;puerta una hoja c/vidrio 0.90 x 2.05  m;u;2214
+438;puerta una hoja c/vidrio1.00 x 2.05  m;u;2460
+439;ventana corrediza 1.20 x 1.50m;u;1440
+440;ventana vidrio fijo 0.60 x 1.40 m;u;840
+441;ventana desplaz 1.15 x 1.40 m;u;3864
+442;ventana desplaz 1.00 x 0.50 m;u;1200
+443;ventana desplaz 0.60 x 0.60 m;u;864
+444;ventana vidrio fijo 2.05 x 0.80 m;u;1640
+445;ventana vidrio fijo 0.80 x 1.55 m;u;1240
+446;ventana desplaz 1.40 x 1.55 m;u;5208
+447;ventana desplaz 0.60 x 0.90 m;u;1296
+448;ventana desplaz 0.80 x 1.40 m;u;2688
+449;Revoque Plástico x 25kg;kg;75,32
+450;Caño Estructural 80-80-2 (6m);ml;93,83
+451;metal desplegado (esp. 3.2);m2;85
+452;Tornillo T3 Punta Mecha  6 X 1 1/2 pulg;u;0,27
+453;placa Novoplack Multipróposito (MP) 15 mm;m2;24,3
+454;Placa cementicia SUPERBOARD 12mm (1.20x2.40m);m2;176
+455;Caja Rectangular de chapa 10 X 5;u;3,5
+456;Caja Rectangular de chapa 10 X 10;u;10
+457;Caja octogonal grande de chapa;u;10
+458;"Caño Corrugado 7/8""";ml;3,6
+459;"Caño Corrugado 3/4""";ml;2
+460;"Caño Corrugado 1""";ml;4,6
+461;"Union Pvc 7/8""";u;2,9
+462;"Union Pvc 3/4""";u;2,7
+463;"Union Pvc 1""";u;3,1
+464;Cinta Aisladora x 10mts;u;6,99
+465;Cable Unipolar 2.5mm Normalizado (negro);ml;1,69
+466;Cable Unipolar 2.5mm Normalizado (rojo);ml;1,69
+467;Cable Unipolar 4mm Normalizado (negro);ml;3,17
+468;Cable Unipolar 4mm Normalizado (rojo);ml;3,17
+469;Cable Unipolar 1.5 Mm Normalizado Verde Tierra;ml;1,49
+470;Cable Subterraneo Sintenax 3x4 mm;ml;22
+471;Cable Subterraneo Sintenax 3x6 mm;ml;29
+472;Llave Unipolar 10 A;u;60
+473;Llave bipolar 25 A;u;140,41
+474;Llave bipolar 32 A;u;169,8
+475;Llave Unipolar 16 A;u;80
+476;Gabinete p/ Embutir (12 módulos);u;142
+477;Jabalina 3/8 X 1 Mts;u;72
+478;Cinta Aisladora x 20mts;u;22
+479;Caja Mignon 5x5;u;3,9
+480;Caño 120-40-1.6 (x6mt);un;0
+481;Caño 40-40-1.6 (x6mt);un;350
+482;Planchuela 50x3mm (barra x 6mt);un;577
+483;"cenefa madera de pino 1"" x 4""";ml;55,85
+484;panel OSB 18 mm;m2;0
+485;panel OSB 12 mm;m2;0
+486;"deck madera  1"" x 4""";ml;55,85
+487;Porcelanato Pulido Beige 60x60 - Rectificado;m2;275
+488;puerta corrediza placa 0.80 x 2.05 m;u;1300
+489;puerta corrediza 0.80 x 2.05m;u;1300
+490;puerta corrediza 1.10 x 2.05m;u;1804
+491;puerta ventana corrediza dos hojas 2.20 x 2.05m;u;4510
+492;puerta una hoja 0.70 x 2.05  m;u;949
+493;puerta una hoja 0.90 x 2.05  m;u;1125,45
+494;puerta una hoja 1.10 x 2.20  m;u;6085
+495;portón plegadizo dos paños 2.60 x 2.20  m;u;21840
+496;ventana gillotina 0.60 x 0.60 m;u;504
+497;ventana gillotina 0.80 x 2.20 m;u;2464
+498;ventana gillotina 0.90 x 1.00 m;u;2160
+499;ventana gillotina 1.00 x 0.90 m;u;1260
+500;ventana gillotina 1.00 x 1.20 m;u;1680
+501;ventana gillotina 1.40 x 1.60 m;u;3136
+502;ventana gillotina 1.50 x 0.80 m;u;1680
+503;ventana gillotina 1.50 x 2.20 m;u;4620
+504;ventana corrediza 2.40 x 2.20 m;u;6336
+505;ventana desplaz 2.00 x 1.00 m;u;4800
+506;ventana vidrio fijo 1.30 x 1.40 m;u;1820
+507;cemento de albañilería x 40kg;bolsas;277
+508;mampost. de ladrillo cerámico tabique 18x18x33;u;0
+509;mampost. de ladrillo cerámico tabique 12x18x33;u;0
+510;Toma corriente (modulo doble);u;70
+511;Toma corriente (modulo simple);u;0
+512;Toma corriente (modulo triple);u;0
+513;llave (1 punto);u;37
+514;llave (2 puntos);u;40
+515;llave (3 puntos);u;64
+516;llave (1 comb. escalera);u;35
+517;llave (2 comb. escalera);u;45
+518;llave (3 comb. escalera);u;64
+519;llave (1 punto y toma);u;40
+520;llave (2 puntos y toma);u;70
+521;llave (1 comb. escalera y toma);u;40
+522;llave (2 comb. escalera y toma);u;75
+523;.;.;0
+524;solera 70mm (largo:2.60m);u;34
+525;montante 69mm (largo:2.60m);u;36
+526;Tornillo T1  Aguja;u;0,27
+527;Tornillo T2  Aguja;u;0,5
+528;Tarugo Fisher Fijacion N°8;u;0,29
+529;Tirafondo Zincado de 3/16 X 1.3/4;u;0,58
+530;Griferías (baño tipo) global;gl;3470
+531;Griferías (baño toilette) global;gl;2470
+532;Instalacion sanitaria global (baño tipo);gl;16030
+533;Instalacion sanitaria global (baño toilette);gl;13330
+534;solera 35mm (largo:2.60m);u;25
+535;Placas Durlock 9 mm;m2;107,63
+536;Equipo de filtrado con casilla vulcano Vc-50 (p/pilleta nat.);gl;8983
+537;pintura para piletas x litro color;lts;168,25
+538;Gabinete p/ Embutir (4 módulos);u;59
+539;llave (2 puntos y comb. escalera);u;64
+540;llave (1 comb. escalera y un punto);u;45
+541;Timbre Campanilla 12v C/trafo;u;160
+542;llave pulsador timbre;u;34
+543;portalámpara de techo;u;6
+544;portalámpara de pared;u;7,8
+545;tanque tricapa x 1100 lts.;u;1490
+546;tanque cisterna 850 lts.Tricapa;u;2685
+547;tanque Cisterna Eternit Tricapa 2800 lts;u;7650
+548;Bomba Centrifuga De Agua  Motor 1 Hp Protector Termico;u;1649
+549;Camara De Inspeccion 40x40;u;450
+550;Camara Pvc Desgrasadora Para Cocina Pvc;u;1399
+551;Camara Septica Eternit Bicapa 2500 L Para 12 Personas;u;6630
+552;pozo absorvente x ml;ml;800
+553;Caño Cloacal 110 mm X 4 Metros Awaduct;u;163
+554;válvula Retencion Vertical Con Filtro;u;320
+555;válvula De Retencion 1 Pulgada - Bronce;u;295
+556;Flotante Automatico Tanque Cisterna;u;169
+557;Caño Termofusion 25mm X 4mts Fria / Caliente;u;40
+558;Caño Termofusion 20mm X 4mts Fria / Caliente;u;33,5
+559;Caño Termofusion 32mm X 4mts Fria / Caliente;u;79
+560;codo termofusion 32mm Fria / Caliente;u;20
+561;codo termofusion 25mm Fria / Caliente;u;20
+562;codo termofusion 20mm Fria / Caliente;u;20
+563;T termofusion 20mm Fria / Caliente;u;20
+564;T termofusion 25mm Fria / Caliente;u;20
+565;T termofusion 32mm Fria / Caliente;u;20
+566;Llave De Paso 1 Pulgada Metalica;u;400
+567;Llave De Paso 3/4 Pulgada Metalica;u;200
+568;Llave De Paso 1/2 Pulgada Metalica;u;100
+569;"cabio madera pino LAM 4"" x 6""";ml;180
+570;"cabio madera pino LAM 4"" x 12""";ml;480
+571;"madera machimbrada pino 1""";m2;250
+572;Impermeabilizante - base  Poliuretano monocomponente de alta elasticidad;lts;80
+573;venda fibra de poliéster - ancho  20cms (x metro);ml;1,66
+574;STEEL FRAME tensor chapa galv. 40mm;ml;10
+575;Griferías global (40-70m2);gl;1985
+576;Instalacion eléctrica global 40-50m2;gl;10715
+577;Instalacion sanitaria global 40-70m2;gl;15582
+578;Instalacion gas global 40-70m2;gl;6629
+579;Tablero electrico y cableado en general 40-70m2;gl;1500
+580;ventana vidrio fijo 1.40 x 1.40 m;u;1980
+581;ventana vidrio fijo 2.05 x 1.80 m;u;3500
+582;ventana vidrio fijo 1.40 x 1.60 m;u;2100
+583;ventana desplaz 0.60 x 1.20 m;u;1750
+584;ventana desplaz 1.40 x 0.60 m;u;2200
+585;ventana corrediza 1.40 x 1.80m;u;8000
+586;ventana gillotina 1.40 x 0.60 m;u;2500
+587;ventana gillotina 1.60 x 0.50 m;u;1610
+588;ventana banderola 0.40 x 1.40m;u;1750
+589;ventana gillotina 1.00 x 0.60 m;u;1120
+590;ventana gillotina 1.60 x 2.00 m;u;4620
+591;ventana gillotina 1.60 x 0.70 m;u;1810
+592;ventana gillotina 1.60 x 1.00 m;u;2400
+593;puerta una hoja c/vidrio 0.75 x 2.05  m;u;1750
+594;plástico 200 micrones;m2;4,5
+595;"cabio madera pino LAM 3"" x 8""";ml;260
+596;perfil omega 65x15 mm (2.60m);;27
+597;Placa SIDING cementicia SUPERBOARD 8mm (0.20x2.44m);m2;198
+598;ventana corrediza 0.90 x 1.10m;u;1250
+599;ventana banderola 0.50 x 0.50m;u;850
+600;perfil galvanizado Omega (PGO) 12.5 x 0.90mm;ml;11,25
+601;Tornillo Superboard 8 x 1 1/4” autoperforante- autofresante punta mecha galv.;u;1,15
+602;Tornillo Superboard 10 x 1 1/2” cabeza fresada punta mecha con alas- galvanizada;u;1,6
+603;Masilla para exteriores SUPERBOARD;kg;287
+604;Sellador elástico poliretánico;u;0
+605;Placa cementicia SUPERBOARD 8mm (1.20x2.40m);m2;221,88
+606;adhesivo Para Venecitas X 30 Kg;kg;10,17
+607;Venecitas 30 x 30 cm;m2;300
+608;Inodoro Largo + Deposito Dual Ferrum Linea Murano;u;3799
+609;Bidet De 3 Agujeros Ferrum Linea Murano;u;1915
+610;Bañera Chapa Acero Enlozada 160x70;u;2480
+611;Tapa Asiento Inodoro Ferrum Murano Original Tux;u;370
+612;Bacha Ferrum Andros De Apoyar Chica;u;1324
+613;Tornillos Tel Con Alas 8 X 1 1/4;u;1,15
+614;Cantonera Durlock (x2.60m);ml;12,3
+615;Caño Estructural 50-50-2 (6m);ml;50
+616;"cabio madera pino LAM 3"" x 10""";ml;220
+617;arena fina;m3;374
+618;Instalacion eléctrica global 50-70m2;gl;15000
+619;Escalera caracol (metálica);u;3300
+620;Placa cementicia SUPERBOARD 10mm (1.20x2.40m);m2;190
+621;camión cisterna;m3;100
+622;bloque de H° de 14 x 20 x 40;u;13
+623;portón levadizos 2.40 x 2.05  m;u;12600
+624;Durmiente madera (ml);ml;120
+625;Vidrio Templado 10mm. Incoloro;m2;1560
+626;Equipo Filtrado Gabinete - 40000 lts - Bomba Vulcano;u;6920
+627;Caño Estructural 100-100-2 (6m);ml;110
+628;Hierro Angulo 1-1/2 X 3/16 (38,5 X 4,7mm)  Barra x 6 Mtrs;ml;134,8
+629;Caño Estructural 20-40-1,60mm (6m);ml;24,5
+630;Caño Estructural 150-50-2 mm (6m);ml;108
+631;Máquina excavadora;m3;0
+632;"cabio madera pino LAM 3"" x 4""";ml;158
+633;policarbonato 6mm;m2;189
+634;Varilla Roscada Zincada 7/16;ml;31
+635;"Tirafondo Hexagonal Zincado 5/16 X 8""";u;12,2
+636;Perfil H Para Policarbonato Alv. Para  6 mm;ml;29,31
+637;Perfil U Para Policarbonato Alv. 6mm;ml;3
+638;Cinta de Aluminio 24mm (sella borde policarbonato);ml;3,4
+639;Cinta porosa 24mm (sella borde policarbonato);ml;3
+640;Vigueta de hormigón pretensado  (x un) x 5.40 m;u;351,6
+641;Vigueta de hormigón pretensado  (x un) x 4.60 m;u;206,84
+642;Vigueta de hormigón pretensado  (x un) x 2.10 m;u;86,32
+643;Vigueta de hormigón pretensado  (x un) x 5.60 m;u;364,63
+644;Vigueta de hormigón pretensado  (x un) x 3.50 m;u;145,33
+645;Vigueta de hormigón pretensado  (x un) x 3.00 m;u;124,53
+646;ventana corrediza 0.60 x 1.00m;u;1000
+647;ventana corrediza 1.50 x 1.80m;u;1600
+648;ventana corrediza 1.50 x 1.50m;u;1500
+649;ventana abrir 1.00 x 0.60m;u;700
+650;Piso Goma Altro Transito Comercial Ignifugo 2.5mm;m2;320
+651;Adhesivo Doble Contacto p/ Pisos De Goma y Vinilicos;lt;95
+652;Zinguería desarrollo 40cm chapa n24 x ml (GL);ml;90
+653;Vigueta de hormigón pretensado  (x un) x 5.10 m;u;205
+654;Vigueta de hormigón pretensado  (x un) x 4.50 m;u;204
+655;Caño 120-40-2 (x6mt);un;709
+656;hierro planchuela 38.1 mm (1 1/2) x esp.3.18mm.(1/8) largo (x6mt);un;143
+657;Disco de corte diam. 115 mm x 1mm;un;19,2
+658;Disco de desbaste diam. 115 mm x 22mm;un;25
+659;electrodos 2,0 mm;kg;80
+660;Bulón c/hexagonal (acero 8.8)  5/16x3 pulg - con broca exp.;u;26
+661;Tornillos Para Techo Autoperforantes Chapa A Caño 14 X 2 pulg;u;1,8
+662;Vigueta de hormigón pretensado  (x un) x 6.80 m;u;442
+663;Perfil IPN 16;ml;595
+664;Perfil IPN 18;ml;761
+665;Perfil UPN 8;ml;258
+666;Caño 120-40-3.2 (x6mt);un;1890
+667;Caño Estructural 120-40-3.2 mm (6m);ml;315
+668;EPS 50 mm;m2;175
+669;EPS fijaciones;u;0
+670;EPS 30 mm;m2;155
+671;Varilla Roscada Zincada diam. 16 mm;ml;0
+672;Varilla Roscada Zincada diam. 12 mm;ml;0
+673;Varilla Roscada Zincada diam. 10 mm;ml;0
+674;Varilla Roscada Zincada diam. 8 mm;ml;0
+675;membrana asf. geotextil;m2;0
+676;STEEL PGC 300-1.60;ml;0
+677;STEEL PGU 300-1.60;ml;0
+678;Caño 60-60-2 (x6mt);un;1596
+679;Caño 100-60-2 (x6mt);un;2143
+680;Caño 140-60-2 (x6mt);un;2689
+681;Motor Portón Corredizo Automático Eléctrico Seg Abs 400k (kit);un;5168
+682;Cinta malla fibra - bajo base coat - 120 Grs. ( 1,00 x ml.);ml;61,97
+683;Placa SUPERBOARD SIDING CEDAR 6 mm. ( 3,60 x 0,20 m.);ml;91,2
+684;Placa SUPERBOARD SIDING CEDAR 8 mm. ( 3,60 x 0,20 m.);ml;105,6
+685;STEEL FRAME Anclaje S-HTT 14 galvanizado ( 60 X 70 X 245 X 3,2 MM.);u;512,7
+686;STEEL FRAME Unión `L` chica galvanizada ( 40 X 50 X 70 X 0,9 MM.);u;22,03
+687;Caño Estructural 20-30-1,60mm (6m);ml;35

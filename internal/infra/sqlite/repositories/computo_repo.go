@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 
 	"changeme/internal/ports"
@@ -115,6 +116,38 @@ func (r *ComputoRepo) GetHeader(ctx context.Context, versionID string) (*ports.C
 		h.FechaInicio = t
 	}
 	return &h, nil
+}
+
+// UpdateDescripcion updates descripcion/comitente on computo_version and computo_comitente.
+func (r *ComputoRepo) UpdateDescripcion(ctx context.Context, versionID string, descripcion string) error {
+	descripcion = strings.TrimSpace(descripcion)
+	if descripcion == "" {
+		return fmt.Errorf("descripción de comitente requerida")
+	}
+	now := time.Now().UTC().Format("2006-01-02T15:04:05Z")
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	res, err := tx.ExecContext(ctx,
+		`UPDATE computo_version SET descripcion = ?, updated_at = ? WHERE id = ?`,
+		descripcion, now, versionID)
+	if err != nil {
+		return err
+	}
+	n, _ := res.RowsAffected()
+	if n == 0 {
+		return fmt.Errorf("versión no encontrada: %s", versionID)
+	}
+	if _, err := tx.ExecContext(ctx,
+		`UPDATE computo_comitente SET descripcion = ? WHERE version_id = ?`,
+		descripcion, versionID); err != nil {
+		return err
+	}
+
+	return tx.Commit()
 }
 
 // UpdateSuperficie updates superficie_milli on computo_version and computo_comitente.
@@ -291,6 +324,36 @@ func (r *ComputoRepo) GetSnapshotForVersion(ctx context.Context, versionID strin
 		})
 	}
 	return out, nil
+}
+
+// DeleteSeries deletes a full computo series (CO-xxxx) and all its related rows.
+//
+// Note: `computo_version.parent_version_id` references `computo_version(id)` without ON DELETE CASCADE,
+// so we must set it to NULL before deleting the series.
+func (r *ComputoRepo) DeleteSeries(ctx context.Context, seriesID string) error {
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// Break RESTRICT foreign key so we can delete all versions safely.
+	if _, err := tx.ExecContext(ctx,
+		`UPDATE computo_version SET parent_version_id = NULL WHERE series_id = ?`, seriesID); err != nil {
+		return err
+	}
+
+	res, err := tx.ExecContext(ctx,
+		`DELETE FROM computo_series WHERE id = ?`, seriesID)
+	if err != nil {
+		return err
+	}
+	affected, _ := res.RowsAffected()
+	if affected == 0 {
+		return fmt.Errorf("cómputo no encontrado: %s", seriesID)
+	}
+
+	return tx.Commit()
 }
 
 type snapshotRubroRow struct {

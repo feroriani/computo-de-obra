@@ -66,6 +66,10 @@ export function ComputoCreateNewVersionFrom(arg1) {
   return window['go']['app']['App']['ComputoCreateNewVersionFrom'](arg1);
 }
 
+export function ComputoDeleteSeries(arg1) {
+  return window['go']['app']['App']['ComputoDeleteSeries'](arg1);
+}
+
 export function ComputoGet(arg1) {
   return window['go']['app']['App']['ComputoGet'](arg1);
 }
@@ -86,6 +90,10 @@ export function ComputoRubroItemsTrash(arg1) {
   return window['go']['app']['App']['ComputoRubroItemsTrash'](arg1);
 }
 
+export function ComputoRubroTrashEmpty(arg1) {
+  return window['go']['app']['App']['ComputoRubroTrashEmpty'](arg1);
+}
+
 export function ComputoRubroTrashList(arg1) {
   return window['go']['app']['App']['ComputoRubroTrashList'](arg1);
 }
@@ -98,8 +106,16 @@ export function ComputoRubrosAdd(arg1, arg2) {
   return window['go']['app']['App']['ComputoRubrosAdd'](arg1, arg2);
 }
 
+export function ComputoRubrosDelete(arg1) {
+  return window['go']['app']['App']['ComputoRubrosDelete'](arg1);
+}
+
 export function ComputoRubrosReorder(arg1, arg2) {
   return window['go']['app']['App']['ComputoRubrosReorder'](arg1, arg2);
+}
+
+export function ComputoSetComitenteDescripcion(arg1, arg2) {
+  return window['go']['app']['App']['ComputoSetComitenteDescripcion'](arg1, arg2);
 }
 
 export function ComputoSetSuperficie(arg1, arg2) {
@@ -110,8 +126,8 @@ export function DB() {
   return window['go']['app']['App']['DB']();
 }
 
-export function ExportComputoCSVAndSave(arg1) {
-  return window['go']['app']['App']['ExportComputoCSVAndSave'](arg1);
+export function ExportComputoCSVAndSave(arg1, arg2) {
+  return window['go']['app']['App']['ExportComputoCSVAndSave'](arg1, arg2);
 }
 
 export function Greet(arg1) {

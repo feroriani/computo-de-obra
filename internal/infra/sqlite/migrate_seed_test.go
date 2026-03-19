@@ -34,7 +34,31 @@ func TestMigrationIncludesSeedRubros(t *testing.T) {
 		t.Fatal(err)
 	}
 	if mo != 3 {
-		t.Fatalf("expected 3 seed mano de obra (MANODEOBRA.txt), got %d", mo)
+		t.Fatalf("expected 3 seed mano de obra (docs/MANODEOBRA.txt), got %d", mo)
+	}
+
+	var mats int
+	if err := db.QueryRow(`SELECT COUNT(*) FROM componente_material`).Scan(&mats); err != nil {
+		t.Fatal(err)
+	}
+	if mats != 674 {
+		t.Fatalf("expected 674 seed materiales (docs/MATERIALES.txt), got %d", mats)
+	}
+
+	var itemMat int
+	if err := db.QueryRow(`SELECT COUNT(*) FROM item_material`).Scan(&itemMat); err != nil {
+		t.Fatal(err)
+	}
+	if itemMat != 1235 {
+		t.Fatalf("expected 1235 item->material asociaciones, got %d", itemMat)
+	}
+
+	var itemMO int
+	if err := db.QueryRow(`SELECT COUNT(*) FROM item_mano_obra`).Scan(&itemMO); err != nil {
+		t.Fatal(err)
+	}
+	if itemMO != 745 {
+		t.Fatalf("expected 745 item->mano de obra asociaciones (unique), got %d", itemMO)
 	}
 }
 

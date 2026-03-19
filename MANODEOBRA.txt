@@ -1,3 +1,0 @@
-﻿27;ayudante;h;80,68
-28;ayudante carga/descarga;h;36
-209;oficial;h;95,31

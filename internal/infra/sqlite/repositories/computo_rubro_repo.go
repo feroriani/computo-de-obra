@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"time"
 
 	"changeme/internal/ports"
@@ -79,5 +80,58 @@ func (r *ComputoRubroRepo) Reorder(ctx context.Context, versionID string, comput
 			return err
 		}
 	}
+	return tx.Commit()
+}
+
+// Delete removes a computo_rubro from a draft version if it has no items (active or trashed).
+func (r *ComputoRubroRepo) Delete(ctx context.Context, computoRubroID string) error {
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	var versionID string
+	var estado string
+	var orden int
+	err = tx.QueryRowContext(ctx, `
+		SELECT cr.version_id, cv.estado, cr.orden
+		FROM computo_rubro cr
+		JOIN computo_version cv ON cv.id = cr.version_id
+		WHERE cr.id = ?
+	`, computoRubroID).Scan(&versionID, &estado, &orden)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return fmt.Errorf("rubro no encontrado: %s", computoRubroID)
+		}
+		return err
+	}
+	if estado != "borrador" {
+		return fmt.Errorf("solo se puede eliminar rubros en borrador: %s", computoRubroID)
+	}
+
+	var cnt int64
+	if err := tx.QueryRowContext(ctx, `SELECT COUNT(1) FROM computo_rubro_item WHERE computo_rubro_id = ?`, computoRubroID).Scan(&cnt); err != nil {
+		return err
+	}
+	if cnt > 0 {
+		return fmt.Errorf("no se puede eliminar el rubro: tiene ítems asociados")
+	}
+
+	res, err := tx.ExecContext(ctx, `DELETE FROM computo_rubro WHERE id = ?`, computoRubroID)
+	if err != nil {
+		return err
+	}
+	aff, _ := res.RowsAffected()
+	if aff == 0 {
+		return fmt.Errorf("rubro no encontrado: %s", computoRubroID)
+	}
+
+	// Compact ordens for the remaining rubros in the version.
+	_, err = tx.ExecContext(ctx, `UPDATE computo_rubro SET orden = orden - 1 WHERE version_id = ? AND orden > ?`, versionID, orden)
+	if err != nil {
+		return err
+	}
+
 	return tx.Commit()
 }

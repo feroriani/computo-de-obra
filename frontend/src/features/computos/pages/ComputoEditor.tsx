@@ -1,11 +1,14 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { ListadoPanel } from "../../../components/ListadoPanel";
+import { ScrollArea } from "../../../components/ScrollArea";
 import {
   getComputo,
   computoConfirm,
   computoCreateNewVersionFrom,
   rubroCatalogList,
   computoRubrosAdd,
+  computoRubrosDelete,
   computoRubrosReorder,
   itemCatalogList,
   computoRubroItemsAdd,
@@ -13,9 +16,8 @@ import {
   computoRubroItemsTrash,
   computoRubroTrashList,
   computoRubroTrashRestore,
-  materialsAll,
-  manoObraAll,
-  exportComputoCSVAndSave,
+  computoRubroTrashEmpty,
+  computoSetComitenteDescripcion,
   computoSetSuperficie,
 } from "../api";
 import type {
@@ -24,8 +26,6 @@ import type {
   ItemCatalogItemDTO,
   ComputoRubroItemTrashedDTO,
   ComputoCreateResultDTO,
-  MaterialObraRowDTO,
-  ManoObraObraRowDTO,
 } from "../api";
 
 // Shape-only types for derived state (avoid Wails DTO class instances).
@@ -60,6 +60,40 @@ interface EditorTotales {
   costo_m2_centavos: number;
 }
 
+function Modal({
+  title,
+  children,
+  footer,
+  onClose,
+  zClassName = "z-30",
+}: {
+  title: string;
+  children: React.ReactNode;
+  footer: React.ReactNode;
+  onClose?: () => void;
+  zClassName?: string;
+}) {
+  return (
+    <div
+      className={`fixed inset-0 ${zClassName} flex items-center justify-center bg-black/50 p-4`}
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
+          <h2 className="text-lg font-medium text-slate-800 dark:text-slate-100">{title}</h2>
+        </div>
+        <div className="p-4">{children}</div>
+        <div className="flex justify-end gap-2 border-t border-slate-200 px-4 py-3 dark:border-slate-700">{footer}</div>
+      </div>
+    </div>
+  );
+}
+
 function formatCentavos(centavos: number): string {
   return new Intl.NumberFormat("es-AR", {
     style: "currency",
@@ -83,6 +117,15 @@ function TrashIcon() {
       <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
       <line x1="10" y1="11" x2="10" y2="17" />
       <line x1="14" y1="11" x2="14" y2="17" />
+    </svg>
+  );
+}
+
+function ClearInputIcon() {
+  return (
+    <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
     </svg>
   );
 }
@@ -143,6 +186,9 @@ export function ComputoEditor() {
   const [computo, setComputo] = useState<ComputoGetDTO | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [rubroDeleteMsg, setRubroDeleteMsg] = useState<string | null>(null);
+  const [rubroTrashAction, setRubroTrashAction] = useState<{ id: string; nombre: string; count: number } | null>(null);
+  const [rubroDeleteConfirm, setRubroDeleteConfirm] = useState<{ id: string; nombre: string } | null>(null);
   const [selectedRubroId, setSelectedRubroId] = useState<string | null>(null);
   const [cantidadOverrides, setCantidadOverrides] = useState<Record<string, number>>({});
   const [cantidadDraft, setCantidadDraft] = useState<Record<string, string>>({});
@@ -150,14 +196,21 @@ export function ComputoEditor() {
   const [redoStack, setRedoStack] = useState<Record<string, number>[]>([]);
   const [addRubroOpen, setAddRubroOpen] = useState(false);
   const [addItemOpen, setAddItemOpen] = useState(false);
+  const [addRubroSearch, setAddRubroSearch] = useState("");
+  const [addItemSearch, setAddItemSearch] = useState("");
   const [rubroCatalog, setRubroCatalog] = useState<RubroCatalogItemDTO[]>([]);
   const [itemCatalog, setItemCatalog] = useState<ItemCatalogItemDTO[]>([]);
   const [trashedItems, setTrashedItems] = useState<ComputoRubroItemTrashedDTO[]>([]);
   const [actionLoading, setActionLoading] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [superficieM2Str, setSuperficieM2Str] = useState("");
   const [superficieSaving, setSuperficieSaving] = useState(false);
   const [superficieMsg, setSuperficieMsg] = useState<string | null>(null);
   const [superficieDialogOpen, setSuperficieDialogOpen] = useState(false);
+  const [comitenteStr, setComitenteStr] = useState("");
+  const [comitenteSaving, setComitenteSaving] = useState(false);
+  const [comitenteMsg, setComitenteMsg] = useState<string | null>(null);
+  const [comitenteDialogOpen, setComitenteDialogOpen] = useState(false);
 
   const loadComputo = useCallback((silent = false) => {
     if (!versionId) return;
@@ -213,6 +266,32 @@ export function ComputoEditor() {
     setSuperficieDialogOpen(true);
   }, [computo?.header]);
 
+  const openComitenteDialog = useCallback(() => {
+    setComitenteStr(computo?.header?.descripcion ?? "");
+    setComitenteMsg(null);
+    setComitenteDialogOpen(true);
+  }, [computo?.header?.descripcion]);
+
+  const handleSaveComitente = useCallback(async () => {
+    if (!versionId) return;
+    const value = comitenteStr.trim();
+    if (!value) {
+      setComitenteMsg("Ingresá una descripción de comitente.");
+      return;
+    }
+    setComitenteMsg(null);
+    setComitenteSaving(true);
+    try {
+      await computoSetComitenteDescripcion(versionId, value);
+      await loadComputo(true);
+      setComitenteDialogOpen(false);
+    } catch (e) {
+      setComitenteMsg(e instanceof Error ? e.message : "Error al guardar");
+    } finally {
+      setComitenteSaving(false);
+    }
+  }, [versionId, comitenteStr, loadComputo]);
+
   const handleSaveSuperficie = useCallback(async () => {
     if (!versionId) return;
     const n = parseFloat(superficieM2Str.replace(",", "."));
@@ -243,6 +322,22 @@ export function ComputoEditor() {
     () => rubros.find((r) => r.id === selectedRubroId) ?? null,
     [rubros, selectedRubroId]
   );
+  const availableRubros = useMemo(
+    () => rubroCatalog.filter((rub) => !rubros.some((r) => r.rubro_id === rub.id)),
+    [rubroCatalog, rubros]
+  );
+  const filteredRubros = useMemo(() => {
+    const query = addRubroSearch.trim().toLowerCase();
+    if (!query) return availableRubros;
+    return availableRubros.filter((rub) => rub.nombre.toLowerCase().includes(query));
+  }, [availableRubros, addRubroSearch]);
+  const filteredItems = useMemo(() => {
+    const query = addItemSearch.trim().toLowerCase();
+    if (!query) return itemCatalog;
+    return itemCatalog.filter((item) =>
+      `${item.tarea} ${item.unidad}`.toLowerCase().includes(query)
+    );
+  }, [itemCatalog, addItemSearch]);
 
   const setCantidad = useCallback((itemId: string, cantidadMilli: number) => {
     setCantidadOverrides((prev) => {
@@ -290,7 +385,10 @@ export function ComputoEditor() {
     if (!versionId) return;
     setActionLoading(true);
     computoConfirm(versionId)
-      .then(() => loadComputo())
+      .then(() => {
+        setConfirmDialogOpen(false);
+        loadComputo();
+      })
       .catch((e) => setError(e instanceof Error ? e.message : "Error al confirmar"))
       .finally(() => setActionLoading(false));
   }, [versionId, loadComputo]);
@@ -308,6 +406,7 @@ export function ComputoEditor() {
 
   const handleAddRubroOpen = useCallback(() => {
     setAddRubroOpen(true);
+    setAddRubroSearch("");
     rubroCatalogList().then(setRubroCatalog).catch(() => setRubroCatalog([]));
   }, []);
 
@@ -341,6 +440,67 @@ export function ComputoEditor() {
     [versionId, loadComputo]
   );
 
+  const handleDeleteRubro = useCallback(
+    async (computoRubroId: string) => {
+      if (!isBorrador) return;
+      const rubro = rubros.find((r) => r.id === computoRubroId);
+      if (!rubro) return;
+
+      if (rubro.items.length > 0) {
+        setRubroDeleteMsg("Este rubro tiene ítems asociados. Primero eliminá o mové a papelera esos ítems.");
+        return;
+      }
+
+      try {
+        // If it's not the currently selected rubro, we still need to validate papelera.
+        const trash = computoRubroId === selectedRubroId ? trashedItems : await computoRubroTrashList(computoRubroId);
+        if (trash.length > 0) {
+          setRubroTrashAction({ id: rubro.id, nombre: rubro.nombre, count: trash.length });
+          return;
+        }
+      } catch {
+        // If we can't validate trash, backend will still enforce it.
+      }
+
+      setRubroDeleteConfirm({ id: rubro.id, nombre: rubro.nombre });
+    },
+    [isBorrador, rubros, selectedRubroId, trashedItems, loadComputo]
+  );
+
+  const handleEmptyRubroTrash = useCallback(async () => {
+    if (!rubroTrashAction) return;
+    setActionLoading(true);
+    try {
+      await computoRubroTrashEmpty(rubroTrashAction.id);
+      // Ensure UI reflects trash emptied (especially if rubro is selected).
+      if (selectedRubroId === rubroTrashAction.id) {
+        setTrashedItems([]);
+      }
+      setRubroTrashAction(null);
+    } catch (e) {
+      setRubroTrashAction(null);
+      setRubroDeleteMsg(e instanceof Error ? e.message : "Error al vaciar la papelera");
+    } finally {
+      setActionLoading(false);
+    }
+  }, [rubroTrashAction, selectedRubroId]);
+
+  const confirmDeleteRubro = useCallback(async () => {
+    if (!rubroDeleteConfirm) return;
+    setActionLoading(true);
+    setRubroDeleteMsg(null);
+    try {
+      await computoRubrosDelete(rubroDeleteConfirm.id);
+      setRubroDeleteConfirm(null);
+      await loadComputo();
+    } catch (e) {
+      setRubroDeleteConfirm(null);
+      setRubroDeleteMsg(e instanceof Error ? e.message : "Error al eliminar rubro");
+    } finally {
+      setActionLoading(false);
+    }
+  }, [rubroDeleteConfirm, loadComputo]);
+
   const handleMoveRubro = useCallback(
     (index: number, dir: "up" | "down") => {
       if (dir === "up" && index <= 0) return;
@@ -355,6 +515,7 @@ export function ComputoEditor() {
 
   const handleAddItemOpen = useCallback(() => {
     setAddItemOpen(true);
+    setAddItemSearch("");
     itemCatalogList().then(setItemCatalog).catch(() => setItemCatalog([]));
   }, []);
 
@@ -418,8 +579,8 @@ export function ComputoEditor() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-900">
-        <div className="mx-auto max-w-6xl">
+      <div className="h-full min-h-0 bg-slate-50 p-6 dark:bg-slate-900">
+        <div className="w-full">
           <p className="text-slate-500 dark:text-slate-400">Cargando cómputo…</p>
         </div>
       </div>
@@ -428,8 +589,8 @@ export function ComputoEditor() {
 
   if (error || !computo) {
     return (
-      <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-900">
-        <div className="mx-auto max-w-6xl">
+      <div className="h-full min-h-0 bg-slate-50 p-6 dark:bg-slate-900">
+        <div className="w-full">
           <button type="button" onClick={() => navigate("/")} className="text-primary hover:underline dark:text-teal-400">
             ← Volver a cómputos
           </button>
@@ -444,8 +605,8 @@ export function ComputoEditor() {
   const h = computo.header;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-900">
-      <div className="mx-auto max-w-6xl">
+    <div className="h-full min-h-0 overflow-hidden bg-slate-50 p-6 dark:bg-slate-900">
+      <div className="flex h-full min-h-0 w-full flex-col">
         <div className="mb-4 flex flex-wrap items-center gap-4">
           <button
             type="button"
@@ -464,12 +625,27 @@ export function ComputoEditor() {
           >
             {h.estado}
           </span>
-          <span className="text-slate-600 dark:text-slate-400">{h.descripcion}</span>
+          <span className="flex items-baseline gap-2 text-slate-600 dark:text-slate-400">
+            <span>{h.descripcion}</span>
+            <button
+              type="button"
+              onClick={openComitenteDialog}
+              className="text-sm text-primary hover:underline dark:text-teal-400"
+            >
+              Editar
+            </button>
+          </span>
           <span className="ml-auto flex items-center gap-2">
+            <Link
+              to={`/computo/${versionId}/listados`}
+              className="rounded border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+            >
+              Ver listados
+            </Link>
             {isBorrador && (
               <button
                 type="button"
-                onClick={handleConfirm}
+                onClick={() => setConfirmDialogOpen(true)}
                 disabled={actionLoading}
                 className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700 disabled:opacity-50"
               >
@@ -509,12 +685,13 @@ export function ComputoEditor() {
           <div className="mb-2 text-sm text-slate-500 dark:text-slate-400">Guardando…</div>
         )}
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="min-h-0 flex flex-1 flex-col gap-6 overflow-hidden">
+          <div className="min-h-0 flex flex-1 flex-col gap-6 overflow-hidden lg:flex-row">
           {/* Panel rubros */}
-          <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
-            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-700">
-              <h2 className="font-medium text-slate-800 dark:text-slate-200">Rubros</h2>
-              {isBorrador && (
+          <ListadoPanel
+            title="Rubros"
+            right={
+              isBorrador ? (
                 <button
                   type="button"
                   onClick={handleAddRubroOpen}
@@ -522,59 +699,79 @@ export function ComputoEditor() {
                 >
                   + Rubro
                 </button>
-              )}
-            </div>
-            <ul className="max-h-64 overflow-y-auto">
+              ) : null
+            }
+            className="min-h-0 overflow-hidden lg:w-1/3"
+            bodyClassName="p-0"
+          >
+            <ScrollArea mode="auto" containWheel className="h-0 p-0">
               {rubros.length === 0 ? (
-                <li className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">Sin rubros. Agregá uno desde el catálogo.</li>
+                <div className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">
+                  Sin rubros. Agregá uno desde el catálogo.
+                </div>
               ) : (
-                rubros.map((r, idx) => (
-                  <li key={r.id} className="flex items-center gap-1 border-b border-slate-100 last:border-0 dark:border-slate-700">
-                    {isBorrador && (
-                      <span className="flex shrink-0">
+                <ul className="divide-y divide-slate-100 dark:divide-slate-700">
+                  {rubros.map((r, idx) => (
+                    <li key={r.id} className="flex items-center gap-1">
+                      {isBorrador && (
+                        <span className="flex shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => handleMoveRubro(idx, "up")}
+                            disabled={idx === 0}
+                            className="px-1 text-slate-400 hover:text-slate-600 disabled:opacity-30 dark:hover:text-slate-200"
+                            aria-label="Subir"
+                          >
+                            ↑
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleMoveRubro(idx, "down")}
+                            disabled={idx === rubros.length - 1}
+                            className="px-1 text-slate-400 hover:text-slate-600 disabled:opacity-30 dark:hover:text-slate-200"
+                            aria-label="Bajar"
+                          >
+                            ↓
+                          </button>
+                        </span>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedRubroId(r.id)}
+                        className={`min-w-0 flex-1 px-2 py-2.5 text-left text-sm hover:bg-slate-50 dark:hover:bg-slate-700 ${
+                          selectedRubroId === r.id
+                            ? "bg-primary/10 font-medium text-primary dark:bg-teal-900/30 dark:text-teal-300"
+                            : "text-slate-700 dark:text-slate-200"
+                        }`}
+                      >
+                        <span className="block truncate">{r.nombre}</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400">
+                          {formatCentavos(r.subtotal_centavos)}
+                        </span>
+                      </button>
+                      {isBorrador && (
                         <button
                           type="button"
-                          onClick={() => handleMoveRubro(idx, "up")}
-                          disabled={idx === 0}
-                          className="px-1 text-slate-400 hover:text-slate-600 disabled:opacity-30"
-                          aria-label="Subir"
+                          onClick={() => handleDeleteRubro(r.id)}
+                          className="mr-2 shrink-0 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
+                          title="Eliminar rubro"
+                          aria-label="Eliminar rubro"
                         >
-                          ↑
+                          <TrashIcon />
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => handleMoveRubro(idx, "down")}
-                          disabled={idx === rubros.length - 1}
-                          className="px-1 text-slate-400 hover:text-slate-600 disabled:opacity-30"
-                          aria-label="Bajar"
-                        >
-                          ↓
-                        </button>
-                      </span>
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => setSelectedRubroId(r.id)}
-                      className={`min-w-0 flex-1 px-2 py-2.5 text-left text-sm hover:bg-slate-50 dark:hover:bg-slate-700 ${
-                        selectedRubroId === r.id ? "bg-primary/10 font-medium text-primary dark:bg-teal-900/30 dark:text-teal-300" : "text-slate-700 dark:text-slate-200"
-                      }`}
-                    >
-                      <span className="block truncate">{r.nombre}</span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">{formatCentavos(r.subtotal_centavos)}</span>
-                    </button>
-                  </li>
-                ))
+                      )}
+                    </li>
+                  ))}
+                </ul>
               )}
-            </ul>
-          </div>
+            </ScrollArea>
+          </ListadoPanel>
 
           {/* Panel ítems del rubro seleccionado */}
-          <div className="rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:col-span-2">
-            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-700">
-              <h2 className="font-medium text-slate-800 dark:text-slate-200">
-                {selectedRubro ? selectedRubro.nombre : "Seleccioná un rubro"}
-              </h2>
-              {isBorrador && selectedRubro && (
+          <ListadoPanel
+            title={selectedRubro ? selectedRubro.nombre : "Seleccioná un rubro"}
+            right={
+              isBorrador && selectedRubro ? (
                 <button
                   type="button"
                   onClick={handleAddItemOpen}
@@ -582,134 +779,153 @@ export function ComputoEditor() {
                 >
                   + Ítem
                 </button>
-              )}
-            </div>
-            {selectedRubro && selectedRubro.items.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
-                    <tr>
-                      <th className="px-4 py-2 font-medium">Tarea</th>
-                      <th className="px-4 py-2 font-medium">Unidad</th>
-                      <th className="px-4 py-2 font-medium">Cantidad</th>
-                      <th className="px-4 py-2 font-medium text-right">Material</th>
-                      <th className="px-4 py-2 font-medium text-right">M.O.</th>
-                      <th className="px-4 py-2 font-medium text-right">Total línea</th>
-                      {isBorrador && <th className="px-2 py-2 font-medium" aria-label="Papelera" />}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                    {selectedRubro.items.map((it) => (
-                      <tr key={it.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                        <td className="px-4 py-2 text-slate-800 dark:text-slate-200">{it.tarea}</td>
-                        <td className="px-4 py-2 text-slate-600 dark:text-slate-400">{it.unidad}</td>
-                        <td className="px-4 py-2">
-                          <input
-                            type="text"
-                            value={cantidadDraft[it.id] ?? formatCantidad(it.cantidad_milli)}
-                            onChange={(e) => {
-                              const raw = e.target.value;
-                              setCantidadDraft((prev) => ({ ...prev, [it.id]: raw }));
-                              const v = parseCantidadMilli(raw);
-                              if (v !== null) previewCantidad(it.id, v);
-                            }}
-                            onBlur={() => {
-                              const raw = cantidadDraft[it.id];
-                              const parsed = raw !== undefined ? parseCantidadMilli(raw) : null;
-                              if (parsed === null) {
-                                setCantidadDraft((prev) => {
-                                  if (prev[it.id] === undefined) return prev;
-                                  const next = { ...prev };
-                                  delete next[it.id];
-                                  return next;
-                                });
-                                return;
-                              }
-
-                              setCantidad(it.id, parsed);
-                              handleCantidadBlur(it.id, parsed);
-                              setCantidadDraft((prev) => {
-                                if (prev[it.id] === undefined) return prev;
-                                const next = { ...prev };
-                                delete next[it.id];
-                                return next;
-                              });
-                            }}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") (e.target as HTMLInputElement).blur();
-                              if (e.key === "Escape") {
-                                setCantidadDraft((prev) => {
-                                  if (prev[it.id] === undefined) return prev;
-                                  const next = { ...prev };
-                                  delete next[it.id];
-                                  return next;
-                                });
-                                (e.target as HTMLInputElement).blur();
-                              }
-                            }}
-                            className="w-24 rounded border border-slate-300 px-2 py-1 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-                          />
-                        </td>
-                        <td className="px-4 py-2 text-right text-slate-700 dark:text-slate-300">
-                          {formatCentavos(it.line_material_centavos)}
-                        </td>
-                        <td className="px-4 py-2 text-right text-slate-700 dark:text-slate-300">
-                          {formatCentavos(it.line_mo_centavos)}
-                        </td>
-                        <td className="px-4 py-2 text-right font-medium text-slate-800 dark:text-slate-200">
-                          {formatCentavos(it.line_total_centavos)}
-                        </td>
-                        {isBorrador && (
-                          <td className="px-2 py-2">
-                            <button
-                              type="button"
-                              onClick={() => handleTrashItem(it.id)}
-                              className="text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
-                              title="Enviar a papelera"
-                              aria-label="Enviar a papelera"
-                            >
-                              <TrashIcon />
-                            </button>
-                          </td>
-                        )}
+              ) : null
+            }
+            className="min-h-0 overflow-hidden lg:flex-1"
+            bodyClassName="p-0"
+          >
+            <ScrollArea mode="auto" containWheel className="h-0 p-0">
+              {selectedRubro && selectedRubro.items.length > 0 ? (
+                  <table className="min-w-[900px] w-full text-left text-sm">
+                    <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+                      <tr>
+                        <th className="px-4 py-2 font-medium">Tarea</th>
+                        <th className="px-4 py-2 font-medium">Unidad</th>
+                        <th className="px-4 py-2 font-medium">Cantidad</th>
+                        <th className="px-4 py-2 font-medium text-right">Material</th>
+                        <th className="px-4 py-2 font-medium text-right">M.O.</th>
+                        <th className="px-4 py-2 font-medium text-right">Total línea</th>
+                        {isBorrador && <th className="px-2 py-2 font-medium" aria-label="Papelera" />}
                       </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                      {selectedRubro.items.map((it) => (
+                        <tr key={it.id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
+                          <td className="px-4 py-2 text-slate-800 dark:text-slate-200">{it.tarea}</td>
+                          <td className="px-4 py-2 text-slate-600 dark:text-slate-400">{it.unidad}</td>
+                          <td className="px-4 py-2">
+                            <input
+                              type="text"
+                              value={cantidadDraft[it.id] ?? formatCantidad(it.cantidad_milli)}
+                              onChange={(e) => {
+                                const raw = e.target.value;
+                                setCantidadDraft((prev) => ({ ...prev, [it.id]: raw }));
+                                const v = parseCantidadMilli(raw);
+                                if (v !== null) previewCantidad(it.id, v);
+                              }}
+                              onBlur={() => {
+                                const raw = cantidadDraft[it.id];
+                                const parsed = raw !== undefined ? parseCantidadMilli(raw) : null;
+                                if (parsed === null) {
+                                  setCantidadDraft((prev) => {
+                                    if (prev[it.id] === undefined) return prev;
+                                    const next = { ...prev };
+                                    delete next[it.id];
+                                    return next;
+                                  });
+                                  return;
+                                }
+
+                                setCantidad(it.id, parsed);
+                                handleCantidadBlur(it.id, parsed);
+                                setCantidadDraft((prev) => {
+                                  if (prev[it.id] === undefined) return prev;
+                                  const next = { ...prev };
+                                  delete next[it.id];
+                                  return next;
+                                });
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+                                if (e.key === "Escape") {
+                                  setCantidadDraft((prev) => {
+                                    if (prev[it.id] === undefined) return prev;
+                                    const next = { ...prev };
+                                    delete next[it.id];
+                                    return next;
+                                  });
+                                  (e.target as HTMLInputElement).blur();
+                                }
+                              }}
+                              className="w-24 rounded border border-slate-300 px-2 py-1 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                            />
+                          </td>
+                          <td className="px-4 py-2 text-right text-slate-700 dark:text-slate-300">
+                            {formatCentavos(it.line_material_centavos)}
+                          </td>
+                          <td className="px-4 py-2 text-right text-slate-700 dark:text-slate-300">
+                            {formatCentavos(it.line_mo_centavos)}
+                          </td>
+                          <td className="px-4 py-2 text-right font-medium text-slate-800 dark:text-slate-200">
+                            {formatCentavos(it.line_total_centavos)}
+                          </td>
+                          {isBorrador && (
+                            <td className="px-2 py-2">
+                              <button
+                                type="button"
+                                onClick={() => handleTrashItem(it.id)}
+                                className="text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
+                                title="Enviar a papelera"
+                                aria-label="Enviar a papelera"
+                              >
+                                <TrashIcon />
+                              </button>
+                            </td>
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+              ) : selectedRubro ? (
+                <p className="px-4 py-6 text-slate-500 dark:text-slate-400">Este rubro no tiene ítems. Agregá uno desde el catálogo.</p>
+              ) : null}
+              {/* Papelera del rubro */}
+              {isBorrador && selectedRubro && trashedItems.length > 0 && (
+                <div id="rubro-trash" className="border-t border-slate-200 px-4 py-3 dark:border-slate-700">
+                  <h3 className="mb-2 text-sm font-medium text-slate-600 dark:text-slate-400">Papelera</h3>
+                  <ul className="space-y-1 text-sm">
+                    {trashedItems.map((t) => (
+                      <li key={t.id} className="flex items-center justify-between rounded bg-slate-50 px-2 py-1 dark:bg-slate-700">
+                        <span className="truncate text-slate-700 dark:text-slate-200">{t.tarea}</span>
+                        <span className="ml-2 shrink-0 text-slate-500 dark:text-slate-400">{(t.cantidad_milli / 1000).toFixed(3)} {t.unidad}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleRestoreItem(t.id)}
+                          className="ml-2 shrink-0 text-primary hover:underline"
+                        >
+                          Restaurar
+                        </button>
+                      </li>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : selectedRubro ? (
-              <p className="px-4 py-6 text-slate-500 dark:text-slate-400">Este rubro no tiene ítems. Agregá uno desde el catálogo.</p>
-            ) : null}
-            {/* Papelera del rubro */}
-            {isBorrador && selectedRubro && trashedItems.length > 0 && (
-              <div className="border-t border-slate-200 px-4 py-3 dark:border-slate-700">
-                <h3 className="mb-2 text-sm font-medium text-slate-600 dark:text-slate-400">Papelera</h3>
-                <ul className="space-y-1 text-sm">
-                  {trashedItems.map((t) => (
-                    <li key={t.id} className="flex items-center justify-between rounded bg-slate-50 px-2 py-1 dark:bg-slate-700">
-                      <span className="truncate text-slate-700 dark:text-slate-200">{t.tarea}</span>
-                      <span className="ml-2 shrink-0 text-slate-500 dark:text-slate-400">{(t.cantidad_milli / 1000).toFixed(3)} {t.unidad}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRestoreItem(t.id)}
-                        className="ml-2 shrink-0 text-primary hover:underline"
-                      >
-                        Restaurar
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                  </ul>
+                </div>
+              )}
+            </ScrollArea>
+          </ListadoPanel>
           </div>
-        </div>
 
         {/* Diálogo Agregar rubro */}
         {addRubroOpen && (
-          <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true">
-            <div className="max-h-[80vh] w-full max-w-md overflow-hidden rounded-lg bg-white shadow-lg dark:bg-slate-800">
-              <div className="border-b border-slate-200 px-4 py-3 font-medium text-slate-800 dark:border-slate-700 dark:text-slate-200">Agregar rubro</div>
-              <div className="p-4">
+          <Modal
+            title="Agregar rubro"
+            zClassName="z-10"
+            onClose={() => {
+              setAddRubroOpen(false);
+              setAddRubroSearch("");
+            }}
+            footer={
+              <button
+                type="button"
+                onClick={() => {
+                  setAddRubroOpen(false);
+                  setAddRubroSearch("");
+                }}
+                className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+              >
+                Cerrar
+              </button>
+            }
+          >
                 {rubroCatalog.length === 0 ? (
                   <>
                     <p className="text-sm text-slate-600 dark:text-slate-300">
@@ -725,15 +941,34 @@ export function ComputoEditor() {
                   </>
                     ) : (
                       <>
-                        {rubros.length >= rubroCatalog.length ? (
+                        {availableRubros.length === 0 ? (
                           <p className="text-sm text-slate-500 dark:text-slate-400">Todos los rubros ya están en el cómputo.</p>
                         ) : (
                           <>
                             <p className="mb-2 text-sm text-slate-600 dark:text-slate-300">Elegí un rubro para agregarlo al cómputo:</p>
+                            <input
+                              type="text"
+                              value={addRubroSearch}
+                              onChange={(e) => setAddRubroSearch(e.target.value)}
+                              placeholder="Buscar rubro..."
+                              className="w-full rounded border border-slate-300 px-3 py-2 pr-9 text-sm text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                              autoFocus
+                            />
+                            <div className="pointer-events-none relative -mt-9 mb-2 h-9">
+                              {addRubroSearch.trim() && (
+                                <button
+                                  type="button"
+                                  onClick={() => setAddRubroSearch("")}
+                                  className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-600 dark:hover:text-slate-200"
+                                  aria-label="Limpiar búsqueda de rubros"
+                                  title="Limpiar búsqueda"
+                                >
+                                  <ClearInputIcon />
+                                </button>
+                              )}
+                            </div>
                             <ul className="max-h-80 overflow-y-auto rounded border border-slate-200 dark:border-slate-600">
-                              {rubroCatalog
-                                .filter((rub) => !rubros.some((r) => r.rubro_id === rub.id))
-                                .map((rub) => (
+                              {filteredRubros.map((rub) => (
                                   <li key={rub.id}>
                                     <button
                                       type="button"
@@ -745,31 +980,41 @@ export function ComputoEditor() {
                                     </button>
                                   </li>
                                 ))}
+                              {filteredRubros.length === 0 && (
+                                <li className="px-3 py-2 text-sm text-slate-500 dark:text-slate-400">
+                                  No hay rubros que coincidan con la búsqueda.
+                                </li>
+                              )}
                         </ul>
                       </>
                     )}
                   </>
                 )}
-              </div>
-              <div className="border-t border-slate-200 p-2 dark:border-slate-700">
-                <button
-                  type="button"
-                  onClick={() => setAddRubroOpen(false)}
-                  className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
-                >
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          </div>
+          </Modal>
         )}
 
         {/* Diálogo Agregar ítem */}
         {addItemOpen && (
-          <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/50" role="dialog" aria-modal="true">
-            <div className="max-h-[80vh] w-full max-w-md overflow-hidden rounded-lg bg-white shadow-lg dark:bg-slate-800">
-              <div className="border-b border-slate-200 px-4 py-3 font-medium text-slate-800 dark:border-slate-700 dark:text-slate-200">Agregar ítem al rubro</div>
-              <div className="p-4">
+          <Modal
+            title="Agregar ítem"
+            zClassName="z-10"
+            onClose={() => {
+              setAddItemOpen(false);
+              setAddItemSearch("");
+            }}
+            footer={
+              <button
+                type="button"
+                onClick={() => {
+                  setAddItemOpen(false);
+                  setAddItemSearch("");
+                }}
+                className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+              >
+                Cerrar
+              </button>
+            }
+          >
                 {itemCatalog.length === 0 ? (
                   <>
                     <p className="text-sm text-slate-600 dark:text-slate-300">
@@ -786,8 +1031,29 @@ export function ComputoEditor() {
                 ) : (
                   <>
                     <p className="mb-2 text-sm text-slate-600 dark:text-slate-300">Elegí un ítem para agregarlo al rubro:</p>
+                    <input
+                      type="text"
+                      value={addItemSearch}
+                      onChange={(e) => setAddItemSearch(e.target.value)}
+                      placeholder="Buscar ítem o unidad..."
+                      className="w-full rounded border border-slate-300 px-3 py-2 pr-9 text-sm text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                      autoFocus
+                    />
+                    <div className="pointer-events-none relative -mt-9 mb-2 h-9">
+                      {addItemSearch.trim() && (
+                        <button
+                          type="button"
+                          onClick={() => setAddItemSearch("")}
+                          className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-600 dark:hover:text-slate-200"
+                          aria-label="Limpiar búsqueda de ítems"
+                          title="Limpiar búsqueda"
+                        >
+                          <ClearInputIcon />
+                        </button>
+                      )}
+                    </div>
                     <ul className="max-h-80 overflow-y-auto rounded border border-slate-200 dark:border-slate-600">
-                      {itemCatalog.map((item) => (
+                      {filteredItems.map((item) => (
                         <li key={item.id}>
                           <button
                             type="button"
@@ -800,25 +1066,19 @@ export function ComputoEditor() {
                           </button>
                         </li>
                       ))}
+                      {filteredItems.length === 0 && (
+                        <li className="px-3 py-2 text-sm text-slate-500 dark:text-slate-400">
+                          No hay ítems que coincidan con la búsqueda.
+                        </li>
+                      )}
                     </ul>
                   </>
                 )}
-              </div>
-              <div className="border-t border-slate-200 p-2 dark:border-slate-700">
-                <button
-                  type="button"
-                  onClick={() => setAddItemOpen(false)}
-                  className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
-                >
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          </div>
+          </Modal>
         )}
 
         {/* Panel totales */}
-        <div className="mt-6 rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <div className="shrink-0 rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <h2 className="mb-3 font-medium text-slate-800 dark:text-slate-200">Totales</h2>
           <div className="flex flex-wrap gap-8">
             <div>
@@ -917,171 +1177,189 @@ export function ComputoEditor() {
           </div>
         )}
 
-        {/* Listados por obra (materiales / mano de obra) */}
-        <ListadosPorObra versionId={versionId!} formatCentavos={formatCentavos} formatCantidad={formatCantidad} />
-      </div>
-    </div>
-  );
-}
-
-interface ListadosPorObraProps {
-  versionId: string;
-  formatCentavos: (c: number) => string;
-  formatCantidad: (m: number) => string;
-}
-
-function ListadosPorObra({ versionId, formatCentavos, formatCantidad }: ListadosPorObraProps) {
-  const [materiales, setMateriales] = useState<MaterialObraRowDTO[] | null>(null);
-  const [manoObra, setManoObra] = useState<ManoObraObraRowDTO[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [exportLoading, setExportLoading] = useState(false);
-  const [exportMessage, setExportMessage] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"materiales" | "mano_obra">("materiales");
-
-  const loadListados = useCallback(async () => {
-    setLoading(true);
-    try {
-      const [mat, mo] = await Promise.all([materialsAll(versionId), manoObraAll(versionId)]);
-      setMateriales(mat);
-      setManoObra(mo);
-    } finally {
-      setLoading(false);
-    }
-  }, [versionId]);
-
-  const handleExportCSV = useCallback(async () => {
-    setExportMessage(null);
-    setExportLoading(true);
-    try {
-      await exportComputoCSVAndSave(versionId);
-      setExportMessage("CSV guardado");
-      setTimeout(() => setExportMessage(null), 3000);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      setExportMessage(msg === "cancelado por el usuario" ? "Cancelado" : `Error: ${msg}`);
-    } finally {
-      setExportLoading(false);
-    }
-  }, [versionId]);
-
-  const hasData = (materiales?.length ?? 0) > 0 || (manoObra?.length ?? 0) > 0;
-
-  return (
-    <div className="mt-6 rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 px-4 py-3 dark:border-slate-700">
-        <h2 className="font-medium text-slate-800 dark:text-slate-200">Listados por obra</h2>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={handleExportCSV}
-            disabled={exportLoading}
-            className="rounded border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
-            title="Exportar materiales y mano de obra a CSV"
+        {comitenteDialogOpen && (
+          <Modal
+            title="Comitente"
+            onClose={() => !comitenteSaving && setComitenteDialogOpen(false)}
+            footer={
+              <>
+                <button
+                  type="button"
+                  onClick={() => setComitenteDialogOpen(false)}
+                  disabled={comitenteSaving}
+                  className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveComitente}
+                  disabled={comitenteSaving}
+                  className="rounded bg-primary px-3 py-1.5 text-sm text-white hover:bg-primary-dark disabled:opacity-50 dark:bg-teal-600 dark:hover:bg-teal-700"
+                >
+                  {comitenteSaving ? "Guardando…" : "Guardar"}
+                </button>
+              </>
+            }
           >
-            {exportLoading ? "Exportando…" : "Exportar a CSV"}
-          </button>
-          {exportMessage && (
-            <span className="text-xs text-slate-500 dark:text-slate-400">{exportMessage}</span>
-          )}
-          <button
-            type="button"
-            onClick={loadListados}
-            disabled={loading}
-            className="rounded bg-slate-600 px-3 py-1.5 text-sm text-white hover:bg-slate-700 disabled:opacity-50 dark:bg-slate-500 dark:hover:bg-slate-600"
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="comitente-dialog" className="mb-1 block text-sm text-slate-700 dark:text-slate-300">
+                  Descripción de comitente
+                </label>
+                <input
+                  id="comitente-dialog"
+                  type="text"
+                  value={comitenteStr}
+                  onChange={(e) => setComitenteStr(e.target.value)}
+                  className="w-full rounded border border-slate-300 px-3 py-2 text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                  autoFocus
+                />
+              </div>
+              {comitenteMsg && (
+                <p
+                  className={`text-sm ${comitenteMsg.includes("Error") || comitenteMsg.includes("Ingresá") ? "text-red-600 dark:text-red-400" : "text-slate-600 dark:text-slate-400"}`}
+                >
+                  {comitenteMsg}
+                </p>
+              )}
+            </div>
+          </Modal>
+        )}
+
+        {confirmDialogOpen && (
+          <Modal
+            title="Confirmar versión"
+            onClose={() => !actionLoading && setConfirmDialogOpen(false)}
+            footer={
+              <>
+                <button
+                  type="button"
+                  onClick={() => setConfirmDialogOpen(false)}
+                  disabled={actionLoading}
+                  className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirm}
+                  disabled={actionLoading}
+                  className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700 disabled:opacity-50"
+                  autoFocus
+                >
+                  {actionLoading ? "Confirmando…" : "Sí, confirmar"}
+                </button>
+              </>
+            }
           >
-            {loading ? "Cargando…" : "Cargar listados"}
-          </button>
+            <p className="text-sm text-slate-700 dark:text-slate-200">Vas a confirmar esta versión del cómputo.</p>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              Al confirmar, la versión queda cerrada para edición y se habilita crear una nueva versión desde esta base.
+            </p>
+          </Modal>
+        )}
+
+        {rubroDeleteConfirm && (
+          <Modal
+            title="Eliminar rubro"
+            onClose={() => !actionLoading && setRubroDeleteConfirm(null)}
+            footer={
+              <>
+                <button
+                  type="button"
+                  onClick={() => setRubroDeleteConfirm(null)}
+                  disabled={actionLoading}
+                  className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDeleteRubro}
+                  disabled={actionLoading}
+                  className="rounded bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+                  autoFocus
+                >
+                  {actionLoading ? "Eliminando…" : "Eliminar"}
+                </button>
+              </>
+            }
+          >
+            <p className="text-sm text-slate-700 dark:text-slate-200">
+              Vas a eliminar el rubro <span className="font-medium">&quot;{rubroDeleteConfirm.nombre}&quot;</span> del cómputo.
+            </p>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Esta acción no se puede deshacer.</p>
+          </Modal>
+        )}
+
+        {rubroTrashAction && (
+          <Modal
+            title="Rubro con papelera"
+            onClose={() => !actionLoading && setRubroTrashAction(null)}
+            footer={
+              <>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedRubroId(rubroTrashAction.id);
+                    setRubroTrashAction(null);
+                    setTimeout(() => document.getElementById("rubro-trash")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+                  }}
+                  disabled={actionLoading}
+                  className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                >
+                  Ver papelera
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRubroTrashAction(null)}
+                  disabled={actionLoading}
+                  className="rounded border border-slate-300 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleEmptyRubroTrash}
+                  disabled={actionLoading}
+                  className="rounded bg-red-600 px-3 py-1.5 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+                  autoFocus
+                >
+                  {actionLoading ? "Vaciando…" : "Vaciar papelera"}
+                </button>
+              </>
+            }
+          >
+            <p className="text-sm text-slate-700 dark:text-slate-200">
+              El rubro <span className="font-medium">&quot;{rubroTrashAction.nombre}&quot;</span> tiene {rubroTrashAction.count} ítem(s) en la papelera.
+            </p>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              Para eliminar el rubro, primero restaurá esos ítems o vaciá la papelera (eliminación definitiva).
+            </p>
+          </Modal>
+        )}
+
+        {rubroDeleteMsg && (
+          <Modal
+            title="No se puede eliminar"
+            onClose={() => setRubroDeleteMsg(null)}
+            footer={
+              <button
+                type="button"
+                onClick={() => setRubroDeleteMsg(null)}
+                className="rounded bg-primary px-3 py-1.5 text-sm text-white hover:bg-primary-dark dark:bg-teal-600 dark:hover:bg-teal-700"
+                autoFocus
+              >
+                OK
+              </button>
+            }
+          >
+            <p className="text-sm text-slate-700 dark:text-slate-200">{rubroDeleteMsg}</p>
+          </Modal>
+        )}
         </div>
       </div>
-      {hasData && (
-        <div className="p-4">
-          <div className="mb-3 flex gap-2 border-b border-slate-200 dark:border-slate-700">
-            <button
-              type="button"
-              onClick={() => setActiveTab("materiales")}
-              className={`border-b-2 px-2 py-1 text-sm ${
-                activeTab === "materiales"
-                  ? "border-primary text-primary dark:border-teal-400 dark:text-teal-400"
-                  : "border-transparent text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-              }`}
-            >
-              Materiales
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab("mano_obra")}
-              className={`border-b-2 px-2 py-1 text-sm ${
-                activeTab === "mano_obra"
-                  ? "border-primary text-primary dark:border-teal-400 dark:text-teal-400"
-                  : "border-transparent text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-              }`}
-            >
-              Mano de obra
-            </button>
-          </div>
-          {activeTab === "materiales" && materiales && (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
-                  <tr>
-                    <th className="px-4 py-2 font-medium">Descripción</th>
-                    <th className="px-4 py-2 font-medium">Unidad</th>
-                    <th className="px-4 py-2 font-medium text-right">Cantidad</th>
-                    <th className="px-4 py-2 font-medium text-right">Total</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                  {materiales.map((row) => (
-                    <tr key={row.componente_id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                      <td className="px-4 py-2 text-slate-800 dark:text-slate-200">{row.descripcion}</td>
-                      <td className="px-4 py-2 text-slate-600 dark:text-slate-400">{row.unidad}</td>
-                      <td className="px-4 py-2 text-right text-slate-700 dark:text-slate-300">
-                        {formatCantidad(row.cantidad_milli)}
-                      </td>
-                      <td className="px-4 py-2 text-right font-medium text-slate-800 dark:text-slate-200">
-                        {formatCentavos(row.total_centavos)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-          {activeTab === "mano_obra" && manoObra && (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
-                  <tr>
-                    <th className="px-4 py-2 font-medium">Descripción</th>
-                    <th className="px-4 py-2 font-medium">Unidad</th>
-                    <th className="px-4 py-2 font-medium text-right">Cantidad</th>
-                    <th className="px-4 py-2 font-medium text-right">Total</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                  {manoObra.map((row) => (
-                    <tr key={row.componente_id} className="hover:bg-slate-50 dark:hover:bg-slate-700">
-                      <td className="px-4 py-2 text-slate-800 dark:text-slate-200">{row.descripcion}</td>
-                      <td className="px-4 py-2 text-slate-600 dark:text-slate-400">{row.unidad}</td>
-                      <td className="px-4 py-2 text-right text-slate-700 dark:text-slate-300">
-                        {formatCantidad(row.cantidad_milli)}
-                      </td>
-                      <td className="px-4 py-2 text-right font-medium text-slate-800 dark:text-slate-200">
-                        {formatCentavos(row.total_centavos)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      )}
-      {!hasData && !loading && materiales !== null && (
-        <p className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">
-          Sin datos. Agregá rubros e ítems con composición y pulsá &quot;Cargar listados&quot;.
-        </p>
-      )}
     </div>
   );
 }

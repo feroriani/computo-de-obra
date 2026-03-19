@@ -105,3 +105,12 @@ func (r *ComputoRubroItemRepo) Restore(ctx context.Context, computoRubroItemID s
 		`UPDATE computo_rubro_item SET deleted_at = NULL, updated_at = ? WHERE id = ?`, nowStr, computoRubroItemID)
 	return err
 }
+
+// PurgeTrashedByComputoRubro permanently deletes trashed items of a computo rubro.
+func (r *ComputoRubroItemRepo) PurgeTrashedByComputoRubro(ctx context.Context, computoRubroID string) error {
+	_, err := r.db.ExecContext(ctx,
+		`DELETE FROM computo_rubro_item WHERE computo_rubro_id = ? AND deleted_at IS NOT NULL`,
+		computoRubroID,
+	)
+	return err
+}

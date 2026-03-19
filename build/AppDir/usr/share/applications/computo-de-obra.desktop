@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Computo de Obra
+Exec=computo-de-obra
+Icon=computo-de-obra
+Categories=Office;
+Terminal=false

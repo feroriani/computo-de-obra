@@ -4,7 +4,9 @@ import {
   ComputoConfirm,
   ComputoCreateNewVersionFrom,
   ComputoGet,
+  ComputoSetComitenteDescripcion,
   ComputoSetSuperficie,
+  ComputoDeleteSeries,
   RubroCatalogList,
   RubroCatalogListPaged,
   RubroCatalogGet,
@@ -12,6 +14,7 @@ import {
   RubroCatalogUpdate,
   RubroCatalogDelete,
   ComputoRubrosAdd,
+  ComputoRubrosDelete,
   ComputoRubrosReorder,
   ItemCatalogList,
   ItemCatalogListPaged,
@@ -43,6 +46,7 @@ import {
   ComputoRubroItemsSetCantidad,
   ComputoRubroItemsTrash,
   ComputoRubroTrashList,
+  ComputoRubroTrashEmpty,
   ComputoRubroTrashRestore,
   MaterialsAll,
   ManoObraAll,
@@ -72,6 +76,10 @@ export async function listComputos(): Promise<ComputoListRowDTO[]> {
   return ComputoList();
 }
 
+export async function deleteComputoSeries(seriesID: string): Promise<void> {
+  return ComputoDeleteSeries(seriesID);
+}
+
 export async function createComputo(
   descripcion: string,
   superficieMilli: number,
@@ -86,6 +94,10 @@ export async function getComputo(versionId: string): Promise<ComputoGetDTO | nul
 
 export async function computoSetSuperficie(versionId: string, superficieMilli: number): Promise<void> {
   return ComputoSetSuperficie(versionId, superficieMilli);
+}
+
+export async function computoSetComitenteDescripcion(versionId: string, descripcion: string): Promise<void> {
+  return ComputoSetComitenteDescripcion(versionId, descripcion);
 }
 
 export async function computoConfirm(versionId: string): Promise<void> {
@@ -117,6 +129,10 @@ export async function computoRubrosAdd(versionId: string, rubroId: string): Prom
 
 export async function computoRubrosReorder(versionId: string, computoRubroIds: string[]): Promise<void> {
   return ComputoRubrosReorder(versionId, computoRubroIds);
+}
+
+export async function computoRubrosDelete(computoRubroId: string): Promise<void> {
+  return ComputoRubrosDelete(computoRubroId);
 }
 
 export async function itemCatalogList(): Promise<ItemCatalogItemDTO[]> {
@@ -159,6 +175,10 @@ export async function computoRubroTrashList(
 
 export async function computoRubroTrashRestore(computoRubroItemId: string): Promise<void> {
   return ComputoRubroTrashRestore(computoRubroItemId);
+}
+
+export async function computoRubroTrashEmpty(computoRubroId: string): Promise<void> {
+  return ComputoRubroTrashEmpty(computoRubroId);
 }
 
 // --- Catálogos globales (CRUD) ---
@@ -341,6 +361,11 @@ export async function backupDB(): Promise<void> {
 }
 
 /** Genera CSV del cómputo (materiales y mano de obra) y abre diálogo para guardar. */
-export async function exportComputoCSVAndSave(versionId: string): Promise<void> {
-  return ExportComputoCSVAndSave(versionId);
+export async function exportComputoCSVAndSave(
+  versionId: string,
+  itemId: string,
+  itemTitle: string
+): Promise<void> {
+  // Wails bindings for Go variadic parameters get exported as an array arg.
+  return ExportComputoCSVAndSave(versionId, [itemId, itemTitle]);
 }

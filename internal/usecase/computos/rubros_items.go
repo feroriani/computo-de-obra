@@ -30,6 +30,11 @@ func ComputoRubrosReorder(ctx context.Context, repo ports.ComputoRubroRepository
 	return repo.Reorder(ctx, versionID, computoRubroIDs)
 }
 
+// ComputoRubrosDelete deletes a computo_rubro (draft only) if it has no related items (active or trashed).
+func ComputoRubrosDelete(ctx context.Context, repo ports.ComputoRubroRepository, computoRubroID string) error {
+	return repo.Delete(ctx, computoRubroID)
+}
+
 // ItemCatalogList returns the global item catalog for selectors.
 func ItemCatalogList(ctx context.Context, repo ports.ItemRepository) ([]dto.ItemCatalogItemDTO, error) {
 	rows, err := repo.ListCatalog(ctx)
@@ -80,4 +85,9 @@ func ComputoRubroTrashList(ctx context.Context, repo ports.ComputoRubroItemRepos
 // ComputoRubroTrashRestore restores a trashed computo rubro item.
 func ComputoRubroTrashRestore(ctx context.Context, repo ports.ComputoRubroItemRepository, computoRubroItemID string) error {
 	return repo.Restore(ctx, computoRubroItemID)
+}
+
+// ComputoRubroTrashEmpty permanently deletes trashed items of a computo rubro.
+func ComputoRubroTrashEmpty(ctx context.Context, repo ports.ComputoRubroItemRepository, computoRubroID string) error {
+	return repo.PurgeTrashedByComputoRubro(ctx, computoRubroID)
 }

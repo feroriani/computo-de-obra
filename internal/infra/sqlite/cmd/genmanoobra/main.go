@@ -1,4 +1,4 @@
-// genmanoobra reads MANODEOBRA.txt from repo root and writes 0006_seed_componente_mano_obra.sql.
+// genmanoobra reads docs/MANODEOBRA.txt and writes 0006_seed_componente_mano_obra.sql.
 // Format per line: id;descripcion;unidad;costo (costo en pesos, coma o punto decimal).
 // Run from repo root: go run ./internal/infra/sqlite/cmd/genmanoobra
 package main
@@ -15,7 +15,7 @@ import (
 
 func main() {
 	root := findRoot()
-	inPath := filepath.Join(root, "MANODEOBRA.txt")
+	inPath := filepath.Join(root, "docs", "MANODEOBRA.txt")
 	outPath := filepath.Join(root, "internal/infra/sqlite/migrations/0006_seed_componente_mano_obra.sql")
 
 	f, err := os.Open(inPath)
@@ -32,8 +32,8 @@ func main() {
 	}
 	defer out.Close()
 
-	fmt.Fprintf(out, "-- Catálogo inicial mano de obra (MANODEOBRA.txt). costo_centavos = pesos × 100.\n")
-	fmt.Fprintf(out, "-- IDs fijos 00000000-0000-6000-8000-{código hex}.\n\n")
+	fmt.Fprintf(out, "-- Catálogo inicial mano de obra (docs/MANODEOBRA.txt). costo_centavos = pesos × 100.\n")
+	fmt.Fprintf(out, "-- id = código numérico del archivo.\n\n")
 
 	sc := bufio.NewScanner(f)
 	n := 0
@@ -65,7 +65,7 @@ func main() {
 		if centavos < 0 {
 			centavos = 0
 		}
-		id := fmt.Sprintf("00000000-0000-6000-8000-%012x", idNum)
+		id := strconv.Itoa(idNum)
 		fmt.Fprintf(out, "INSERT OR IGNORE INTO componente_mano_obra (id, descripcion, unidad, costo_centavos, created_at, updated_at) VALUES ('%s', '%s', '%s', %d, '2025-03-17T00:00:00Z', '2025-03-17T00:00:00Z');\n",
 			id, sqlQuote(desc), sqlQuote(unidad), centavos)
 		n++

@@ -8,6 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { Link } from "react-router-dom";
+import { ScrollArea } from "../../../components/ScrollArea";
 import {
   useReactTable,
   getCoreRowModel,
@@ -22,15 +23,18 @@ import type {
   Row,
 } from "@tanstack/react-table";
 import {
+  listComputos,
   rubroCatalogListPaged,
   rubroCatalogCreate,
   rubroCatalogUpdate,
   rubroCatalogDelete,
+  materialsAll,
   componenteMaterialListPaged,
   componenteMaterialList,
   componenteMaterialCreate,
   componenteMaterialUpdate,
   componenteMaterialDelete,
+  manoObraAll,
   componenteManoObraListPaged,
   componenteManoObraList,
   componenteManoObraCreate,
@@ -50,6 +54,7 @@ import {
   itemCompositionDeleteManoObra,
 } from "../api";
 import type {
+  ComputoListRowDTO,
   RubroCatalogItemDTO,
   ComponenteMaterialItemDTO,
   ComponenteManoObraItemDTO,
@@ -91,37 +96,7 @@ function thClass(columnId: string): string {
 
 /** Scroll solo en filas; buscador y paginación quedan fuera (en el padre). */
 function CatalogTableBodyScroll({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  return (
-    <div
-      ref={ref}
-      className="min-h-0 flex-1 overflow-y-auto overflow-x-auto overscroll-contain"
-      style={{
-        scrollbarGutter: "stable",
-        // En algunos WebViews `overscroll-behavior` por clase no alcanza.
-        overscrollBehavior: "contain",
-      }}
-      onWheel={(e) => {
-        // Evitar que el wheel “se escape” al scroll de la ventana (scroll chaining),
-        // que en Wails se percibe como trabas + hover del scrollbar.
-        e.stopPropagation();
-
-        const el = ref.current;
-        if (!el) return;
-
-        // Si el contenedor puede scrollear en Y, prevenimos el default para que
-        // el navegador no intente transferir el wheel al ancestro.
-        const canScrollY = el.scrollHeight > el.clientHeight + 1;
-        if (canScrollY) e.preventDefault();
-      }}
-      onPointerDown={() => {
-        const ae = document.activeElement as HTMLElement | null;
-        if (ae && (ae.tagName === "INPUT" || ae.tagName === "TEXTAREA")) ae.blur();
-      }}
-    >
-      {children}
-    </div>
-  );
+  return <ScrollArea containWheel className="overflow-x-auto">{children}</ScrollArea>;
 }
 
 function rowClassName(): string {
@@ -272,28 +247,6 @@ export function CatalogosAdmin() {
   const [tab, setTab] = useState<TabId>("rubros");
   const [error, setError] = useState("");
 
-  // Evita scroll de ventana mientras esta pantalla está montada.
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-    const prevHtmlOverflow = html.style.overflow;
-    const prevBodyOverflow = body.style.overflow;
-    const prevHtmlOverscroll = (html.style as any).overscrollBehavior;
-    const prevBodyOverscroll = (body.style as any).overscrollBehavior;
-
-    html.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    (html.style as any).overscrollBehavior = "none";
-    (body.style as any).overscrollBehavior = "none";
-
-    return () => {
-      html.style.overflow = prevHtmlOverflow;
-      body.style.overflow = prevBodyOverflow;
-      (html.style as any).overscrollBehavior = prevHtmlOverscroll;
-      (body.style as any).overscrollBehavior = prevBodyOverscroll;
-    };
-  }, []);
-
   // Si clickeás en cualquier lugar fuera del input, que pierda foco.
   useEffect(() => {
     const onPointerDown = (e: PointerEvent) => {
@@ -316,6 +269,181 @@ export function CatalogosAdmin() {
   const matPg = useCatalogPage(tab === "materiales", componenteMaterialListPaged, setError);
   const moPg = useCatalogPage(tab === "manoobra", componenteManoObraListPaged, setError);
   const itemsPg = useCatalogPage(tab === "items", itemCatalogListPaged, setError);
+
+  // --- Selector de cómputo (filtro por componentes usados) ---
+  const [computos, setComputos] = useState<ComputoListRowDTO[]>([]);
+  const [computosLoading, setComputosLoading] = useState(false);
+  const [selectedComputoVersionId, setSelectedComputoVersionId] = useState<string | null>(null);
+
+  const [filterLoading, setFilterLoading] = useState(false);
+  const [computoUsedMaterialIds, setComputoUsedMaterialIds] = useState<string[]>([]);
+  const [computoUsedManoObraIds, setComputoUsedManoObraIds] = useState<string[]>([]);
+  const [computoMaterialBase, setComputoMaterialBase] = useState<ComponenteMaterialItemDTO[]>([]);
+  const [computoManoObraBase, setComputoManoObraBase] = useState<ComponenteManoObraItemDTO[]>([]);
+
+  // Search/paginación client-side cuando el filtro está activo.
+  const matFilterInputRef = useRef<HTMLInputElement | null>(null);
+  const [matFilterQApplied, setMatFilterQApplied] = useState("");
+  const [matFilterPage, setMatFilterPage] = useState(0);
+
+  const moFilterInputRef = useRef<HTMLInputElement | null>(null);
+  const [moFilterQApplied, setMoFilterQApplied] = useState("");
+  const [moFilterPage, setMoFilterPage] = useState(0);
+
+  const filterActive = selectedComputoVersionId !== null;
+
+  useEffect(() => {
+    setComputosLoading(true);
+    setError("");
+    listComputos()
+      .then((rows) => setComputos(rows))
+      .catch((e) => setError(e instanceof Error ? e.message : "Error al cargar cómputos"))
+      .finally(() => setComputosLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (!selectedComputoVersionId) {
+      setComputoUsedMaterialIds([]);
+      setComputoUsedManoObraIds([]);
+      setComputoMaterialBase([]);
+      setComputoManoObraBase([]);
+      setMatFilterQApplied("");
+      setMatFilterPage(0);
+      setMoFilterQApplied("");
+      setMoFilterPage(0);
+      return;
+    }
+
+    let cancel = false;
+    setFilterLoading(true);
+    setError("");
+
+    Promise.all([
+      materialsAll(selectedComputoVersionId),
+      manoObraAll(selectedComputoVersionId),
+      componenteMaterialList(),
+      componenteManoObraList(),
+    ])
+      .then(([matRows, moRows, allMats, allMo]) => {
+        if (cancel) return;
+
+        const usedMaterialIds = Array.from(new Set(matRows.map((r) => r.componente_id)));
+        const usedManoObraIds = Array.from(new Set(moRows.map((r) => r.componente_id)));
+
+        const matUsedSet = new Set(usedMaterialIds);
+        const moUsedSet = new Set(usedManoObraIds);
+
+        setComputoUsedMaterialIds(usedMaterialIds);
+        setComputoUsedManoObraIds(usedManoObraIds);
+        setComputoMaterialBase(allMats.filter((c) => matUsedSet.has(c.id)));
+        setComputoManoObraBase(allMo.filter((c) => moUsedSet.has(c.id)));
+
+        setMatFilterQApplied("");
+        setMatFilterPage(0);
+        setMoFilterQApplied("");
+        setMoFilterPage(0);
+      })
+      .catch((e) => {
+        if (cancel) return;
+        setError(e instanceof Error ? e.message : "Error al cargar filtro por cómputo");
+        setComputoUsedMaterialIds([]);
+        setComputoUsedManoObraIds([]);
+        setComputoMaterialBase([]);
+        setComputoManoObraBase([]);
+      })
+      .finally(() => {
+        if (!cancel) setFilterLoading(false);
+      });
+
+    return () => {
+      cancel = true;
+    };
+  }, [selectedComputoVersionId]);
+
+  const refreshComputoMaterialBase = useCallback(async () => {
+    if (!selectedComputoVersionId) return;
+    if (computoUsedMaterialIds.length === 0) {
+      setComputoMaterialBase([]);
+      return;
+    }
+    const allMats = await componenteMaterialList();
+    const usedSet = new Set(computoUsedMaterialIds);
+    setComputoMaterialBase(allMats.filter((c) => usedSet.has(c.id)));
+  }, [selectedComputoVersionId, computoUsedMaterialIds]);
+
+  const refreshComputoManoObraBase = useCallback(async () => {
+    if (!selectedComputoVersionId) return;
+    if (computoUsedManoObraIds.length === 0) {
+      setComputoManoObraBase([]);
+      return;
+    }
+    const allMo = await componenteManoObraList();
+    const usedSet = new Set(computoUsedManoObraIds);
+    setComputoManoObraBase(allMo.filter((c) => usedSet.has(c.id)));
+  }, [selectedComputoVersionId, computoUsedManoObraIds]);
+
+  const applyMatFilterSearch = useCallback(() => {
+    const next = (matFilterInputRef.current?.value ?? "").trim();
+    setMatFilterQApplied(next);
+    setMatFilterPage(0);
+    matFilterInputRef.current?.blur();
+  }, []);
+
+  const applyMoFilterSearch = useCallback(() => {
+    const next = (moFilterInputRef.current?.value ?? "").trim();
+    setMoFilterQApplied(next);
+    setMoFilterPage(0);
+    moFilterInputRef.current?.blur();
+  }, []);
+
+  const computoMaterialFilteredAll = useMemo(() => {
+    if (!filterActive) return [];
+    const q = matFilterQApplied.trim().toLowerCase();
+    if (!q) return computoMaterialBase;
+    return computoMaterialBase.filter(
+      (c) => c.descripcion.toLowerCase().includes(q) || c.unidad.toLowerCase().includes(q),
+    );
+  }, [filterActive, matFilterQApplied, computoMaterialBase]);
+
+  const computoMaterialPaged = useMemo(() => {
+    const start = matFilterPage * PAGE_SIZE;
+    return computoMaterialFilteredAll.slice(start, start + PAGE_SIZE);
+  }, [computoMaterialFilteredAll, matFilterPage]);
+
+  const computoMaterialTotal = computoMaterialFilteredAll.length;
+  const computoMaterialTotalPages = Math.max(1, Math.ceil(computoMaterialTotal / PAGE_SIZE) || 1);
+  const computoMaterialCanPrev = matFilterPage > 0;
+  const computoMaterialCanNext = (matFilterPage + 1) * PAGE_SIZE < computoMaterialTotal;
+
+  const computoManoObraFilteredAll = useMemo(() => {
+    if (!filterActive) return [];
+    const q = moFilterQApplied.trim().toLowerCase();
+    if (!q) return computoManoObraBase;
+    return computoManoObraBase.filter(
+      (c) => c.descripcion.toLowerCase().includes(q) || c.unidad.toLowerCase().includes(q),
+    );
+  }, [filterActive, moFilterQApplied, computoManoObraBase]);
+
+  const computoManoObraPaged = useMemo(() => {
+    const start = moFilterPage * PAGE_SIZE;
+    return computoManoObraFilteredAll.slice(start, start + PAGE_SIZE);
+  }, [computoManoObraFilteredAll, moFilterPage]);
+
+  const computoManoObraTotal = computoManoObraFilteredAll.length;
+  const computoManoObraTotalPages = Math.max(1, Math.ceil(computoManoObraTotal / PAGE_SIZE) || 1);
+  const computoManoObraCanPrev = moFilterPage > 0;
+  const computoManoObraCanNext = (moFilterPage + 1) * PAGE_SIZE < computoManoObraTotal;
+
+  // Clamps para que el paginado no quede en una página inexistente si el set cambia.
+  useEffect(() => {
+    if (!filterActive) return;
+    if (matFilterPage >= computoMaterialTotalPages) setMatFilterPage(Math.max(0, computoMaterialTotalPages - 1));
+  }, [filterActive, computoMaterialTotalPages, matFilterPage]);
+
+  useEffect(() => {
+    if (!filterActive) return;
+    if (moFilterPage >= computoManoObraTotalPages) setMoFilterPage(Math.max(0, computoManoObraTotalPages - 1));
+  }, [filterActive, computoManoObraTotalPages, moFilterPage]);
 
   const [rubroModal, setRubroModal] = useState<{ open: boolean; id: string | null; nombre: string }>({
     open: false,
@@ -398,7 +526,7 @@ export function CatalogosAdmin() {
 
   return (
     <div className="h-full min-h-0 overflow-hidden bg-slate-50 p-6 dark:bg-slate-900">
-      <div className="mx-auto flex h-full min-h-0 max-w-4xl flex-col">
+      <div className="flex h-full min-h-0 w-full flex-col">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
@@ -496,38 +624,101 @@ export function CatalogosAdmin() {
           )}
           {tab === "materiales" && (
             <div className="flex h-full flex-col gap-3">
-              <form
-                className="flex flex-wrap gap-2"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  matPg.applySearch();
-                }}
-              >
-                <input
-                  type="search"
-                  placeholder="Buscar por descripción o unidad…"
-                  ref={matPg.inputRef}
-                  className={searchInputClass}
-                  aria-label="Buscar componentes material"
-                  onInput={(e: FormEvent<HTMLInputElement>) => {
-                    if (e.currentTarget.value.trim() === "") matPg.applySearch();
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Escape") (e.currentTarget as HTMLInputElement).blur();
-                  }}
-                />
-                <button type="submit" className={searchButtonClass} disabled={matPg.loading}>
-                  Buscar
-                </button>
-              </form>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                {filterActive ? (
+                  <form
+                    className="flex flex-wrap gap-2 items-center flex-1"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      applyMatFilterSearch();
+                    }}
+                  >
+                    <input
+                      type="search"
+                      placeholder="Buscar por descripción o unidad…"
+                      ref={matFilterInputRef}
+                      className={searchInputClass}
+                      aria-label="Buscar componentes material (filtrado por cómputo)"
+                      onInput={(e: FormEvent<HTMLInputElement>) => {
+                        if (e.currentTarget.value.trim() === "") applyMatFilterSearch();
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") (e.currentTarget as HTMLInputElement).blur();
+                      }}
+                    />
+                    <button type="submit" className={searchButtonClass} disabled={filterLoading}>
+                      Buscar
+                    </button>
+                  </form>
+                ) : (
+                  <form
+                    className="flex flex-wrap gap-2 items-center flex-1"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      matPg.applySearch();
+                    }}
+                  >
+                    <input
+                      type="search"
+                      placeholder="Buscar por descripción o unidad…"
+                      ref={matPg.inputRef}
+                      className={searchInputClass}
+                      aria-label="Buscar componentes material"
+                      onInput={(e: FormEvent<HTMLInputElement>) => {
+                        if (e.currentTarget.value.trim() === "") matPg.applySearch();
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") (e.currentTarget as HTMLInputElement).blur();
+                      }}
+                    />
+                    <button type="submit" className={searchButtonClass} disabled={matPg.loading}>
+                      Buscar
+                    </button>
+                  </form>
+                )}
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                    <span>Computo:</span>
+                    <select
+                      value={selectedComputoVersionId ?? ""}
+                      onChange={(e) => setSelectedComputoVersionId(e.target.value || null)}
+                      disabled={computosLoading}
+                      className="w-full max-w-[26rem] rounded border border-slate-300 bg-white px-2 py-1 text-sm text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary [color-scheme:light] disabled:opacity-70 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:[color-scheme:dark]"
+                    >
+                      <option value="">Listado completo</option>
+                      {computos.map((c) => (
+                        <option key={c.version_id} value={c.version_id}>
+                          {c.codigo} · v{c.version_n} · {c.estado}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  {selectedComputoVersionId && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedComputoVersionId(null)}
+                      className="rounded border border-slate-300 px-2 py-1 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+                      aria-label="Quitar filtro por cómputo"
+                      title="Quitar filtro"
+                    >
+                      X
+                    </button>
+                  )}
+                </div>
+              </div>
               <div className="min-h-0 flex-1">
               <MaterialesTab
-                items={matPg.items}
-                loading={matPg.loading}
+                items={filterActive ? computoMaterialPaged : matPg.items}
+                loading={filterActive ? filterLoading : matPg.loading}
                 emptyHint={
-                  matPg.qApplied
-                    ? "Sin resultados para la búsqueda."
-                    : "No hay componentes material."
+                  filterActive
+                    ? matFilterQApplied
+                      ? "Sin resultados para la búsqueda."
+                      : "No hay componentes material usados en este cómputo."
+                    : matPg.qApplied
+                      ? "Sin resultados para la búsqueda."
+                      : "No hay componentes material."
                 }
                 onAdd={() =>
                   setMaterialModal({
@@ -549,56 +740,136 @@ export function CatalogosAdmin() {
                 }
                 onDelete={async (id) => {
                   await componenteMaterialDelete(id);
-                  matPg.refetch();
+                  if (filterActive) {
+                    await refreshComputoMaterialBase();
+                  } else {
+                    matPg.refetch();
+                  }
                 }}
               />
               </div>
-              <CatalogPaginationBar
-                page={matPg.page}
-                totalPages={matPg.totalPages}
-                total={matPg.total}
-                canPrev={matPg.canPrev}
-                canNext={matPg.canNext}
-                loading={matPg.loading}
-                onPrev={() => matPg.setPageIndex((p) => Math.max(0, p - 1))}
-                onNext={() => matPg.setPageIndex((p) => p + 1)}
-              />
+              {filterActive ? (
+                <CatalogPaginationBar
+                  page={matFilterPage + 1}
+                  totalPages={computoMaterialTotalPages}
+                  total={computoMaterialTotal}
+                  canPrev={computoMaterialCanPrev}
+                  canNext={computoMaterialCanNext}
+                  loading={filterLoading}
+                  onPrev={() => setMatFilterPage((p) => Math.max(0, p - 1))}
+                  onNext={() => setMatFilterPage((p) => p + 1)}
+                />
+              ) : (
+                <CatalogPaginationBar
+                  page={matPg.page}
+                  totalPages={matPg.totalPages}
+                  total={matPg.total}
+                  canPrev={matPg.canPrev}
+                  canNext={matPg.canNext}
+                  loading={matPg.loading}
+                  onPrev={() => matPg.setPageIndex((p) => Math.max(0, p - 1))}
+                  onNext={() => matPg.setPageIndex((p) => p + 1)}
+                />
+              )}
             </div>
           )}
           {tab === "manoobra" && (
             <div className="flex h-full flex-col gap-3">
-              <form
-                className="flex flex-wrap gap-2"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  moPg.applySearch();
-                }}
-              >
-                <input
-                  type="search"
-                  placeholder="Buscar por descripción o unidad…"
-                  ref={moPg.inputRef}
-                  className={searchInputClass}
-                  aria-label="Buscar mano de obra"
-                  onInput={(e: FormEvent<HTMLInputElement>) => {
-                    if (e.currentTarget.value.trim() === "") moPg.applySearch();
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Escape") (e.currentTarget as HTMLInputElement).blur();
-                  }}
-                />
-                <button type="submit" className={searchButtonClass} disabled={moPg.loading}>
-                  Buscar
-                </button>
-              </form>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                {filterActive ? (
+                  <form
+                    className="flex flex-wrap gap-2 items-center flex-1"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      applyMoFilterSearch();
+                    }}
+                  >
+                    <input
+                      type="search"
+                      placeholder="Buscar por descripción o unidad…"
+                      ref={moFilterInputRef}
+                      className={searchInputClass}
+                      aria-label="Buscar mano de obra (filtrado por cómputo)"
+                      onInput={(e: FormEvent<HTMLInputElement>) => {
+                        if (e.currentTarget.value.trim() === "") applyMoFilterSearch();
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") (e.currentTarget as HTMLInputElement).blur();
+                      }}
+                    />
+                    <button type="submit" className={searchButtonClass} disabled={filterLoading}>
+                      Buscar
+                    </button>
+                  </form>
+                ) : (
+                  <form
+                    className="flex flex-wrap gap-2 items-center flex-1"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      moPg.applySearch();
+                    }}
+                  >
+                    <input
+                      type="search"
+                      placeholder="Buscar por descripción o unidad…"
+                      ref={moPg.inputRef}
+                      className={searchInputClass}
+                      aria-label="Buscar mano de obra"
+                      onInput={(e: FormEvent<HTMLInputElement>) => {
+                        if (e.currentTarget.value.trim() === "") moPg.applySearch();
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") (e.currentTarget as HTMLInputElement).blur();
+                      }}
+                    />
+                    <button type="submit" className={searchButtonClass} disabled={moPg.loading}>
+                      Buscar
+                    </button>
+                  </form>
+                )}
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                    <span>Computo:</span>
+                    <select
+                      value={selectedComputoVersionId ?? ""}
+                      onChange={(e) => setSelectedComputoVersionId(e.target.value || null)}
+                      disabled={computosLoading}
+                      className="w-full max-w-[26rem] rounded border border-slate-300 bg-white px-2 py-1 text-sm text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary [color-scheme:light] disabled:opacity-70 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:[color-scheme:dark]"
+                    >
+                      <option value="">Listado completo</option>
+                      {computos.map((c) => (
+                        <option key={c.version_id} value={c.version_id}>
+                          {c.codigo} · v{c.version_n} · {c.estado}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  {selectedComputoVersionId && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedComputoVersionId(null)}
+                      className="rounded border border-slate-300 px-2 py-1 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
+                      aria-label="Quitar filtro por cómputo"
+                      title="Quitar filtro"
+                    >
+                      X
+                    </button>
+                  )}
+                </div>
+              </div>
               <div className="min-h-0 flex-1">
               <ManoObraTab
-                items={moPg.items}
-                loading={moPg.loading}
+                items={filterActive ? computoManoObraPaged : moPg.items}
+                loading={filterActive ? filterLoading : moPg.loading}
                 emptyHint={
-                  moPg.qApplied
-                    ? "Sin resultados para la búsqueda."
-                    : "No hay componentes mano de obra."
+                  filterActive
+                    ? moFilterQApplied
+                      ? "Sin resultados para la búsqueda."
+                      : "No hay componentes mano de obra usados en este cómputo."
+                    : moPg.qApplied
+                      ? "Sin resultados para la búsqueda."
+                      : "No hay componentes mano de obra."
                 }
                 onAdd={() =>
                   setManoObraModal({
@@ -620,20 +891,37 @@ export function CatalogosAdmin() {
                 }
                 onDelete={async (id) => {
                   await componenteManoObraDelete(id);
-                  moPg.refetch();
+                  if (filterActive) {
+                    await refreshComputoManoObraBase();
+                  } else {
+                    moPg.refetch();
+                  }
                 }}
               />
               </div>
-              <CatalogPaginationBar
-                page={moPg.page}
-                totalPages={moPg.totalPages}
-                total={moPg.total}
-                canPrev={moPg.canPrev}
-                canNext={moPg.canNext}
-                loading={moPg.loading}
-                onPrev={() => moPg.setPageIndex((p) => Math.max(0, p - 1))}
-                onNext={() => moPg.setPageIndex((p) => p + 1)}
-              />
+              {filterActive ? (
+                <CatalogPaginationBar
+                  page={moFilterPage + 1}
+                  totalPages={computoManoObraTotalPages}
+                  total={computoManoObraTotal}
+                  canPrev={computoManoObraCanPrev}
+                  canNext={computoManoObraCanNext}
+                  loading={filterLoading}
+                  onPrev={() => setMoFilterPage((p) => Math.max(0, p - 1))}
+                  onNext={() => setMoFilterPage((p) => p + 1)}
+                />
+              ) : (
+                <CatalogPaginationBar
+                  page={moPg.page}
+                  totalPages={moPg.totalPages}
+                  total={moPg.total}
+                  canPrev={moPg.canPrev}
+                  canNext={moPg.canNext}
+                  loading={moPg.loading}
+                  onPrev={() => moPg.setPageIndex((p) => Math.max(0, p - 1))}
+                  onNext={() => moPg.setPageIndex((p) => p + 1)}
+                />
+              )}
             </div>
           )}
           {tab === "items" && (
@@ -742,7 +1030,11 @@ export function CatalogosAdmin() {
             } else {
               await componenteMaterialCreate(descripcion, unidad, centavos);
             }
-            matPg.refetch();
+            if (filterActive) {
+              await refreshComputoMaterialBase();
+            } else {
+              matPg.refetch();
+            }
             setMaterialModal((p) => ({ ...p, open: false }));
           }}
         />
@@ -768,7 +1060,11 @@ export function CatalogosAdmin() {
             } else {
               await componenteManoObraCreate(descripcion, unidad, centavos);
             }
-            moPg.refetch();
+            if (filterActive) {
+              await refreshComputoManoObraBase();
+            } else {
+              moPg.refetch();
+            }
             setManoObraModal((p) => ({ ...p, open: false }));
           }}
         />
@@ -1777,7 +2073,7 @@ function ComposicionModal({
                 <select
                   value={addMaterialSelect}
                   onChange={(e) => setAddMaterialSelect(e.target.value)}
-                  className="rounded border border-slate-300 px-2 py-1 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                  className="rounded border border-slate-300 bg-white px-2 py-1 text-sm text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary [color-scheme:light] dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:[color-scheme:dark]"
                 >
                   <option value="">Agregar material…</option>
                   {availableMateriales.map((c) => (
@@ -1871,7 +2167,7 @@ function ComposicionModal({
                 <select
                   value={addManoObraSelect}
                   onChange={(e) => setAddManoObraSelect(e.target.value)}
-                  className="rounded border border-slate-300 px-2 py-1 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                  className="rounded border border-slate-300 bg-white px-2 py-1 text-sm text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary [color-scheme:light] dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:[color-scheme:dark]"
                 >
                   <option value="">Agregar mano de obra…</option>
                   {availableManoObra.map((c) => (

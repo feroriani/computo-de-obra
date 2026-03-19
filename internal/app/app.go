@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 
 	"changeme/internal/app/dto"
 	"changeme/internal/infra/sqlite"
@@ -75,10 +76,10 @@ func (a *App) DB() *sql.DB {
 
 // ComputoList returns all computos for the list screen.
 func (a *App) ComputoList() ([]dto.ComputoListRowDTO, error) {
-	if a.computoRepo == nil {
+	if a.computoRepo == nil || a.rubroRepo == nil || a.rubroItemRepo == nil || a.itemUnitCostsRepo == nil {
 		return nil, fmt.Errorf("database not ready")
 	}
-	rows, err := computos.List(a.ctx, a.computoRepo)
+	rows, err := computos.List(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo)
 	if err != nil {
 		return nil, err
 	}
@@ -133,6 +134,14 @@ func (a *App) ComputoGet(versionID string) (*dto.ComputoGetDTO, error) {
 		return nil, fmt.Errorf("database not ready")
 	}
 	return computos.Get(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo, versionID)
+}
+
+// ComputoSetComitenteDescripcion updates descripcion/comitente for a computo version.
+func (a *App) ComputoSetComitenteDescripcion(versionID string, descripcion string) error {
+	if a.computoRepo == nil {
+		return fmt.Errorf("database not ready")
+	}
+	return computos.SetComitenteDescripcion(a.ctx, a.computoRepo, versionID, descripcion)
 }
 
 // ComputoSetSuperficie updates superficie (m² en milli) and recalcula costo/m² en listado si hay snapshot.
@@ -205,6 +214,14 @@ func (a *App) ComputoRubrosReorder(versionID string, computoRubroIDs []string) e
 		return fmt.Errorf("database not ready")
 	}
 	return computos.ComputoRubrosReorder(a.ctx, a.rubroRepo, versionID, computoRubroIDs)
+}
+
+// ComputoRubrosDelete deletes a computo_rubro if it's in a draft and has no items (active or trashed).
+func (a *App) ComputoRubrosDelete(computoRubroID string) error {
+	if a.rubroRepo == nil {
+		return fmt.Errorf("database not ready")
+	}
+	return computos.ComputoRubrosDelete(a.ctx, a.rubroRepo, computoRubroID)
 }
 
 // ItemCatalogList returns the global item catalog for selectors.
@@ -455,6 +472,14 @@ func (a *App) ComputoRubroTrashRestore(computoRubroItemID string) error {
 	return computos.ComputoRubroTrashRestore(a.ctx, a.rubroItemRepo, computoRubroItemID)
 }
 
+// ComputoRubroTrashEmpty permanently deletes trashed items of a computo rubro.
+func (a *App) ComputoRubroTrashEmpty(computoRubroID string) error {
+	if a.rubroItemRepo == nil {
+		return fmt.Errorf("database not ready")
+	}
+	return computos.ComputoRubroTrashEmpty(a.ctx, a.rubroItemRepo, computoRubroID)
+}
+
 // ComputoConfirm sets the version to confirmado and persists snapshot (totals + rubros + lineas).
 func (a *App) ComputoConfirm(versionID string) error {
 	if a.computoRepo == nil {
@@ -479,6 +504,14 @@ func (a *App) ComputoCreateNewVersionFrom(versionIDConfirmado string) (*dto.Comp
 		VersionN:  row.VersionN,
 		Estado:    row.Estado,
 	}, nil
+}
+
+// ComputoDeleteSeries deletes a full computo series (CO-xxxx) and all its related data.
+func (a *App) ComputoDeleteSeries(seriesID string) error {
+	if a.computoRepo == nil {
+		return fmt.Errorf("database not ready")
+	}
+	return computos.DeleteSeries(a.ctx, a.computoRepo, seriesID)
 }
 
 // MaterialsAll returns aggregated materials for the computo version (listado por obra).
@@ -530,11 +563,23 @@ func (a *App) BackupDB() error {
 }
 
 // ExportComputoCSVAndSave generates a CSV with materials and labor list for the given version,
-// opens a save dialog, and writes the file. Returns an error if generation, dialog or write fails.
-func (a *App) ExportComputoCSVAndSave(versionID string) error {
+// opens a save dialog, and writes the file.
+//
+// rest is optional (Wails bindings pass it as a string array). When omitted or empty,
+// the export is considered for the full computo.
+func (a *App) ExportComputoCSVAndSave(versionID string, rest []string) error {
 	if a.computoRepo == nil {
 		return fmt.Errorf("database not ready")
 	}
+	itemID := "__all__"
+	itemTitle := ""
+	if len(rest) >= 1 {
+		itemID = rest[0]
+	}
+	if len(rest) >= 2 {
+		itemTitle = rest[1]
+	}
+
 	header, err := a.computoRepo.GetHeader(a.ctx, versionID)
 	if err != nil {
 		return err
@@ -542,42 +587,139 @@ func (a *App) ExportComputoCSVAndSave(versionID string) error {
 	if header == nil {
 		return fmt.Errorf("cómputo no encontrado: %s", versionID)
 	}
-	mats, err := computos.MaterialsAll(a.ctx, a.rubroRepo, a.rubroItemRepo, a.itemCompositionRepo, a.componenteMaterialRepo, versionID)
-	if err != nil {
-		return fmt.Errorf("listar materiales: %w", err)
+
+	// The frontend uses "__all__" as a sentinel for "Todos".
+	const allItemsSentinel = "__all__"
+
+	listTitle := "Listado de toda la obra"
+	if strings.TrimSpace(itemID) != "" && itemID != allItemsSentinel {
+		title := strings.TrimSpace(itemTitle)
+		if title == "" {
+			title = itemID
+		}
+		listTitle = fmt.Sprintf("Listado de Ítem: %s", title)
 	}
-	mo, err := computos.ManoObraAll(a.ctx, a.rubroRepo, a.rubroItemRepo, a.itemCompositionRepo, a.componenteManoObraRepo, versionID)
-	if err != nil {
-		return fmt.Errorf("listar mano de obra: %w", err)
+
+	sanitizeFilenamePart := func(s string) string {
+		s = strings.TrimSpace(s)
+		if s == "" {
+			return "item"
+		}
+		s = strings.ReplaceAll(s, " ", "_")
+		s = strings.Map(func(r rune) rune {
+			switch {
+			case r == '-' || r == '_' || unicode.IsLetter(r) || unicode.IsDigit(r):
+				return r
+			default:
+				return '_'
+			}
+		}, s)
+		s = strings.Trim(s, "_")
+		if s == "" {
+			return "item"
+		}
+		if len(s) > 40 {
+			return s[:40]
+		}
+		return s
+	}
+
+	var (
+		mats []dto.MaterialObraRowDTO
+		mo   []dto.ManoObraObraRowDTO
+	)
+
+	if strings.TrimSpace(itemID) == "" || itemID == allItemsSentinel {
+		mats, err = computos.MaterialsAll(
+			a.ctx,
+			a.rubroRepo,
+			a.rubroItemRepo,
+			a.itemCompositionRepo,
+			a.componenteMaterialRepo,
+			versionID,
+		)
+		if err != nil {
+			return fmt.Errorf("listar materiales: %w", err)
+		}
+		mo, err = computos.ManoObraAll(
+			a.ctx,
+			a.rubroRepo,
+			a.rubroItemRepo,
+			a.itemCompositionRepo,
+			a.componenteManoObraRepo,
+			versionID,
+		)
+		if err != nil {
+			return fmt.Errorf("listar mano de obra: %w", err)
+		}
+	} else {
+		mats, err = computos.MaterialsByItem(
+			a.ctx,
+			a.rubroRepo,
+			a.rubroItemRepo,
+			itemID,
+			a.itemCompositionRepo,
+			a.componenteMaterialRepo,
+			versionID,
+		)
+		if err != nil {
+			return fmt.Errorf("listar materiales del ítem: %w", err)
+		}
+		mo, err = computos.ManoObraByItem(
+			a.ctx,
+			a.rubroRepo,
+			a.rubroItemRepo,
+			itemID,
+			a.itemCompositionRepo,
+			a.componenteManoObraRepo,
+			versionID,
+		)
+		if err != nil {
+			return fmt.Errorf("listar mano de obra del ítem: %w", err)
+		}
 	}
 
 	var buf strings.Builder
 	w := csv.NewWriter(&buf)
 	w.Comma = ';' // Excel en español suele usar punto y coma
-	_ = w.Write([]string{"Cómputo exportado", fmt.Sprintf("%s v%d", header.Codigo, header.VersionN)})
+
+	_ = w.Write([]string{listTitle, fmt.Sprintf("%s v%d", header.Codigo, header.VersionN)})
 	_ = w.Write(nil)
 	_ = w.Write([]string{"Materiales"})
 	_ = w.Write([]string{"Descripción", "Unidad", "Cantidad", "Total (ARS)"})
+	var matsSubtotalCentavos int64
 	for _, r := range mats {
+		matsSubtotalCentavos += r.TotalCentavos
 		qty := strconv.FormatFloat(float64(r.CantidadMilli)/1000, 'f', 3, 64)
 		total := strconv.FormatFloat(float64(r.TotalCentavos)/100, 'f', 2, 64)
 		_ = w.Write([]string{r.Descripcion, r.Unidad, qty, total})
 	}
+	_ = w.Write([]string{"Subtotal materiales", "", "", strconv.FormatFloat(float64(matsSubtotalCentavos)/100, 'f', 2, 64)})
 	_ = w.Write(nil)
 	_ = w.Write([]string{"Mano de obra"})
 	_ = w.Write([]string{"Descripción", "Unidad", "Cantidad", "Total (ARS)"})
+	var moSubtotalCentavos int64
 	for _, r := range mo {
+		moSubtotalCentavos += r.TotalCentavos
 		qty := strconv.FormatFloat(float64(r.CantidadMilli)/1000, 'f', 3, 64)
 		total := strconv.FormatFloat(float64(r.TotalCentavos)/100, 'f', 2, 64)
 		_ = w.Write([]string{r.Descripcion, r.Unidad, qty, total})
 	}
+	_ = w.Write([]string{"Subtotal mano de obra", "", "", strconv.FormatFloat(float64(moSubtotalCentavos)/100, 'f', 2, 64)})
+	_ = w.Write(nil)
+	_ = w.Write([]string{"Total materiales + mano de obra", "", "", strconv.FormatFloat(float64(matsSubtotalCentavos+moSubtotalCentavos)/100, 'f', 2, 64)})
 	w.Flush()
 	if w.Error() != nil {
 		return w.Error()
 	}
 
+	defaultFilename := fmt.Sprintf("%s_v%d_%s_export.csv", header.Codigo, header.VersionN, sanitizeFilenamePart("Toda_la_obra"))
+	if strings.TrimSpace(itemID) != "" && itemID != allItemsSentinel {
+		defaultFilename = fmt.Sprintf("%s_v%d_%s_export.csv", header.Codigo, header.VersionN, sanitizeFilenamePart(itemTitle))
+	}
+
 	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
-		DefaultFilename: fmt.Sprintf("%s_v%d_export.csv", header.Codigo, header.VersionN),
+		DefaultFilename: defaultFilename,
 		Title:           "Exportar cómputo a CSV",
 		Filters: []runtime.FileFilter{
 			{DisplayName: "CSV (*.csv)", Pattern: "*.csv"},

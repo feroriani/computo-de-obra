@@ -1,0 +1,2392 @@
+﻿Id;Material_id;Dosaje;Ref;Material;Unidad
+11;57;0,06;ma;cemento Portland x 50kg;bolsas
+11;24;0,006;ma;arena gruesa lavada;m3
+11;209;1,9;mo;oficial;h
+11;27;1,2;mo;ayudante;h
+12;0;0;_;_;_
+12;56;0,2;ma;cemento blanco;kg
+12;4;3,5;ma;adhesivo p/piso cerámico;kg
+12;30;1,05;ma;azulejo 15x15 blanco;m2
+12;209;1,2;mo;oficial;h
+12;27;0,4;mo;ayudante;h
+13;0;0;_;_;_
+13;56;0,2;ma;cemento blanco;kg
+13;57;0,08;ma;cemento Portland x 50kg;bolsas
+13;25;0,01;ma;arena gruesa;m3
+13;46;0,04;ma;cal hidratada en bolsa;bolsas
+13;30;1,05;ma;azulejo 15x15 blanco;m2
+13;209;1,6;mo;oficial;h
+13;27;0,6;mo;ayudante;h
+14;0;0;_;_;_
+14;36;1;ma;barandas de madera;ml
+14;209;2,5;mo;oficial;h
+14;27;2,5;mo;ayudante;h
+1;0;0;_;_;_
+1;57;0,44;ma;cemento Portland x 50kg;bolsas
+1;203;1,3;ma;membrana c/aluminio 4 mm espesor;m2
+1;121;0,1;ma;gas envasado x 10 kg;kg
+1;24;0,06;ma;arena gruesa lavada;m3
+1;264;0,1;ma;ripio;m3
+1;46;0,16;ma;cal hidratada en bolsa;bolsas
+1;233;0,3;ma;pintura asfáltica base acuosa (Ormiflex1 o similar);lts
+1;209;1;mo;oficial;h
+2;0;0;_;_;_
+2;70;1;ma;cinta Isolant p/unión;ml
+2;201;1,1;ma;membrana b/tejas c/aislac. térmica TBA10;m2
+2;209;0,1;mo;oficial;h
+2;27;0,1;mo;ayudante;h
+3;0;0;_;_;_
+3;70;1;ma;cinta Isolant p/unión;ml
+3;202;1,1;ma;membrana b/tejas c/aislac. térmica TBA5;m2
+3;209;0,1;mo;oficial;h
+3;27;0,1;mo;ayudante;h
+4;0;0;_;_;_
+4;15;0,1;ma;alambre galvaniz. fino;kg
+4;370;1;ma;"lana de vidrio de 2""";ml
+1;27;1,2;mo;ayudante;h
+4;209;0,2;mo;oficial;h
+4;27;0,2;mo;ayudante;h
+5;0;0;_;_;_
+5;255;1;ma;poliestireno expandido 20 mm;m2
+5;209;0,2;mo;oficial;h
+5;27;0,1;mo;ayudante;h
+6;0;0;_;_;_
+6;139;0,15;ma;hidrófugo x litro;lts
+6;57;0,2;ma;cemento Portland x 50kg;bolsas
+6;46;0,16;ma;cal hidratada en bolsa;bolsas
+6;24;0,12;ma;arena gruesa lavada;m3
+6;34;1,1;ma;baldosa roja 20x20 tipo azotea;m2
+6;209;3;mo;oficial;h
+6;27;0,8;mo;ayudante;h
+7;0;0;_;_;_
+7;57;0,24;ma;cemento Portland x 50kg;bolsas
+7;139;0,15;ma;hidrófugo x litro;lts
+7;24;0,05;ma;arena gruesa lavada;m3
+7;209;2;mo;oficial;h
+7;27;1;mo;ayudante;h
+8;0;0;_;_;_
+8;46;0,16;ma;cal hidratada en bolsa;bolsas
+8;57;0,3;ma;cemento Portland x 50kg;bolsas
+8;24;0,06;ma;arena gruesa lavada;m3
+8;139;0,15;ma;hidrófugo x litro;lts
+8;161;0,06;ma;ladrillo común;u
+8;209;6,3;mo;oficial;h
+8;27;3,3;mo;ayudante;h
+9;0;0;_;_;_
+9;57;0,08;ma;cemento Portland x 50kg;bolsas
+9;46;0,2;ma;cal hidratada en bolsa;bolsas
+9;24;0,03;ma;arena gruesa lavada;m3
+9;209;1,3;mo;oficial;h
+9;27;0,85;mo;ayudante;h
+10;0;0;_;_;_
+10;140;12;ma;hierro liso herrero;kg
+10;92;1,5;ma;electrodos 2,5 mm;kg
+10;20;0,07;ma;antióxido al cromato;lts
+10;141;0,4;ma;hierro planchuela;kg
+10;209;1;mo;oficial;h
+10;27;1;mo;ayudante;h
+11;0;0;_;_;_
+11;139;0,15;ma;hidrófugo x litro;lts
+15;0;0;_;_;_
+15;38;0,22;ma;barniz sintético;lts
+15;6;0,1;ma;aguarrás;u
+15;213;0,2;ma;papel lija mediana;u
+15;209;0,75;mo;oficial;h
+15;27;0,1;mo;ayudante;h
+16;0;0;_;_;_
+16;2;0,13;ma;aceite de lino cocido;kg
+16;213;0,25;ma;papel lija mediana;u
+16;6;0,07;ma;aguarrás;u
+16;38;0,21;ma;barniz sintético;lts
+16;209;0,6;mo;oficial;h
+16;27;0,15;mo;ayudante;h
+17;0;0;_;_;_
+17;213;0,25;ma;papel lija mediana;u
+17;46;0,006;ma;cal hidratada en bolsa;bolsas
+17;209;0,17;mo;oficial;h
+17;27;0,1;mo;ayudante;h
+18;0;0;_;_;_
+18;57;0,22;ma;cemento Portland x 50kg;bolsas
+18;252;1,05;ma;plástico 100 micrones;m2
+18;139;0,25;ma;hidrófugo x litro;lts
+18;24;0,02;ma;arena gruesa lavada;m3
+18;234;0,5;ma;pintura asfáltica secado rapido;lts
+18;209;1,2;mo;oficial;h
+18;27;0,6;mo;ayudante;h
+19;0;0;_;_;_
+19;57;0,24;ma;cemento Portland x 50kg;bolsas
+19;139;0,25;ma;hidrófugo x litro;lts
+19;24;0,02;ma;arena gruesa lavada;m3
+19;234;0,5;ma;pintura asfáltica secado rapido;lts
+19;209;1,9;mo;oficial;h
+19;27;1,2;mo;ayudante;h
+20;0;0;_;_;_
+20;57;0,3;ma;cemento Portland x 50kg;bolsas
+20;161;0,02;ma;ladrillo común;u
+20;139;0,25;ma;hidrófugo x litro;lts
+20;24;0,04;ma;arena gruesa lavada;m3
+20;234;1;ma;pintura asfáltica secado rapido;lts
+20;46;0,08;ma;cal hidratada en bolsa;bolsas
+20;209;2,3;mo;oficial;h
+21;0;0;_;_;_
+21;27;0,8;mo;ayudante;h
+22;0;0;_;_;_
+22;57;0,3;ma;cemento Portland x 50kg;bolsas
+22;25;0,045;ma;arena gruesa;m3
+22;209;1,5;mo;oficial;h
+22;27;0,75;mo;ayudante;h
+23;0;0;_;_;_
+23;53;1;ma;Carpinteria de aluminio xm2;m2
+23;138;1;ma;herrajes completos;u
+23;209;2;mo;oficial;h
+23;27;2;mo;ayudante;h
+24;0;0;_;_;_
+24;54;1;ma;cartel de obra;gl
+24;209;2;mo;oficial;h
+24;27;1;mo;ayudante;h
+25;0;0;_;_;_
+25;216;0,1;ma;pastina p/ceramicos color;kg
+25;4;3,5;ma;adhesivo p/piso cerámico;kg
+25;59;1,1;ma;cerámico esmaltado;m2
+25;209;3;mo;oficial;h
+25;27;1,5;mo;ayudante;h
+26;0;0;_;_;_
+26;216;0,1;ma;pastina p/ceramicos color;kg
+26;57;0,08;ma;cemento Portland x 50kg;bolsas
+26;25;0,02;ma;arena gruesa;m3
+26;46;0,08;ma;cal hidratada en bolsa;bolsas
+26;59;1,05;ma;cerámico esmaltado;m2
+26;209;1,8;mo;oficial;h
+26;27;0,7;mo;ayudante;h
+27;0;0;_;_;_
+27;74;0,1;ma;"clavos P.P. 2 1/2""";kg
+27;307;1,5;ma;"tirante pino 3""x3"" s/cepillar";m
+27;16;0,1;ma;alambre negro Nº16;kg
+27;66;1;ma;chapa H°G° N°27, 3.05 x 1.10 m.;u
+27;209;0,16;mo;oficial;h
+27;27;0,8;mo;ayudante;h
+28;0;0;_;_;_
+28;140;10;ma;hierro liso herrero;kg
+28;141;0,03;ma;hierro planchuela;kg
+28;120;0,5;ma;gancho p/chapa FºCº;u
+28;63;1,2;ma;chapa acanalada F°C°;m2
+28;20;0,2;ma;antióxido al cromato;lts
+28;92;0,25;ma;electrodos 2,5 mm;kg
+28;209;1,8;mo;oficial;h
+28;27;1,6;mo;ayudante;h
+29;0;0;_;_;_
+29;140;9;ma;hierro liso herrero;kg
+29;92;0,2;ma;electrodos 2,5 mm;kg
+29;64;1,2;ma;chapa acanalada HºGº;m2
+29;119;1;ma;"gancho ""J"" p/chapa galvanizada";u
+29;20;0,2;ma;antióxido al cromato;lts
+29;209;1,1;mo;oficial;h
+29;27;0,9;mo;ayudante;h
+30;0;0;_;_;_
+30;306;1,6;ma;"tirante pino 2x3""";m
+30;73;0,15;ma;"clavos P.P. 1""";kg
+30;64;1,2;ma;chapa acanalada HºGº;m2
+30;185;1,1;ma;"madera machimbrada pino 3/4""";m2
+30;72;2;ma;"clavos cabeza de plomo 3""";u
+30;180;1,5;ma;"listones pino 1x2""";ml
+30;209;1,4;mo;oficial;h
+30;27;1,4;mo;ayudante;h
+31;0;0;_;_;_
+31;46;0,065;ma;cal hidratada en bolsa;bolsas
+31;57;0,009;ma;cemento Portland x 50kg;bolsas
+31;139;0,15;ma;hidrófugo x litro;lts
+31;209;0,6;mo;oficial;h
+32;617;0,006;ma;arena fina;m3
+31;27;0,3;mo;ayudante;h
+32;0;0;_;_;_
+32;46;0,065;ma;cal hidratada en bolsa;bolsas
+32;57;0,009;ma;cemento Portland x 50kg;bolsas
+32;209;1;mo;oficial;h
+32;27;0,4;mo;ayudante;h
+33;0;0;_;_;_
+33;46;0,144;ma;cal hidratada en bolsa;bolsas
+33;57;0,04;ma;cemento Portland x 50kg;bolsas
+33;24;0,02;ma;arena gruesa lavada;m3
+33;139;0,15;ma;hidrófugo x litro;lts
+33;209;0,85;mo;oficial;h
+33;27;0,45;mo;ayudante;h
+34;0;0;_;_;_
+34;46;0,144;ma;cal hidratada en bolsa;bolsas
+34;57;0,04;ma;cemento Portland x 50kg;bolsas
+34;24;0,02;ma;arena gruesa lavada;m3
+34;209;0,7;mo;oficial;h
+34;27;0,35;mo;ayudante;h
+35;0;0;_;_;_
+35;46;1,1;ma;cal hidratada en bolsa;bolsas
+35;264;0,4;ma;ripio;m3
+35;219;0,62;ma;piedra bola;m3
+35;57;1,7;ma;cemento Portland x 50kg;bolsas
+35;209;3;mo;oficial;h
+35;27;10;mo;ayudante;h
+37;0;0;_;_;_
+37;27;0,25;mo;ayudante;h
+37;322;0,25;ma;vibrocompactador a explosión;h
+38;0;0;_;_;_
+38;46;0,56;ma;cal hidratada en bolsa;bolsas
+38;57;0,16;ma;cemento Portland x 50kg;bolsas
+38;218;0,16;ma;perla de telgopor;m3
+38;25;0,07;ma;arena gruesa;m3
+38;209;0,7;mo;oficial;h
+38;27;1,5;mo;ayudante;h
+39;0;0;_;_;_
+39;46;0,36;ma;cal hidratada en bolsa;bolsas
+39;57;0,22;ma;cemento Portland x 50kg;bolsas
+39;264;0,1;ma;ripio;m3
+39;209;2,2;mo;oficial;h
+39;27;1,1;mo;ayudante;h
+40;0;0;_;_;_
+40;46;0,396;ma;cal hidratada en bolsa;bolsas
+40;57;0,242;ma;cemento Portland x 50kg;bolsas
+40;209;2,2;mo;oficial;h
+40;27;1,1;mo;ayudante;h
+41;0;0;_;_;_
+41;57;0,5;ma;cemento Portland x 50kg;bolsas
+41;186;1;ma;malla Sima Q92;kg
+41;263;0,07;ma;ripio lavado 1:3;m3
+41;25;0,05;ma;arena gruesa;m3
+41;209;2,6;mo;oficial;h
+41;27;1,5;mo;ayudante;h
+42;0;0;_;_;_
+42;46;0,12;ma;cal hidratada en bolsa;bolsas
+42;57;0,05;ma;cemento Portland x 50kg;bolsas
+42;264;0,05;ma;ripio;m3
+42;209;2,05;mo;oficial;h
+42;27;1;mo;ayudante;h
+43;0;0;_;_;_
+43;140;2,3;ma;hierro liso herrero;kg
+43;92;0,8;ma;electrodos 2,5 mm;kg
+43;20;0,05;ma;antióxido al cromato;lts
+43;209;0,5;mo;oficial;h
+43;27;0,5;mo;ayudante;h
+44;0;0;_;_;_
+44;183;3,8;ma;"madera dura 11/2""x2"" cepillada";m
+44;57;0,08;ma;cemento Portland x 50kg;bolsas
+44;25;0,02;ma;arena gruesa;m3
+44;46;0,12;ma;cal hidratada en bolsa;bolsas
+44;59;1,1;ma;cerámico esmaltado;m2
+44;305;12;ma;"tirafondo 6,5 mm x 3""";u
+44;209;2,5;mo;oficial;h
+44;27;2,5;mo;ayudante;h
+45;0;0;_;_;_
+45;209;0,1;mo;oficial;h
+45;27;0,5;mo;ayudante;h
+45;28;0,04;mo;ayudante carga/descarga;h
+45;77;0,01;ma;contenedor;u
+46;0;0;_;_;_
+46;209;1;mo;oficial;h
+46;27;12;mo;ayudante;h
+46;28;0,9;mo;ayudante carga/descarga;h
+46;77;0,25;ma;contenedor;u
+47;0;0;_;_;_
+47;209;0,3;mo;oficial;h
+47;27;1,7;mo;ayudante;h
+47;28;0,22;mo;ayudante carga/descarga;h
+47;77;0,03;ma;contenedor;u
+48;0;0;_;_;_
+48;209;0,12;mo;oficial;h
+48;27;0,6;mo;ayudante;h
+49;0;0;_;_;_
+49;209;0,26;mo;oficial;h
+49;27;1,3;mo;ayudante;h
+49;28;0,1;mo;ayudante carga/descarga;h
+49;77;0,02;ma;contenedor;u
+50;0;0;_;_;_
+50;209;1,2;mo;oficial;h
+50;27;20;mo;ayudante;h
+50;28;0,9;mo;ayudante carga/descarga;h
+50;77;0,25;ma;contenedor;u
+51;0;0;_;_;_
+51;209;0,6;mo;oficial;h
+51;27;6;mo;ayudante;h
+51;28;0,8;mo;ayudante carga/descarga;h
+51;77;0,22;ma;contenedor;u
+52;0;0;_;_;_
+52;209;0,37;mo;oficial;h
+52;27;1,85;mo;ayudante;h
+52;28;0,11;mo;ayudante carga/descarga;h
+52;77;0,01;ma;contenedor;u
+53;0;0;_;_;_
+53;209;0,4;mo;oficial;h
+53;27;1,85;mo;ayudante;h
+53;28;0,08;mo;ayudante carga/descarga;h
+53;77;0,005;ma;contenedor;u
+54;0;0;_;_;_
+54;209;0,08;mo;oficial;h
+54;27;1,4;mo;ayudante;h
+54;28;0,07;mo;ayudante carga/descarga;h
+54;77;0,006;ma;contenedor;u
+55;0;0;_;_;_
+55;209;0,03;mo;oficial;h
+55;27;0,03;mo;ayudante;h
+55;208;0,02;ma;motoniveladora;h
+56;0;0;_;_;_
+56;156;1;ma;Instalacion eléctrica global 130-150m2;gl
+57;0;0;_;_;_
+57;46;0,03;ma;cal hidratada en bolsa;bolsas
+57;24;0,01;ma;arena gruesa lavada;m3
+57;209;0,55;mo;oficial;h
+57;27;0,3;mo;ayudante;h
+58;0;0;_;_;_
+58;46;0,065;ma;cal hidratada en bolsa;bolsas
+58;57;0,009;ma;cemento Portland x 50kg;bolsas
+58;139;0,15;ma;hidrófugo x litro;lts
+58;209;1,05;mo;oficial;h
+58;27;0,65;mo;ayudante;h
+59;0;0;_;_;_
+59;46;0,065;ma;cal hidratada en bolsa;bolsas
+59;57;0,009;ma;cemento Portland x 50kg;bolsas
+59;209;0,95;mo;oficial;h
+59;27;0,55;mo;ayudante;h
+60;0;0;_;_;_
+60;355;6,5;ma;yeso blanco;kg
+60;209;0,65;mo;oficial;h
+60;27;0,6;mo;ayudante;h
+61;0;0;_;_;_
+61;355;0,5;ma;yeso blanco;kg
+61;209;0,7;mo;oficial;h
+61;27;0,25;mo;ayudante;h
+63;0;0;_;_;_
+63;99;1;ma;escalera madera;m2
+59;617;0,006;ma;arena fina;m3
+63;209;5;mo;oficial;h
+63;27;6,5;mo;ayudante;h
+64;0;0;_;_;_
+64;236;0,25;ma;pintura epoxi amarillo;lts
+64;213;0,25;ma;papel lija mediana;u
+64;235;0,15;ma;pintura de imprimación;lts
+64;209;0,8;mo;oficial;h
+64;27;0,2;mo;ayudante;h
+65;0;0;_;_;_
+65;106;0,1;ma;esmalte sintetico verde x 4 lts;u
+65;6;0,2;ma;aguarrás;u
+65;118;0,15;ma;fondo p/chapa galvanizada tipo Galvite;lts
+65;209;0,7;mo;oficial;h
+65;27;0,2;mo;ayudante;h
+66;0;0;_;_;_
+66;2;0,13;ma;aceite de lino cocido;kg
+66;213;0,25;ma;papel lija mediana;u
+66;6;0,06;ma;aguarrás;u
+66;107;0,05;ma;esmalte sintetico x 4 lts blanco;u
+66;209;0,7;mo;oficial;h
+66;27;0,2;mo;ayudante;h
+67;0;0;_;_;_
+67;6;0,1;ma;aguarrás;u
+67;21;0,03;ma;antióxido rojo lata x 4 lts.;u
+67;107;0,04;ma;esmalte sintetico x 4 lts blanco;u
+67;209;0,9;mo;oficial;h
+67;27;0,2;mo;ayudante;h
+68;0;0;_;_;_
+68;107;0,04;ma;esmalte sintetico x 4 lts blanco;u
+68;98;0,03;ma;entonador (pomo 120 cm3);u
+68;213;0,25;ma;papel lija mediana;u
+68;235;0,1;ma;pintura de imprimación;lts
+68;6;0,06;ma;aguarrás;u
+68;209;0,5;mo;oficial;h
+68;27;0,2;mo;ayudante;h
+69;0;0;_;_;_
+69;2;0,13;ma;aceite de lino cocido;kg
+69;213;0,25;ma;papel lija mediana;u
+69;6;0,07;ma;aguarrás;u
+69;107;0,15;ma;esmalte sintetico x 4 lts blanco;u
+69;209;0,6;mo;oficial;h
+69;27;0,25;mo;ayudante;h
+70;0;0;_;_;_
+70;108;1;ma;espejo 3mm;m2
+70;267;150;ma;silicona p/vidrios;cm3
+70;209;0,5;mo;oficial;h
+71;0;0;_;_;_
+71;27;3;mo;ayudante;h
+72;0;0;_;_;_
+72;27;5;mo;ayudante;h
+73;0;0;_;_;_
+73;27;3,4;mo;ayudante;h
+74;0;0;_;_;_
+74;27;6;mo;ayudante;h
+75;0;0;_;_;_
+75;27;3;mo;ayudante;h
+76;0;0;_;_;_
+76;46;0,11;ma;cal hidratada en bolsa;bolsas
+76;57;0,09;ma;cemento Portland x 50kg;bolsas
+76;139;0,15;ma;hidrófugo x litro;lts
+76;24;0,03;ma;arena gruesa lavada;m3
+76;209;1,2;mo;oficial;h
+76;27;0,6;mo;ayudante;h
+77;0;0;_;_;_
+77;265;5;ma;salpicado plástico blanco tipo Igam;kg
+77;209;0,2;mo;oficial;h
+77;27;0,2;mo;ayudante;h
+79;0;0;_;_;_
+79;157;1;ma;Instalacion gas global 130-150m2;gl
+80;0;0;_;_;_
+80;46;0,144;ma;cal hidratada en bolsa;bolsas
+80;57;0,037;ma;cemento Portland x 50kg;bolsas
+80;24;0,02;ma;arena gruesa lavada;m3
+80;139;0,15;ma;hidrófugo x litro;lts
+80;209;2;mo;oficial;h
+80;27;1,1;mo;ayudante;h
+81;0;0;_;_;_
+81;46;0,144;ma;cal hidratada en bolsa;bolsas
+81;57;0,04;ma;cemento Portland x 50kg;bolsas
+81;24;0,02;ma;arena gruesa lavada;m3
+81;209;1,7;mo;oficial;h
+81;27;0,85;mo;ayudante;h
+82;0;0;_;_;_
+82;46;0,144;ma;cal hidratada en bolsa;bolsas
+82;139;0,2;ma;hidrófugo x litro;lts
+82;57;0,037;ma;cemento Portland x 50kg;bolsas
+82;24;0,02;ma;arena gruesa lavada;m3
+82;209;1,7;mo;oficial;h
+82;27;0,85;mo;ayudante;h
+83;0;0;_;_;_
+83;149;140;ma;hierro torsionado;kg
+83;57;6,4;ma;cemento Portland x 50kg;bolsas
+83;181;2;ma;"madera 1"" pino nacional";m2
+83;263;0,6;ma;ripio lavado 1:3;m3
+83;25;0,7;ma;arena gruesa;m3
+83;71;1,5;ma;"clavos 2""";kg
+83;307;4;ma;"tirante pino 3""x3"" s/cepillar";m
+83;16;1,2;ma;alambre negro Nº16;kg
+83;209;23;mo;oficial;h
+83;27;21;mo;ayudante;h
+84;0;0;_;_;_
+84;149;105;ma;hierro torsionado;kg
+84;57;5;ma;cemento Portland x 50kg;bolsas
+84;181;2,5;ma;"madera 1"" pino nacional";m2
+84;263;0,6;ma;ripio lavado 1:3;m3
+84;25;0,7;ma;arena gruesa;m3
+84;16;2;ma;alambre negro Nº16;kg
+84;71;2;ma;"clavos 2""";kg
+84;307;6;ma;"tirante pino 3""x3"" s/cepillar";m
+84;209;23;mo;oficial;h
+84;27;21;mo;ayudante;h
+85;0;0;_;_;_
+85;149;40;ma;hierro torsionado;kg
+85;57;6,4;ma;cemento Portland x 50kg;bolsas
+85;181;2;ma;"madera 1"" pino nacional";m2
+85;263;0,6;ma;ripio lavado 1:3;m3
+85;25;0,7;ma;arena gruesa;m3
+85;16;1,2;ma;alambre negro Nº16;kg
+85;71;1,7;ma;"clavos 2""";kg
+85;307;1,4;ma;"tirante pino 3""x3"" s/cepillar";m
+85;209;24;mo;oficial;h
+85;27;24;mo;ayudante;h
+86;0;0;_;_;_
+86;149;0,55;ma;hierro torsionado;kg
+86;186;1,79;ma;malla Sima Q92;kg
+86;43;8;ma;bovedilla cerámica 12,5x40x25;u
+86;354;2,1;ma;viguetas pretensadas;m
+86;57;0,56;ma;cemento Portland x 50kg;bolsas
+86;181;0,3;ma;"madera 1"" pino nacional";m2
+86;263;0,06;ma;ripio lavado 1:3;m3
+86;25;0,07;ma;arena gruesa;m3
+86;16;0,2;ma;alambre negro Nº16;kg
+86;71;0,1;ma;"clavos 2""";kg
+86;307;1,2;ma;"tirante pino 3""x3"" s/cepillar";m
+86;209;5,1;mo;oficial;h
+86;27;4,1;mo;ayudante;h
+87;0;0;_;_;_
+87;149;0,6;ma;hierro torsionado;kg
+87;186;1,79;ma;malla Sima Q92;kg
+87;44;8;ma;bovedilla ceramica 16,5x40x25;u
+87;354;2,1;ma;viguetas pretensadas;m
+87;57;0,62;ma;cemento Portland x 50kg;bolsas
+87;181;0,35;ma;"madera 1"" pino nacional";m2
+87;263;0,07;ma;ripio lavado 1:3;m3
+87;25;0,08;ma;arena gruesa;m3
+87;16;0,2;ma;alambre negro Nº16;kg
+87;71;0,1;ma;"clavos 2""";kg
+87;307;1,5;ma;"tirante pino 3""x3"" s/cepillar";m
+87;209;5,2;mo;oficial;h
+87;27;4,2;mo;ayudante;h
+88;0;0;_;_;_
+88;149;0,5;ma;hierro torsionado;kg
+88;186;1,79;ma;malla Sima Q92;kg
+88;45;8;ma;bovedilla cerámica 9,5x40x25;u
+88;353;2,1;ma;Vigueta de hormigón pretensado Vigueta Pretensada Hormigón (por ml. estimado);ml
+88;57;0,48;ma;cemento Portland x 50kg;bolsas
+88;181;0,3;ma;"madera 1"" pino nacional";m2
+88;263;0,05;ma;ripio lavado 1:3;m3
+88;25;0,06;ma;arena gruesa;m3
+88;16;0,2;ma;alambre negro Nº16;kg
+88;71;0,1;ma;"clavos 2""";kg
+88;307;1,1;ma;"tirante pino 3""x3"" s/cepillar";m
+88;209;5;mo;oficial;h
+88;27;4;mo;ayudante;h
+89;0;0;_;_;_
+89;149;0,6;ma;hierro torsionado;kg
+89;186;1,79;ma;malla Sima Q92;kg
+89;167;2;ma;Ladrillo de techo poliestireno (16x100x42) x unidad;u
+89;354;2,1;ma;viguetas pretensadas;m
+89;57;0,62;ma;cemento Portland x 50kg;bolsas
+89;181;0,35;ma;"madera 1"" pino nacional";m2
+89;263;0,07;ma;ripio lavado 1:3;m3
+89;25;0,08;ma;arena gruesa;m3
+89;16;0,2;ma;alambre negro Nº16;kg
+89;71;0,1;ma;"clavos 2""";kg
+89;307;1,5;ma;"tirante pino 3""x3"" s/cepillar";m
+89;209;5,2;mo;oficial;h
+89;27;4,2;mo;ayudante;h
+90;0;0;_;_;_
+90;149;0,55;ma;hierro torsionado;kg
+90;186;1,79;ma;malla Sima Q92;kg
+90;166;2;ma;Ladrillo de techo poliestireno (12x100x42) x unidad;u
+90;354;2,1;ma;viguetas pretensadas;m
+90;57;0,56;ma;cemento Portland x 50kg;bolsas
+90;181;0,3;ma;"madera 1"" pino nacional";m2
+90;263;0,06;ma;ripio lavado 1:3;m3
+90;25;0,07;ma;arena gruesa;m3
+90;16;0,2;ma;alambre negro Nº16;kg
+90;71;0,1;ma;"clavos 2""";kg
+90;307;1,2;ma;"tirante pino 3""x3"" s/cepillar";m
+90;209;5,1;mo;oficial;h
+90;27;4,1;mo;ayudante;h
+91;0;0;_;_;_
+91;149;0,5;ma;hierro torsionado;kg
+91;186;1,79;ma;malla Sima Q92;kg
+91;168;2;ma;Ladrillo de techo poliestireno (9x100x42) x unidad;u
+91;353;2,1;ma;Vigueta de hormigón pretensado Vigueta Pretensada Hormigón (por ml. estimado);ml
+91;57;0,48;ma;cemento Portland x 50kg;bolsas
+91;181;0,3;ma;"madera 1"" pino nacional";m2
+91;263;0,05;ma;ripio lavado 1:3;m3
+91;25;0,06;ma;arena gruesa;m3
+91;16;0,2;ma;alambre negro Nº16;kg
+91;71;0,1;ma;"clavos 2""";kg
+91;307;1,1;ma;"tirante pino 3""x3"" s/cepillar";m
+91;209;5;mo;oficial;h
+91;27;4;mo;ayudante;h
+92;0;0;_;_;_
+92;149;34;ma;hierro torsionado;kg
+92;57;6,4;ma;cemento Portland x 50kg;bolsas
+92;181;0,7;ma;"madera 1"" pino nacional";m2
+92;263;0,06;ma;ripio lavado 1:3;m3
+92;25;0,7;ma;arena gruesa;m3
+92;71;1;ma;"clavos 2""";kg
+92;307;2;ma;"tirante pino 3""x3"" s/cepillar";m
+92;16;1,2;ma;alambre negro Nº16;kg
+92;209;15;mo;oficial;h
+92;27;15;mo;ayudante;h
+93;0;0;_;_;_
+93;25;0,6;ma;arena gruesa;m3
+93;263;0,65;ma;ripio lavado 1:3;m3
+93;149;25;ma;hierro torsionado;kg
+93;57;5;ma;cemento Portland x 50kg;bolsas
+93;16;0,15;ma;alambre negro Nº16;kg
+93;209;5;mo;oficial;h
+93;27;10;mo;ayudante;h
+94;0;0;_;_;_
+94;149;80;ma;hierro torsionado;kg
+94;57;6,4;ma;cemento Portland x 50kg;bolsas
+94;181;2,5;ma;"madera 1"" pino nacional";m2
+94;263;0,6;ma;ripio lavado 1:3;m3
+94;25;0,7;ma;arena gruesa;m3
+94;16;2,5;ma;alambre negro Nº16;kg
+94;71;2,5;ma;"clavos 2""";kg
+94;307;8;ma;"tirante pino 3""x3"" s/cepillar";m
+94;209;26;mo;oficial;h
+94;27;26;mo;ayudante;h
+95;0;0;_;_;_
+95;140;95;ma;hierro liso herrero;kg
+95;57;6,8;ma;cemento Portland x 50kg;bolsas
+95;182;3,5;ma;madera 1ra. pino cepillada;m2
+95;263;0,6;ma;ripio lavado 1:3;m3
+95;25;0,7;ma;arena gruesa;m3
+95;16;2,5;ma;alambre negro Nº16;kg
+95;71;2,5;ma;"clavos 2""";kg
+95;307;3,5;ma;"tirante pino 3""x3"" s/cepillar";m
+95;209;32;mo;oficial;h
+95;27;25;mo;ayudante;h
+96;0;0;_;_;_
+96;149;100;ma;hierro torsionado;kg
+96;57;6,4;ma;cemento Portland x 50kg;bolsas
+147;138;1;ma;herrajes completos;u
+147;209;2;mo;oficial;h
+147;27;2;mo;ayudante;h
+148;0;0;_;_;_
+148;209;0,25;mo;oficial;h
+148;27;0,25;mo;ayudante;h
+148;198;0,25;ma;maquina pulidora trifasica;hr
+148;1;0,02;ma;abrasivos y pastas;gl
+149;0;0;_;_;_
+149;209;0,25;mo;oficial;h
+149;27;0,25;mo;ayudante;h
+149;198;0,25;ma;maquina pulidora trifasica;hr
+149;1;0,02;ma;abrasivos y pastas;gl
+150;0;0;_;_;_
+150;74;0,022;ma;"clavos P.P. 2 1/2""";kg
+150;307;0,18;ma;"tirante pino 3""x3"" s/cepillar";m
+150;16;0,04;ma;alambre negro Nº16;kg
+150;222;0,05;ma;"pino 1"" s/cepillar";m2
+150;209;0,5;mo;oficial;h
+150;27;0,5;mo;ayudante;h
+151;0;0;_;_;_
+151;69;1;ma;cielorraso durlock 9,5 completo;m2
+151;209;0,6;mo;oficial;h
+151;27;0,6;mo;ayudante;h
+153;0;0;_;_;_
+153;158;1;ma;Instalacion sanitaria global 130-150m2;gl
+154;0;0;_;_;_
+154;238;0,3;ma;pintura siliconadas p/ladrillos;lts
+154;6;0,15;ma;aguarrás;u
+154;209;0,7;mo;oficial;h
+154;27;0,4;mo;ayudante;h
+155;0;0;_;_;_
+155;400;12;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+155;275;0,7;ma;STEEL PGU 200-1.24;ml
+155;278;4;ma;STEEL PGC 200-1.24;ml
+155;12;1;ma;"aislación térmica lana de vidrio de 2""";m2
+155;209;5,5;mo;oficial;h
+155;27;5;mo;ayudante;h
+156;0;0;_;_;_
+156;209;5,5;mo;oficial;h
+156;27;5;mo;ayudante;h
+157;0;0;_;_;_
+156;401;1,7;ma;Tornillo Hexagonal mecha 10 x 3/4 pulg;u
+157;274;1,5;ma;STEEL PGU 150-0.9;ml
+157;270;2,5;ma;STEEL PGC 150-0.9;ml
+157;10;1;ma;aislación térmica  (ISOLANT TBA 10 mm);ml
+157;269;1,6;ma;STEEL PGC 100-0.9;ml
+157;432;2,9;ma;Tarugo Fisher Fijacion N°12;u
+157;431;2,9;ma;"Tornillo tirafondo y arandela  3/8 x 2-3/4""";u
+168;399;2;ma;"cabio madera pino LAM 3"" x 6""";ml
+168;10;1,1;ma;aislación térmica  (ISOLANT TBA 10 mm);ml
+278;278;0,05;ma;STEEL PGC 200-1.24;ml
+342;0;0;_;_;_
+157;400;18;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+158;400;12;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+158;180;2;ma;"listones pino 1x2""";ml
+157;209;5,5;mo;oficial;h
+157;27;5;mo;ayudante;h
+158;0;0;_;_;_
+158;313;6;ma;Tornillos Para Techo Autoperforantes Chapa A Madera 14 X 2 pulg;u
+158;316;1;ma;tyvek 1 x 30m;ml
+158;274;1;ma;STEEL PGU 150-0.9;ml
+158;270;1;ma;STEEL PGC 150-0.9;ml
+158;209;5,5;mo;oficial;h
+158;27;5;mo;ayudante;h
+159;0;0;_;_;_
+159;57;0,16;ma;cemento Portland x 50kg;bolsas
+159;46;0,12;ma;cal hidratada en bolsa;bolsas
+159;181;0,6;ma;"madera 1"" pino nacional";m2
+168;385;1,1;ma;chapa acanalada H°G° N°24  x 1.10 m( x metro cuadrado);m2
+168;389;2,3;ma;"clavadera madera pino 2"" x 2""";ml
+158;211;1;ma;panel OSB 15 mm;m2
+159;204;0,75;ma;metal desplegado 0.75mx2.00m.;u
+159;25;0,03;ma;arena gruesa;m3
+159;180;2,5;ma;"listones pino 1x2""";ml
+355;13;1;ma;aislación térmica (lana de vidrio 50 mm);m2
+159;16;0,15;ma;alambre negro Nº16;kg
+159;15;0,1;ma;alambre galvaniz. fino;kg
+159;71;0,15;ma;"clavos 2""";kg
+159;209;1,8;mo;oficial;h
+159;27;1,8;mo;ayudante;h
+160;0;0;_;_;_
+160;57;0,16;ma;cemento Portland x 50kg;bolsas
+160;46;0,08;ma;cal hidratada en bolsa;bolsas
+160;181;0,6;ma;"madera 1"" pino nacional";m2
+160;204;0,75;ma;metal desplegado 0.75mx2.00m.;u
+160;25;0,02;ma;arena gruesa;m3
+160;180;2,5;ma;"listones pino 1x2""";ml
+160;16;0,15;ma;alambre negro Nº16;kg
+160;15;0,1;ma;alambre galvaniz. fino;kg
+160;71;0,15;ma;"clavos 2""";kg
+160;355;6;ma;yeso blanco;kg
+160;209;2;mo;oficial;h
+160;27;2;mo;ayudante;h
+161;0;0;_;_;_
+161;306;1,5;ma;"tirante pino 2x3""";m
+161;180;1,5;ma;"listones pino 1x2""";ml
+161;185;1,1;ma;"madera machimbrada pino 3/4""";m2
+161;149;2;ma;hierro torsionado;kg
+161;16;0,15;ma;alambre negro Nº16;kg
+161;71;0,4;ma;"clavos 2""";kg
+161;209;1,6;mo;oficial;h
+161;27;1,2;mo;ayudante;h
+162;0;0;_;_;_
+162;217;4,7;ma;Perfil chapa galv. Solera de 35 mm;u
+162;15;0,2;ma;alambre galvaniz. fino;kg
+162;255;1,05;ma;poliestireno expandido 20 mm;m2
+162;209;0,6;mo;oficial;h
+162;27;0,4;mo;ayudante;h
+163;0;0;_;_;_
+163;69;1;ma;cielorraso durlock 9,5 completo;m2
+163;209;1,6;mo;oficial;h
+163;27;1,6;mo;ayudante;h
+164;0;0;_;_;_
+164;217;5;ma;Perfil chapa galv. Solera de 35 mm;u
+164;251;1,1;ma;placa spanacustic c/fibra vidrio 25 mm;m2
+164;15;1,5;ma;alambre galvaniz. fino;kg
+96;181;2,5;ma;"madera 1"" pino nacional";m2
+96;263;0,6;ma;ripio lavado 1:3;m3
+96;25;0,7;ma;arena gruesa;m3
+96;71;1,5;ma;"clavos 2""";kg
+96;307;5;ma;"tirante pino 3""x3"" s/cepillar";m
+96;16;1,6;ma;alambre negro Nº16;kg
+96;209;28;mo;oficial;h
+96;27;28;mo;ayudante;h
+97;0;0;_;_;_
+97;149;95;ma;hierro torsionado;kg
+97;57;5;ma;cemento Portland x 50kg;bolsas
+97;181;2;ma;"madera 1"" pino nacional";m2
+97;263;0,6;ma;ripio lavado 1:3;m3
+97;25;0,7;ma;arena gruesa;m3
+97;71;2;ma;"clavos 2""";kg
+97;307;4;ma;"tirante pino 3""x3"" s/cepillar";m
+97;16;2;ma;alambre negro Nº16;kg
+97;209;23;mo;oficial;h
+97;27;21;mo;ayudante;h
+98;0;0;_;_;_
+98;57;0,25;ma;cemento Portland x 50kg;bolsas
+98;263;0,03;ma;ripio lavado 1:3;m3
+98;25;0,03;ma;arena gruesa;m3
+98;209;0,2;mo;oficial;h
+98;27;0,4;mo;ayudante;h
+99;0;0;_;_;_
+99;149;35;ma;hierro torsionado;kg
+99;57;6;ma;cemento Portland x 50kg;bolsas
+99;263;0,6;ma;ripio lavado 1:3;m3
+99;25;0,7;ma;arena gruesa;m3
+99;16;0,25;ma;alambre negro Nº16;kg
+99;209;28;mo;oficial;h
+99;27;28;mo;ayudante;h
+100;0;0;_;_;_
+100;149;90;ma;hierro torsionado;kg
+100;57;6;ma;cemento Portland x 50kg;bolsas
+100;263;0,6;ma;ripio lavado 1:3;m3
+100;16;0,8;ma;alambre negro Nº16;kg
+100;25;0,7;ma;arena gruesa;m3
+100;71;0,8;ma;"clavos 2""";kg
+100;222;0,8;ma;"pino 1"" s/cepillar";m2
+100;209;16;mo;oficial;h
+100;27;20;mo;ayudante;h
+101;0;0;_;_;_
+101;149;80;ma;hierro torsionado;kg
+101;57;6;ma;cemento Portland x 50kg;bolsas
+101;263;0,6;ma;ripio lavado 1:3;m3
+101;16;2;ma;alambre negro Nº16;kg
+101;25;0,7;ma;arena gruesa;m3
+101;71;2;ma;"clavos 2""";kg
+101;222;2;ma;"pino 1"" s/cepillar";m2
+101;307;2;ma;"tirante pino 3""x3"" s/cepillar";m
+101;209;25;mo;oficial;h
+102;0;0;_;_;_
+102;149;125;ma;hierro torsionado;kg
+102;57;6;ma;cemento Portland x 50kg;bolsas
+102;263;0,6;ma;ripio lavado 1:3;m3
+102;25;0,7;ma;arena gruesa;m3
+102;16;1,5;ma;alambre negro Nº16;kg
+102;71;1;ma;"clavos 2""";kg
+102;222;0,8;ma;"pino 1"" s/cepillar";m2
+102;209;20;mo;oficial;h
+102;27;15;mo;ayudante;h
+103;0;0;_;_;_
+103;149;95;ma;hierro torsionado;kg
+103;57;6;ma;cemento Portland x 50kg;bolsas
+103;263;0,6;ma;ripio lavado 1:3;m3
+103;25;0,7;ma;arena gruesa;m3
+103;16;1;ma;alambre negro Nº16;kg
+103;71;1;ma;"clavos 2""";kg
+103;222;1;ma;"pino 1"" s/cepillar";m2
+103;209;18;mo;oficial;h
+103;27;15;mo;ayudante;h
+104;0;0;_;_;_
+104;209;1;mo;oficial;h
+105;0;0;_;_;_
+105;57;0,44;ma;cemento Portland x 50kg;bolsas
+105;24;0,01;ma;arena gruesa lavada;m3
+105;139;0,15;ma;hidrófugo x litro;lts
+105;209;0,9;mo;oficial;h
+105;27;0,4;mo;ayudante;h
+106;0;0;_;_;_
+106;46;0,12;ma;cal hidratada en bolsa;bolsas
+106;57;0,04;ma;cemento Portland x 50kg;bolsas
+106;24;0,02;ma;arena gruesa lavada;m3
+106;209;1;mo;oficial;h
+106;27;0,5;mo;ayudante;h
+107;0;0;_;_;_
+107;265;4,5;ma;salpicado plástico blanco tipo Igam;kg
+107;209;0,2;mo;oficial;h
+107;27;0,15;mo;ayudante;h
+108;0;0;_;_;_
+108;161;0,03;ma;ladrillo común;u
+108;57;0,1;ma;cemento Portland x 50kg;bolsas
+108;25;0,02;ma;arena gruesa;m3
+108;46;0,16;ma;cal hidratada en bolsa;bolsas
+108;209;1,3;mo;oficial;h
+108;27;1;mo;ayudante;h
+109;0;0;_;_;_
+109;173;1,2;ma;laja irregular;m2
+109;57;0,16;ma;cemento Portland x 50kg;bolsas
+109;25;0,03;ma;arena gruesa;m3
+109;46;0,08;ma;cal hidratada en bolsa;bolsas
+109;209;1,6;mo;oficial;h
+109;27;1,6;mo;ayudante;h
+110;0;0;_;_;_
+110;27;0,25;mo;ayudante;h
+110;77;0,05;ma;contenedor;u
+111;0;0;_;_;_
+111;209;8;mo;oficial;h
+111;27;16;mo;ayudante;h
+111;208;8;ma;motoniveladora;h
+111;47;20;ma;camión volcador;h
+111;210;8;ma;pala cargadora;h
+112;0;0;_;_;_
+112;209;20;mo;oficial;h
+113;0;0;_;_;_
+113;46;0,076;ma;cal hidratada en bolsa;bolsas
+113;57;0,039;ma;cemento Portland x 50kg;bolsas
+113;41;13;ma;bloque de H° de 10 x 20 x 40;u
+113;209;1,5;mo;oficial;h
+113;27;1,4;mo;ayudante;h
+114;0;0;_;_;_
+114;46;0,06;ma;cal hidratada en bolsa;bolsas
+114;57;0,066;ma;cemento Portland x 50kg;bolsas
+114;42;13;ma;bloque de H° de 20 x 20 x 40;u
+114;25;0,015;ma;arena gruesa;m3
+114;209;1,6;mo;oficial;h
+114;27;1,5;mo;ayudante;h
+115;0;0;_;_;_
+115;46;0,1;ma;cal hidratada en bolsa;bolsas
+115;57;0,013;ma;cemento Portland x 50kg;bolsas
+115;209;1,9;mo;oficial;h
+116;190;15,5;ma;mampost. de ladrillo cerámico 8x18x33;u
+115;27;1,5;mo;ayudante;h
+115;24;0,012;ma;arena gruesa lavada;m3
+198;507;0,099;ma;cemento de albañilería x 40kg;bolsas
+116;0;0;_;_;_
+116;46;0,1;ma;cal hidratada en bolsa;bolsas
+116;57;0,052;ma;cemento Portland x 50kg;bolsas
+116;209;0,95;mo;oficial;h
+116;27;0,7;mo;ayudante;h
+117;0;0;_;_;_
+117;46;0,12;ma;cal hidratada en bolsa;bolsas
+117;57;0,016;ma;cemento Portland x 50kg;bolsas
+117;209;2;mo;oficial;h
+117;27;1,7;mo;ayudante;h
+118;0;0;_;_;_
+118;46;1,4;ma;cal hidratada en bolsa;bolsas
+118;57;0,4;ma;cemento Portland x 50kg;bolsas
+118;161;0,4;ma;ladrillo común;u
+118;25;0,35;ma;arena gruesa;m3
+118;209;6,1;mo;oficial;h
+118;27;7,1;mo;ayudante;h
+115;189;13;ma;mampost. de ladrillo cerámico portante 12x19x33;u
+130;27;0,6;mo;ayudante;h
+119;0;0;_;_;_
+116;24;0,012;ma;arena gruesa lavada;m3
+113;24;0,013;ma;arena gruesa lavada;m3
+119;46;0,12;ma;cal hidratada en bolsa;bolsas
+119;57;0,04;ma;cemento Portland x 50kg;bolsas
+119;161;30;ma;ladrillo común;u
+119;25;0,01;ma;arena gruesa;m3
+119;209;0,85;mo;oficial;h
+119;27;0,6;mo;ayudante;h
+120;0;0;_;_;_
+120;46;0,27;ma;cal hidratada en bolsa;bolsas
+120;57;0,07;ma;cemento Portland x 50kg;bolsas
+120;162;0,25;ma;ladrillo común 0,20;u
+120;25;0,05;ma;arena gruesa;m3
+120;209;1,2;mo;oficial;h
+120;27;1;mo;ayudante;h
+121;0;0;_;_;_
+121;46;0,16;ma;cal hidratada en bolsa;bolsas
+121;57;0,09;ma;cemento Portland x 50kg;bolsas
+121;171;17,5;ma;ladrillo hueco 9T 18x19x30;u
+121;25;0,04;ma;arena gruesa;m3
+121;209;1,3;mo;oficial;h
+121;27;0,7;mo;ayudante;h
+122;0;0;_;_;_
+122;46;1,52;ma;cal hidratada en bolsa;bolsas
+122;57;0,12;ma;cemento Portland x 50kg;bolsas
+122;5;125;ma;adobe 10x20x40;kg
+122;25;0,23;ma;arena gruesa;m3
+122;209;4,5;mo;oficial;h
+122;27;6;mo;ayudante;h
+123;0;0;_;_;_
+123;161;0,4;ma;ladrillo común;u
+123;24;0,35;ma;arena gruesa lavada;m3
+123;57;0,7;ma;cemento Portland x 50kg;bolsas
+123;46;1,2;ma;cal hidratada en bolsa;bolsas
+123;209;7;mo;oficial;h
+123;27;8;mo;ayudante;h
+124;0;0;_;_;_
+124;46;1,84;ma;cal hidratada en bolsa;bolsas
+124;57;0,6;ma;cemento Portland x 50kg;bolsas
+124;219;1,15;ma;piedra bola;m3
+124;25;0,33;ma;arena gruesa;m3
+124;209;7,5;mo;oficial;h
+124;27;16;mo;ayudante;h
+125;0;0;_;_;_
+125;175;0,3;ma;latex p/canchas y piletas;lts
+125;235;0,1;ma;pintura de imprimación;lts
+125;213;0,25;ma;papel lija mediana;u
+125;98;0,03;ma;entonador (pomo 120 cm3);u
+125;209;1;mo;oficial;h
+125;27;0,5;mo;ayudante;h
+126;0;0;_;_;_
+126;315;0,6;ma;Triturados 20-30;m3
+126;57;0,16;ma;cemento Portland x 50kg;bolsas
+126;25;0,03;ma;arena gruesa;m3
+126;46;0,08;ma;cal hidratada en bolsa;bolsas
+126;209;3,3;mo;oficial;h
+126;27;2,4;mo;ayudante;h
+127;0;0;_;_;_
+127;117;0,02;ma;fijador al agua;lts
+127;355;0,06;ma;yeso blanco;kg
+127;213;0,25;ma;papel lija mediana;u
+127;223;0,07;ma;pintura al agua bolsa 4 kg;u
+127;209;0,4;mo;oficial;h
+127;27;0,25;mo;ayudante;h
+128;0;0;_;_;_
+128;117;0,02;ma;fijador al agua;lts
+128;355;0,06;ma;yeso blanco;kg
+128;213;0,25;ma;papel lija mediana;u
+128;223;0,06;ma;pintura al agua bolsa 4 kg;u
+128;209;0,35;mo;oficial;h
+128;27;0,15;mo;ayudante;h
+129;0;0;_;_;_
+129;117;0,02;ma;fijador al agua;lts
+129;355;0,06;ma;yeso blanco;kg
+129;213;0,2;ma;papel lija mediana;u
+129;223;0,06;ma;pintura al agua bolsa 4 kg;u
+129;209;0,25;mo;oficial;h
+129;27;0,15;mo;ayudante;h
+130;0;0;_;_;_
+130;117;0,02;ma;fijador al agua;lts
+130;213;0,25;ma;papel lija mediana;u
+130;235;0,13;ma;pintura de imprimación;lts
+130;209;0,6;mo;oficial;h
+131;0;0;_;_;_
+131;228;0,2;ma;pintura al latex - lata 20 lts. Para exteriores;lts
+131;117;0,02;ma;fijador al agua;lts
+131;235;0,13;ma;pintura de imprimación;lts
+130;227;0,01;ma;pintura al latex - lata 20 lts, para interiores;lts
+131;213;0,25;ma;papel lija mediana;u
+131;98;0,03;ma;entonador (pomo 120 cm3);u
+131;209;0,6;mo;oficial;h
+131;27;0,4;mo;ayudante;h
+132;0;0;_;_;_
+132;227;0,2;ma;pintura al latex - lata 20 lts, para interiores;lts
+132;117;0,02;ma;fijador al agua;lts
+132;235;0,13;ma;pintura de imprimación;lts
+132;213;0,25;ma;papel lija mediana;u
+132;98;0,03;ma;entonador (pomo 120 cm3);u
+132;209;0,6;mo;oficial;h
+132;27;0,3;mo;ayudante;h
+133;0;0;_;_;_
+133;46;0,16;ma;cal hidratada en bolsa;bolsas
+133;57;0,16;ma;cemento Portland x 50kg;bolsas
+133;25;0,03;ma;arena gruesa;m3
+133;26;0,2;ma;asfalto plástico p/juntas de pavimento;kg
+133;34;1,05;ma;baldosa roja 20x20 tipo azotea;m2
+133;209;1,3;mo;oficial;h
+133;27;1,2;mo;ayudante;h
+134;0;0;_;_;_
+134;4;3,5;ma;adhesivo p/piso cerámico;kg
+134;216;0,1;ma;pastina p/ceramicos color;kg
+134;59;1,05;ma;cerámico esmaltado;m2
+134;209;2,3;mo;oficial;h
+134;27;1,1;mo;ayudante;h
+135;0;0;_;_;_
+135;4;3;ma;adhesivo p/piso cerámico;kg
+135;116;0,2;ma;ferrite rojo;kg
+135;33;1,05;ma;baldosa cerámica roja 8 x 16;m2
+135;209;1,7;mo;oficial;h
+135;27;0,85;mo;ayudante;h
+136;0;0;_;_;_
+136;46;0,2;ma;cal hidratada en bolsa;bolsas
+136;57;0,16;ma;cemento Portland x 50kg;bolsas
+136;25;0,03;ma;arena gruesa;m3
+136;35;1,05;ma;baldosones de granza lavada 50 x 50 cm;m2
+136;209;1,1;mo;oficial;h
+136;27;0,9;mo;ayudante;h
+137;0;0;_;_;_
+137;57;0,3;ma;cemento Portland x 50kg;bolsas
+137;24;0,02;ma;arena gruesa lavada;m3
+137;209;1;mo;oficial;h
+137;27;0,4;mo;ayudante;h
+138;0;0;_;_;_
+138;46;0,24;ma;cal hidratada en bolsa;bolsas
+138;57;0,1;ma;cemento Portland x 50kg;bolsas
+138;25;0,02;ma;arena gruesa;m3
+138;26;0,2;ma;asfalto plástico p/juntas de pavimento;kg
+138;161;0,02;ma;ladrillo común;u
+138;209;1,3;mo;oficial;h
+138;27;0,8;mo;ayudante;h
+139;0;0;_;_;_
+139;46;0,2;ma;cal hidratada en bolsa;bolsas
+139;57;0,24;ma;cemento Portland x 50kg;bolsas
+139;25;0,02;ma;arena gruesa;m3
+139;173;1,2;ma;laja irregular;m2
+139;209;1,5;mo;oficial;h
+139;27;0,8;mo;ayudante;h
+140;0;0;_;_;_
+140;3;0,25;ma;adhesivo p/parquet;lts
+140;58;0,05;ma;cera en pasta;Kg
+140;215;1,05;ma;parquet incienso comercial;m2
+140;209;1,5;mo;oficial;h
+140;27;0,75;mo;ayudante;h
+141;0;0;_;_;_
+141;46;0,12;ma;cal hidratada en bolsa;bolsas
+141;57;0,08;ma;cemento Portland x 50kg;bolsas
+141;25;0,03;ma;arena gruesa;m3
+141;205;1,05;ma;mosaico calcareo amarillo o rojo;m2
+141;209;1,2;mo;oficial;h
+141;27;0,85;mo;ayudante;h
+142;0;0;_;_;_
+142;46;0,12;ma;cal hidratada en bolsa;bolsas
+142;57;0,09;ma;cemento Portland x 50kg;bolsas
+142;25;0,03;ma;arena gruesa;m3
+142;206;1,05;ma;mosaico calcareo gris;m2
+142;209;1,15;mo;oficial;h
+142;27;0,85;mo;ayudante;h
+143;0;0;_;_;_
+143;46;0,12;ma;cal hidratada en bolsa;bolsas
+143;57;0,1;ma;cemento Portland x 50kg;bolsas
+143;25;0,03;ma;arena gruesa;m3
+143;207;1,05;ma;mosaico granitico 30x30;m2
+143;209;1,3;mo;oficial;h
+143;27;0,85;mo;ayudante;h
+144;0;0;_;_;_
+144;140;4;ma;hierro liso herrero;kg
+144;253;1,1;ma;policarbonato 4mm;m2
+144;267;20;ma;silicona p/vidrios;cm3
+144;92;0,5;ma;electrodos 2,5 mm;kg
+144;209;1,6;mo;oficial;h
+144;27;1;mo;ayudante;h
+145;0;0;_;_;_
+145;257;1;ma;puerta dos hojas marco 1.10 x 2.05 m;u
+145;138;1,5;ma;herrajes completos;u
+145;209;2,5;mo;oficial;h
+145;27;2,5;mo;ayudante;h
+146;0;0;_;_;_
+146;138;1;ma;herrajes completos;u
+146;209;2;mo;oficial;h
+146;27;2;mo;ayudante;h
+147;0;0;_;_;_
+147;260;1;ma;puerta una hoja 1.00  x 2.05 m;u
+179;46;0,06;ma;cal hidratada en bolsa;bolsas
+179;57;0,18;ma;cemento Portland x 50kg;bolsas
+146;377;1;ma;puerta una hoja placa 0.80 x 2.05  m;u
+179;24;0,02;ma;arena gruesa lavada;m3
+179;122;1;ma;granito reconst. 4 cm. esp.;m2
+179;209;2,5;mo;oficial;h
+179;27;0,5;mo;ayudante;h
+180;0;0;_;_;_
+180;184;1;ma;"madera dura 2""";m2
+180;24;0,02;ma;arena gruesa lavada;m3
+180;57;0,12;ma;cemento Portland x 50kg;bolsas
+180;305;12;ma;"tirafondo 6,5 mm x 3""";u
+180;209;5;mo;oficial;h
+180;27;5;mo;ayudante;h
+181;0;0;_;_;_
+181;320;1;ma;ventana dos hojas marco met o mad.;u
+181;138;1;ma;herrajes completos;u
+181;209;2;mo;oficial;h
+181;27;2;mo;ayudante;h
+182;0;0;_;_;_
+182;57;0,5;ma;cemento Portland x 50kg;bolsas
+182;264;0,13;ma;ripio;m3
+182;209;1,4;mo;oficial;h
+182;27;1;mo;ayudante;h
+183;0;0;_;_;_
+183;323;1,05;ma;vidrio armado;m2
+183;199;0,5;ma;masilla;kg
+183;209;0,6;mo;oficial;h
+184;0;0;_;_;_
+184;324;1,05;ma;vidrio doble transparente;m2
+184;199;0,4;ma;masilla;kg
+184;209;0,5;mo;oficial;h
+185;0;0;_;_;_
+185;326;1,05;ma;vidrio triple transparente;m2
+185;199;0,4;ma;masilla;kg
+185;209;0,5;mo;oficial;h
+186;0;0;_;_;_
+186;325;1,05;ma;vidrio transparente 6 mm;m2
+186;199;0,4;ma;masilla;kg
+186;209;0,5;mo;oficial;h
+187;0;0;_;_;_
+187;140;7;ma;hierro liso herrero;kg
+187;92;1;ma;electrodos 2,5 mm;kg
+187;20;0,06;ma;antióxido al cromato;lts
+187;209;0,6;mo;oficial;h
+187;27;0,6;mo;ayudante;h
+188;0;0;_;_;_
+188;46;0,01;ma;cal hidratada en bolsa;bolsas
+188;57;0,01;ma;cemento Portland x 50kg;bolsas
+188;24;0,005;ma;arena gruesa lavada;m3
+188;34;0,1;ma;baldosa roja 20x20 tipo azotea;m2
+188;209;0,5;mo;oficial;h
+188;27;0,2;mo;ayudante;h
+189;0;0;_;_;_
+189;46;0,01;ma;cal hidratada en bolsa;bolsas
+189;57;0,008;ma;cemento Portland x 50kg;bolsas
+189;24;0,003;ma;arena gruesa lavada;m3
+189;357;1;ma;zocalo calcareo amarillo o rojo;ml
+189;209;0,25;mo;oficial;h
+189;27;0,1;mo;ayudante;h
+190;0;0;_;_;_
+190;4;0,35;ma;adhesivo p/piso cerámico;kg
+190;216;0,001;ma;pastina p/ceramicos color;kg
+190;59;0,105;ma;cerámico esmaltado;m2
+190;209;0,2;mo;oficial;h
+190;27;0,075;mo;ayudante;h
+191;0;0;_;_;_
+164;209;1;mo;oficial;h
+164;27;0,4;mo;ayudante;h
+165;0;0;_;_;_
+165;286;1;ma;tabique exterior durlock completo;m2
+165;209;2;mo;oficial;h
+165;27;1;mo;ayudante;h
+166;0;0;_;_;_
+166;288;1;ma;tabique sanitario durlock 12,5 x 10 cm completo;m2
+166;209;2;mo;oficial;h
+166;27;1;mo;ayudante;h
+167;0;0;_;_;_
+167;285;1;ma;tabique durlock 12,5 x 10 cm completo;m2
+167;209;2;mo;oficial;h
+168;0;0;_;_;_
+168;209;4;mo;oficial;h
+168;27;4;mo;ayudante;h
+169;0;0;_;_;_
+169;57;0,1;ma;cemento Portland x 50kg;bolsas
+169;46;0,24;ma;cal hidratada en bolsa;bolsas
+169;55;0,02;ma;cascotes de ladrillos;m3
+169;25;0,01;ma;arena gruesa;m3
+169;293;25;ma;teja colonial chica (25/m2);u
+169;209;1,6;mo;oficial;h
+169;27;2;mo;ayudante;h
+168;179;2;ma;"listones de pino 1/2"" x 2""";ml
+170;0;0;_;_;_
+170;16;0,15;ma;alambre negro Nº16;kg
+170;71;0,3;ma;"clavos 2""";kg
+170;185;1,15;ma;"madera machimbrada pino 3/4""";m2
+167;27;1;mo;ayudante;h
+170;308;2;ma;"tirante pino 3x6""";m
+170;293;25;ma;teja colonial chica (25/m2);u
+170;180;2;ma;"listones pino 1x2""";ml
+170;179;1,8;ma;"listones de pino 1/2"" x 2""";ml
+170;74;0,25;ma;"clavos P.P. 2 1/2""";kg
+170;209;2;mo;oficial;h
+170;27;2,1;mo;ayudante;h
+171;0;0;_;_;_
+171;57;0,04;ma;cemento Portland x 50kg;bolsas
+171;24;0,03;ma;arena gruesa lavada;m3
+171;46;0,1;ma;cal hidratada en bolsa;bolsas
+171;71;0,2;ma;"clavos 2""";kg
+171;300;15;ma;tejuela hueca 2,5x17x40;u
+171;308;2;ma;"tirante pino 3x6""";m
+171;293;25;ma;teja colonial chica (25/m2);u
+171;180;5;ma;"listones pino 1x2""";ml
+171;209;2,3;mo;oficial;h
+171;27;2,3;mo;ayudante;h
+172;0;0;_;_;_
+172;57;0,08;ma;cemento Portland x 50kg;bolsas
+172;46;0,2;ma;cal hidratada en bolsa;bolsas
+172;25;0,07;ma;arena gruesa;m3
+172;297;15;ma;teja francesa;u
+172;209;1,4;mo;oficial;h
+172;27;1,8;mo;ayudante;h
+173;0;0;_;_;_
+173;71;0,15;ma;"clavos 2""";kg
+173;185;1,15;ma;"madera machimbrada pino 3/4""";m2
+173;297;15;ma;teja francesa;u
+173;308;2;ma;"tirante pino 3x6""";m
+173;74;0,15;ma;"clavos P.P. 2 1/2""";kg
+173;180;5,35;ma;"listones pino 1x2""";ml
+173;179;1,8;ma;"listones de pino 1/2"" x 2""";ml
+173;15;0,08;ma;alambre galvaniz. fino;kg
+173;209;2,2;mo;oficial;h
+173;27;2,1;mo;ayudante;h
+174;0;0;_;_;_
+174;200;1,3;ma;material  de relleno;m3
+174;27;1,9;mo;ayudante;h
+175;0;0;_;_;_
+175;27;2,15;mo;ayudante;h
+176;0;0;_;_;_
+176;57;0,05;ma;cemento Portland x 50kg;bolsas
+176;24;0,003;ma;arena gruesa lavada;m3
+176;139;0,15;ma;hidrófugo x litro;lts
+176;209;0,7;mo;oficial;h
+176;27;0,3;mo;ayudante;h
+177;0;0;_;_;_
+177;57;0,1;ma;cemento Portland x 50kg;bolsas
+177;24;0,007;ma;arena gruesa lavada;m3
+177;209;1;mo;oficial;h
+177;27;0,5;mo;ayudante;h
+178;0;0;_;_;_
+178;57;0,08;ma;cemento Portland x 50kg;bolsas
+178;24;0,006;ma;arena gruesa lavada;m3
+178;209;1,2;mo;oficial;h
+178;27;0,6;mo;ayudante;h
+179;0;0;_;_;_
+191;4;0,35;ma;adhesivo p/piso cerámico;kg
+191;116;0,001;ma;ferrite rojo;kg
+191;33;0,085;ma;baldosa cerámica roja 8 x 16;m2
+191;209;0,4;mo;oficial;h
+191;27;0,15;mo;ayudante;h
+192;0;0;_;_;_
+192;46;0,01;ma;cal hidratada en bolsa;bolsas
+192;57;0,03;ma;cemento Portland x 50kg;bolsas
+192;24;0,003;ma;arena gruesa lavada;m3
+192;161;0,004;ma;ladrillo común;u
+192;209;0,5;mo;oficial;h
+192;27;0,2;mo;ayudante;h
+193;0;0;_;_;_
+193;57;0,008;ma;cemento Portland x 50kg;bolsas
+193;46;0,01;ma;cal hidratada en bolsa;bolsas
+193;24;0,005;ma;arena gruesa lavada;m3
+193;361;1;ma;zócalo de H° 10 x 50;ml
+193;209;1;mo;oficial;h
+193;27;0,6;mo;ayudante;h
+194;0;0;_;_;_
+194;365;1,1;ma;zocalo de pino 7 cm;ml
+194;314;2;ma;tornillos y tacos diam.8mm;u
+194;209;0,25;mo;oficial;h
+194;27;0,1;mo;ayudante;h
+195;0;0;_;_;_
+195;57;0,24;ma;cemento Portland x 50kg;bolsas
+195;139;0,15;ma;hidrófugo x litro;lts
+195;24;0,02;ma;arena gruesa lavada;m3
+195;209;0,9;mo;oficial;h
+195;27;0,5;mo;ayudante;h
+196;0;0;_;_;_
+196;57;0,06;ma;cemento Portland x 50kg;bolsas
+196;139;0,15;ma;hidrófugo x litro;lts
+196;24;0,06;ma;arena gruesa lavada;m3
+196;209;0,35;mo;oficial;h
+196;27;0,2;mo;ayudante;h
+197;0;0;_;_;_
+197;46;0,01;ma;cal hidratada en bolsa;bolsas
+197;57;0,008;ma;cemento Portland x 50kg;bolsas
+197;24;0,005;ma;arena gruesa lavada;m3
+197;371;1;ma;zocalo granitico 10 x 30;ml
+197;209;0,3;mo;oficial;h
+197;27;0,1;mo;ayudante;h
+198;0;0;_;_;_
+199;0;0;_;_;_
+199;185;1;ma;"madera machimbrada pino 3/4""";m2
+199;10;1;ma;aislación térmica  (ISOLANT TBA 10 mm);ml
+199;316;1;ma;tyvek 1 x 30m;ml
+200;0;0;_;_;_
+201;0;0;_;_;_
+202;0;0;_;_;_
+203;0;0;_;_;_
+200;27;5;mo;ayudante;h
+200;209;5,5;mo;oficial;h
+200;13;1,3;ma;aislación térmica (lana de vidrio 50 mm);m2
+201;27;5;mo;ayudante;h
+201;209;5,5;mo;oficial;h
+204;0;0;_;_;_
+205;0;0;_;_;_
+204;372;1;ma;masilla Durlock;kg
+204;373;2;ma;cinta de papel Durlock;ml
+204;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+207;237;0,1;ma;pintura Impregnante Protector De Madera x lts;lts
+208;0;0;_;_;_
+168;180;2;ma;"listones pino 1x2""";ml
+201;13;1,3;ma;aislación térmica (lana de vidrio 50 mm);m2
+204;375;1,05;ma;Placas Durlock 12.5 mm;m2
+205;372;1;ma;masilla Durlock;kg
+205;373;2;ma;cinta de papel Durlock;ml
+205;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+205;375;1,05;ma;Placas Durlock 12.5 mm;m2
+206;0;0;_;_;_
+206;27;1,4;mo;ayudante;h
+206;209;1,4;mo;oficial;h
+206;185;1,1;ma;"madera machimbrada pino 3/4""";m2
+207;0;0;_;_;_
+207;266;1;ma;"siding de madera (INGLES 1""x5"")";m2
+207;316;1;ma;tyvek 1 x 30m;ml
+207;180;4;ma;"listones pino 1x2""";ml
+207;311;18;ma;Tornillo T3 Punta Aguja  6 X 1 1/2 pulg;u
+208;59;1,1;ma;cerámico esmaltado;m2
+208;4;3,5;ma;adhesivo p/piso cerámico;kg
+208;216;0,1;ma;pastina p/ceramicos color;kg
+208;27;1,5;mo;ayudante;h
+208;209;3;mo;oficial;h
+209;0;0;_;_;_
+209;209;3;mo;oficial;h
+209;27;1,5;mo;ayudante;h
+209;216;0,1;ma;pastina p/ceramicos color;kg
+209;4;3,5;ma;adhesivo p/piso cerámico;kg
+209;59;1,1;ma;cerámico esmaltado;m2
+210;0;0;_;_;_
+210;59;1,05;ma;cerámico esmaltado;m2
+210;216;0,1;ma;pastina p/ceramicos color;kg
+210;4;3,5;ma;adhesivo p/piso cerámico;kg
+210;27;1,1;mo;ayudante;h
+210;209;2,3;mo;oficial;h
+211;0;0;_;_;_
+212;0;0;_;_;_
+212;138;1;ma;herrajes completos;u
+212;258;1;ma;puerta un hoja placa 0.70 x 2.05  m;u
+212;209;2;mo;oficial;h
+212;27;2;mo;ayudante;h
+211;138;1;ma;herrajes completos;u
+211;27;2,5;mo;ayudante;h
+211;209;2,5;mo;oficial;h
+211;376;1;ma;puerta corrediza placa 0.70 x 2.05 m;u
+213;0;0;_;_;_
+213;138;1;ma;herrajes completos;u
+213;378;1;ma;puerta ventana corrediza dos hojas 2.05 x 2.05 m;u
+213;27;2,5;mo;ayudante;h
+213;209;2,5;mo;oficial;h
+214;0;0;_;_;_
+214;209;2;mo;oficial;h
+214;27;2;mo;ayudante;h
+214;138;1;ma;herrajes completos;u
+214;379;1;ma;ventana desplaz 1.27 x 1.58 m;u
+215;0;0;_;_;_
+215;380;1;ma;ventana desplaz 1.00 x 0.60m;u
+215;138;1;ma;herrajes completos;u
+215;27;2;mo;ayudante;h
+215;209;2;mo;oficial;h
+216;0;0;_;_;_
+216;381;1;ma;ventana desplaz 1.20 x 0.60m;u
+216;138;1;ma;herrajes completos;u
+216;27;2;mo;ayudante;h
+216;209;2;mo;oficial;h
+217;0;0;_;_;_
+217;382;1;ma;ventana vidrio fijo 1.20 x 1.70 m;u
+217;27;2;mo;ayudante;h
+217;209;2;mo;oficial;h
+218;0;0;_;_;_
+218;383;1,05;ma;Placas Durlock VERDE 12.5 mm;m2
+218;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+218;373;2;ma;cinta de papel Durlock;ml
+218;372;1;ma;masilla Durlock;kg
+218;27;0,7;mo;ayudante;h
+218;209;1,5;mo;oficial;h
+204;209;1,5;mo;oficial;h
+205;209;1,8;mo;oficial;h
+204;27;0,7;mo;ayudante;h
+205;27;0,9;mo;ayudante;h
+219;0;0;_;_;_
+219;16;2;ma;alambre negro Nº16;kg
+219;71;2;ma;"clavos 2""";kg
+219;25;0,7;ma;arena gruesa;m3
+219;263;0,6;ma;ripio lavado 1:3;m3
+219;57;5;ma;cemento Portland x 50kg;bolsas
+219;27;26;mo;ayudante;h
+219;209;28;mo;oficial;h
+220;0;0;_;_;_
+220;71;1;ma;"clavos 2""";kg
+220;16;1;ma;alambre negro Nº16;kg
+220;25;0,7;ma;arena gruesa;m3
+220;263;0,6;ma;ripio lavado 1:3;m3
+220;57;6;ma;cemento Portland x 50kg;bolsas
+220;27;27;mo;ayudante;h
+220;209;31;mo;oficial;h
+221;0;0;_;_;_
+221;25;0,03;ma;arena gruesa;m3
+221;57;0,2;ma;cemento Portland x 50kg;bolsas
+221;27;0,7;mo;ayudante;h
+221;209;1,4;mo;oficial;h
+207;27;0,6;mo;ayudante;h
+207;209;0,6;mo;oficial;h
+222;0;0;_;_;_
+222;247;1;ma;piso flotante 8.3 mm + manta;m2
+222;27;0,75;mo;ayudante;h
+222;209;1,5;mo;oficial;h
+202;27;5;mo;ayudante;h
+202;209;5,5;mo;oficial;h
+223;0;0;_;_;_
+224;0;0;_;_;_
+224;138;1;ma;herrajes completos;u
+223;138;1;ma;herrajes completos;u
+224;27;2;mo;ayudante;h
+224;209;2;mo;oficial;h
+224;402;1;ma;puerta una hoja c/vidrio 0.80 x 2.05  m;u
+223;403;1;ma;puerta ventana corrediza dos hojas 2.45 x 2.05m;u
+223;209;2,5;mo;oficial;h
+223;27;2,5;mo;ayudante;h
+225;0;0;_;_;_
+226;0;0;_;_;_
+227;0;0;_;_;_
+228;0;0;_;_;_
+229;0;0;_;_;_
+230;0;0;_;_;_
+231;0;0;_;_;_
+227;138;1;ma;herrajes completos;u
+227;404;1;ma;ventana desplaz 0.80 x 0.68m;u
+227;209;2;mo;oficial;h
+227;27;2;mo;ayudante;h
+226;405;1;ma;ventana desplaz 1.00 x 0.76m;u
+226;138;1;ma;herrajes completos;u
+226;209;2;mo;oficial;h
+226;27;2;mo;ayudante;h
+228;406;1;ma;ventana desplaz 1.20 x 0.53m;u
+228;138;1;ma;herrajes completos;u
+228;27;2;mo;ayudante;h
+228;209;2;mo;oficial;h
+225;407;1;ma;ventana desplaz 1.50 x 0.60 m;u
+225;138;1;ma;herrajes completos;u
+225;27;2;mo;ayudante;h
+225;209;2;mo;oficial;h
+230;408;1;ma;ventana vidrio fijo 0.60 x 0.76 m;u
+230;209;1,5;mo;oficial;h
+230;27;1,5;mo;ayudante;h
+231;409;1;ma;ventana vidrio fijo 1.20 x 1.27 m;u
+231;209;2;mo;oficial;h
+231;27;2;mo;ayudante;h
+229;410;1;ma;ventana vidrio fijo 1.50 x 1.70 m;u
+229;209;2,5;mo;oficial;h
+229;27;2,5;mo;ayudante;h
+156;269;4,5;ma;STEEL PGC 100-0.9;ml
+156;273;1,7;ma;STEEL PGU 100-0.9;ml
+232;0;0;_;_;_
+232;25;0,014;ma;arena gruesa;m3
+232;57;0,05;ma;cemento Portland x 50kg;bolsas
+232;46;0,085;ma;cal hidratada en bolsa;bolsas
+232;27;1,45;mo;ayudante;h
+232;209;1,55;mo;oficial;h
+233;0;0;_;_;_
+233;413;5;ma;perlas de telgopor (bolsa x 1.7 kg);u
+233;57;5;ma;cemento Portland x 50kg;bolsas
+233;27;0,4;mo;ayudante;h
+233;209;0,2;mo;oficial;h
+234;0;0;_;_;_
+235;0;0;_;_;_
+236;0;0;_;_;_
+234;416;1;ma;puerta una hoja 1.10 x 2.05  m;u
+234;138;1;ma;herrajes completos;u
+234;27;2;mo;ayudante;h
+234;209;2;mo;oficial;h
+235;209;2;mo;oficial;h
+235;27;2;mo;ayudante;h
+235;138;1;ma;herrajes completos;u
+235;415;1;ma;puerta una hoja 0.80 x 2.05  m;u
+236;414;1;ma;puerta ventana corrediza dos hojas 1.60 x 2.05;u
+236;138;1;ma;herrajes completos;u
+236;209;2,5;mo;oficial;h
+236;27;2,5;mo;ayudante;h
+237;0;0;_;_;_
+238;0;0;_;_;_
+239;0;0;_;_;_
+240;0;0;_;_;_
+241;0;0;_;_;_
+237;138;1;ma;herrajes completos;u
+237;421;1;ma;ventana desplaz 1.00 x 0.90 m;u
+237;27;2;mo;ayudante;h
+237;209;2;mo;oficial;h
+238;422;1;ma;ventana desplaz 1.00 x 1.00 m;u
+238;138;1;ma;herrajes completos;u
+238;209;2;mo;oficial;h
+238;27;2;mo;ayudante;h
+240;418;1;ma;ventana vidrio fijo 0.60 x 1.20 m;u
+240;27;1,5;mo;ayudante;h
+240;209;1,5;mo;oficial;h
+241;419;1;ma;ventana vidrio fijo 0.60 x 1.50 m;u
+241;209;1,5;mo;oficial;h
+241;27;1,5;mo;ayudante;h
+239;420;1;ma;ventana vidrio fijo 1.60 x 1.50 m;u
+239;27;2,5;mo;ayudante;h
+239;209;2,5;mo;oficial;h
+242;0;0;_;_;_
+242;423;0,06;ma;Techado Plavicon fibrado (20 kg) (Tipo Plástico Color bco);lata
+242;27;0,6;mo;ayudante;h
+242;209;0,6;mo;oficial;h
+243;0;0;_;_;_
+243;16;0,2;ma;alambre negro Nº16;kg
+243;25;0,08;ma;arena gruesa;m3
+243;263;0,07;ma;ripio lavado 1:3;m3
+243;57;0,62;ma;cemento Portland x 50kg;bolsas
+243;167;2;ma;Ladrillo de techo poliestireno (16x100x42) x unidad;u
+243;426;1;ma;malla Sima 15x25 (6mm);m2
+243;27;4,2;mo;ayudante;h
+243;209;5,2;mo;oficial;h
+244;0;0;_;_;_
+244;16;0,2;ma;alambre negro Nº16;kg
+244;25;0,06;ma;arena gruesa;m3
+244;263;0,05;ma;ripio lavado 1:3;m3
+244;57;0,48;ma;cemento Portland x 50kg;bolsas
+244;168;2;ma;Ladrillo de techo poliestireno (9x100x42) x unidad;u
+244;425;1;ma;malla Sima 15x25 (4mm);m2
+244;27;4;mo;ayudante;h
+244;209;5;mo;oficial;h
+245;0;0;_;_;_
+245;16;1,6;ma;alambre negro Nº16;kg
+246;0;0;_;_;_
+246;16;0,25;ma;alambre negro Nº16;kg
+246;25;0,7;ma;arena gruesa;m3
+246;263;0,6;ma;ripio lavado 1:3;m3
+246;57;6;ma;cemento Portland x 50kg;bolsas
+246;27;11;mo;ayudante;h
+246;209;4;mo;oficial;h
+245;25;0,7;ma;arena gruesa;m3
+245;263;0,6;ma;ripio lavado 1:3;m3
+245;57;6,4;ma;cemento Portland x 50kg;bolsas
+245;27;35;mo;ayudante;h
+245;209;37;mo;oficial;h
+247;0;0;_;_;_
+247;24;0,02;ma;arena gruesa lavada;m3
+247;57;0,04;ma;cemento Portland x 50kg;bolsas
+247;46;0,1;ma;cal hidratada en bolsa;bolsas
+247;27;0,35;mo;ayudante;h
+247;209;0,7;mo;oficial;h
+156;400;16;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+39;25;0,07;ma;arena gruesa;m3
+35;25;0,363;ma;arena gruesa;m3
+199;313;6;ma;Tornillos Para Techo Autoperforantes Chapa A Madera 14 X 2 pulg;u
+199;428;10;ma;Tornillo Fix Madera  8 X 3 pulg;u
+248;0;0;_;_;_
+248;209;2;mo;oficial;h
+248;27;2;mo;ayudante;h
+249;0;0;_;_;_
+249;209;0,2;mo;oficial;h
+249;27;0,2;mo;ayudante;h
+250;0;0;_;_;_
+251;0;0;_;_;_
+251;4;3,5;ma;adhesivo p/piso cerámico;kg
+250;4;3,5;ma;adhesivo p/piso cerámico;kg
+251;216;0,1;ma;pastina p/ceramicos color;kg
+250;216;0,1;ma;pastina p/ceramicos color;kg
+251;59;1,05;ma;cerámico esmaltado;m2
+250;59;1,05;ma;cerámico esmaltado;m2
+251;209;2,3;mo;oficial;h
+250;209;1,2;mo;oficial;h
+251;27;1,1;mo;ayudante;h
+250;27;0,6;mo;ayudante;h
+252;0;0;_;_;_
+252;21;1;ma;antióxido rojo lata x 4 lts.;u
+253;0;0;_;_;_
+24;21;1;ma;antióxido rojo lata x 4 lts.;u
+154;433;4;ma;base coat (bolsa x 30 kg);kg
+253;433;4;ma;base coat (bolsa x 30 kg);kg
+253;434;1;ma;Malla De Fibra De Vidrio En Rollo - (Rollo x50 m2);m2
+254;0;0;_;_;_
+254;435;1;ma;puerta corrediza placa 0.88 x 2.05 m;u
+254;138;1;ma;herrajes completos;u
+254;209;2,5;mo;oficial;h
+254;27;2,5;mo;ayudante;h
+255;0;0;_;_;_
+255;436;1;ma;puerta ventana corrediza (tres hojas) 2.60  x 2.20 m;u
+255;138;1;ma;herrajes completos;u
+255;27;2,5;mo;ayudante;h
+255;209;2,5;mo;oficial;h
+256;0;0;_;_;_
+257;0;0;_;_;_
+256;437;1;ma;puerta una hoja c/vidrio 0.90 x 2.05  m;u
+257;438;1;ma;puerta una hoja c/vidrio1.00 x 2.05  m;u
+256;138;1;ma;herrajes completos;u
+257;138;1;ma;herrajes completos;u
+256;209;2;mo;oficial;h
+257;209;2;mo;oficial;h
+256;27;2;mo;ayudante;h
+257;27;2;mo;ayudante;h
+258;0;0;_;_;_
+259;0;0;_;_;_
+259;440;1;ma;ventana vidrio fijo 0.60 x 1.40 m;u
+259;27;1,5;mo;ayudante;h
+259;209;1,5;mo;oficial;h
+260;0;0;_;_;_
+261;0;0;_;_;_
+262;0;0;_;_;_
+263;0;0;_;_;_
+264;0;0;_;_;_
+265;0;0;_;_;_
+266;0;0;_;_;_
+267;0;0;_;_;_
+258;439;1;ma;ventana corrediza 1.20 x 1.50m;u
+258;27;2;mo;ayudante;h
+258;209;2;mo;oficial;h
+266;138;1;ma;herrajes completos;u
+262;27;2;mo;ayudante;h
+258;138;1;ma;herrajes completos;u
+266;27;2;mo;ayudante;h
+262;138;1;ma;herrajes completos;u
+262;443;1;ma;ventana desplaz 0.60 x 0.60 m;u
+262;209;2;mo;oficial;h
+266;447;1;ma;ventana desplaz 0.60 x 0.90 m;u
+266;209;2;mo;oficial;h
+267;448;1;ma;ventana desplaz 0.80 x 1.40 m;u
+261;442;1;ma;ventana desplaz 1.00 x 0.50 m;u
+260;441;1;ma;ventana desplaz 1.15 x 1.40 m;u
+265;446;1;ma;ventana desplaz 1.40 x 1.55 m;u
+264;445;1;ma;ventana vidrio fijo 0.80 x 1.55 m;u
+263;444;1;ma;ventana vidrio fijo 2.05 x 0.80 m;u
+263;209;2,5;mo;oficial;h
+263;27;2,5;mo;ayudante;h
+264;27;2;mo;ayudante;h
+264;209;2;mo;oficial;h
+265;138;1;ma;herrajes completos;u
+265;209;2;mo;oficial;h
+265;27;2;mo;ayudante;h
+260;138;1;ma;herrajes completos;u
+260;209;2;mo;oficial;h
+260;27;2;mo;ayudante;h
+261;138;1;ma;herrajes completos;u
+261;209;2;mo;oficial;h
+261;27;2;mo;ayudante;h
+267;138;1;ma;herrajes completos;u
+267;27;2;mo;ayudante;h
+267;209;2;mo;oficial;h
+268;0;0;_;_;_
+268;449;2;ma;Revoque Plástico x 25kg;kg
+268;27;0,4;mo;ayudante;h
+268;209;0,6;mo;oficial;h
+252;27;12;mo;ayudante;h
+252;209;12;mo;oficial;h
+252;451;5;ma;metal desplegado (esp. 3.2);m2
+252;387;70;ma;"cenefa madera de pino 1"" x 6""";ml
+252;452;60;ma;Tornillo T3 Punta Mecha  6 X 1 1/2 pulg;u
+269;0;0;_;_;_
+269;453;1;ma;placa Novoplack Multipróposito (MP) 15 mm;m2
+269;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+269;27;0,7;mo;ayudante;h
+269;209;1,5;mo;oficial;h
+249;400;7,2;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+270;0;0;_;_;_
+271;0;0;_;_;_
+270;523;0;ma;.;.
+271;209;5,5;mo;oficial;h
+271;27;5;mo;ayudante;h
+271;452;24;ma;Tornillo T3 Punta Mecha  6 X 1 1/2 pulg;u
+272;0;0;_;_;_
+272;483;155;ma;"cenefa madera de pino 1"" x 4""";ml
+272;480;15;ma;Caño 120-40-1.6 (x6mt);un
+272;481;8;ma;Caño 40-40-1.6 (x6mt);un
+272;482;8;ma;Planchuela 50x3mm (barra x 6mt);un
+272;451;13;ma;metal desplegado (esp. 3.2);m2
+272;21;1;ma;antióxido rojo lata x 4 lts.;u
+379;0;0;_;_;_
+379;525;2;ma;montante 69mm (largo:2.60m);u
+272;452;200;ma;Tornillo T3 Punta Mecha  6 X 1 1/2 pulg;u
+272;237;4;ma;pintura Impregnante Protector De Madera x lts;lts
+273;0;0;_;_;_
+274;0;0;_;_;_
+275;0;0;_;_;_
+276;0;0;_;_;_
+276;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+274;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+273;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+275;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+276;212;1;ma;panel OSB 9 mm;m2
+274;484;1;ma;panel OSB 18 mm;m2
+273;211;1;ma;panel OSB 15 mm;m2
+275;485;1;ma;panel OSB 12 mm;m2
+275;209;2;mo;oficial;h
+273;209;2;mo;oficial;h
+274;209;2;mo;oficial;h
+276;209;2;mo;oficial;h
+275;27;1;mo;ayudante;h
+273;27;1;mo;ayudante;h
+274;27;1;mo;ayudante;h
+276;27;1;mo;ayudante;h
+277;0;0;_;_;_
+277;387;8,5;ma;"cenefa madera de pino 1"" x 6""";ml
+277;269;2,1;ma;STEEL PGC 100-0.9;ml
+277;273;0,7;ma;STEEL PGU 100-0.9;ml
+277;400;4,5;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+277;452;24;ma;Tornillo T3 Punta Mecha  6 X 1 1/2 pulg;u
+277;27;5;mo;ayudante;h
+277;209;5,5;mo;oficial;h
+277;486;8,5;ma;"deck madera  1"" x 4""";ml
+168;185;1,1;ma;"madera machimbrada pino 3/4""";m2
+168;428;10;ma;Tornillo Fix Madera  8 X 3 pulg;u
+168;430;0,9;ma;"Tornillo tirafondo y arandela  5/16  x 1-1/4""";u
+168;313;6;ma;Tornillos Para Techo Autoperforantes Chapa A Madera 14 X 2 pulg;u
+168;316;1,1;ma;tyvek 1 x 30m;ml
+158;385;1;ma;chapa acanalada H°G° N°24  x 1.10 m( x metro cuadrado);m2
+158;428;10;ma;Tornillo Fix Madera  8 X 3 pulg;u
+158;179;2;ma;"listones de pino 1/2"" x 2""";ml
+158;389;2,3;ma;"clavadera madera pino 2"" x 2""";ml
+158;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+278;0;0;_;_;_
+278;400;16;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+278;273;1,7;ma;STEEL PGU 100-0.9;ml
+278;269;4,5;ma;STEEL PGC 100-0.9;ml
+278;401;1,7;ma;Tornillo Hexagonal mecha 10 x 3/4 pulg;u
+278;13;1,3;ma;aislación térmica (lana de vidrio 50 mm);m2
+278;27;5;mo;ayudante;h
+278;209;5,5;mo;oficial;h
+279;0;0;_;_;_
+279;425;1;ma;malla Sima 15x25 (4mm);m2
+279;166;2;ma;Ladrillo de techo poliestireno (12x100x42) x unidad;u
+279;57;0,56;ma;cemento Portland x 50kg;bolsas
+279;263;0,06;ma;ripio lavado 1:3;m3
+279;25;0,07;ma;arena gruesa;m3
+279;16;0,2;ma;alambre negro Nº16;kg
+343;0;0;_;_;_
+279;209;5,1;mo;oficial;h
+279;27;4,1;mo;ayudante;h
+280;0;0;_;_;_
+280;487;1,05;ma;Porcelanato Pulido Beige 60x60 - Rectificado;m2
+280;216;0,1;ma;pastina p/ceramicos color;kg
+280;4;4;ma;adhesivo p/piso cerámico;kg
+280;27;1,3;mo;ayudante;h
+280;209;2,5;mo;oficial;h
+281;0;0;_;_;_
+281;487;0,105;ma;Porcelanato Pulido Beige 60x60 - Rectificado;m2
+281;216;0,002;ma;pastina p/ceramicos color;kg
+281;4;0,4;ma;adhesivo p/piso cerámico;kg
+281;27;0,35;mo;ayudante;h
+281;209;0,85;mo;oficial;h
+282;0;0;_;_;_
+282;59;1,05;ma;cerámico esmaltado;m2
+282;216;0,1;ma;pastina p/ceramicos color;kg
+282;4;3,5;ma;adhesivo p/piso cerámico;kg
+282;27;1,1;mo;ayudante;h
+282;209;2,3;mo;oficial;h
+283;0;0;_;_;_
+284;0;0;_;_;_
+285;0;0;_;_;_
+286;0;0;_;_;_
+287;0;0;_;_;_
+288;0;0;_;_;_
+289;0;0;_;_;_
+290;0;0;_;_;_
+291;0;0;_;_;_
+292;0;0;_;_;_
+293;0;0;_;_;_
+294;0;0;_;_;_
+295;0;0;_;_;_
+296;0;0;_;_;_
+297;0;0;_;_;_
+298;0;0;_;_;_
+295;488;1;ma;puerta corrediza placa 0.80 x 2.05 m;u
+295;138;1;ma;herrajes completos;u
+295;209;2,5;mo;oficial;h
+295;27;2,5;mo;ayudante;h
+293;489;1;ma;puerta corrediza 0.80 x 2.05m;u
+292;490;1;ma;puerta corrediza 1.10 x 2.05m;u
+297;491;1;ma;puerta ventana corrediza dos hojas 2.20 x 2.05m;u
+298;494;1;ma;puerta una hoja 1.10 x 2.20  m;u
+294;493;1;ma;puerta una hoja 0.90 x 2.05  m;u
+296;492;1;ma;puerta una hoja 0.70 x 2.05  m;u
+291;495;1;ma;portón plegadizo dos paños 2.60 x 2.20  m;u
+291;209;3;mo;oficial;h
+291;27;3;mo;ayudante;h
+292;138;1;ma;herrajes completos;u
+293;138;1;ma;herrajes completos;u
+292;27;2;mo;ayudante;h
+293;27;2;mo;ayudante;h
+293;209;2;mo;oficial;h
+292;209;2;mo;oficial;h
+297;209;2,5;mo;oficial;h
+297;27;2,5;mo;ayudante;h
+297;138;1;ma;herrajes completos;u
+296;138;1;ma;herrajes completos;u
+296;27;2;mo;ayudante;h
+296;209;2;mo;oficial;h
+294;138;1;ma;herrajes completos;u
+294;27;2;mo;ayudante;h
+294;209;2;mo;oficial;h
+298;138;1;ma;herrajes completos;u
+298;209;2;mo;oficial;h
+298;27;2;mo;ayudante;h
+285;138;1;ma;herrajes completos;u
+289;138;1;ma;herrajes completos;u
+284;138;1;ma;herrajes completos;u
+290;138;1;ma;herrajes completos;u
+288;138;1;ma;herrajes completos;u
+287;138;1;ma;herrajes completos;u
+286;138;1;ma;herrajes completos;u
+283;138;1;ma;herrajes completos;u
+285;209;2;mo;oficial;h
+289;209;2;mo;oficial;h
+284;209;2;mo;oficial;h
+290;209;2;mo;oficial;h
+288;209;2;mo;oficial;h
+287;209;2;mo;oficial;h
+286;209;2;mo;oficial;h
+283;209;2;mo;oficial;h
+285;27;2;mo;ayudante;h
+289;27;2;mo;ayudante;h
+284;27;2;mo;ayudante;h
+290;27;2;mo;ayudante;h
+288;27;2;mo;ayudante;h
+287;27;2;mo;ayudante;h
+286;27;2;mo;ayudante;h
+283;27;2;mo;ayudante;h
+285;496;1;ma;ventana gillotina 0.60 x 0.60 m;u
+289;497;1;ma;ventana gillotina 0.80 x 2.20 m;u
+284;498;1;ma;ventana gillotina 0.90 x 1.00 m;u
+290;499;1;ma;ventana gillotina 1.00 x 0.90 m;u
+288;500;1;ma;ventana gillotina 1.00 x 1.20 m;u
+287;501;1;ma;ventana gillotina 1.40 x 1.60 m;u
+286;502;1;ma;ventana gillotina 1.50 x 0.80 m;u
+283;503;1;ma;ventana gillotina 1.50 x 2.20 m;u
+299;0;0;_;_;_
+299;504;1;ma;ventana corrediza 2.40 x 2.20 m;u
+299;138;1;ma;herrajes completos;u
+299;209;2;mo;oficial;h
+299;27;2;mo;ayudante;h
+300;0;0;_;_;_
+300;505;1;ma;ventana desplaz 2.00 x 1.00 m;u
+300;138;1;ma;herrajes completos;u
+300;209;2;mo;oficial;h
+300;27;2;mo;ayudante;h
+301;0;0;_;_;_
+301;506;1;ma;ventana vidrio fijo 1.30 x 1.40 m;u
+301;209;2;mo;oficial;h
+301;27;2;mo;ayudante;h
+302;0;0;_;_;_
+302;16;1,2;ma;alambre negro Nº16;kg
+302;25;0,7;ma;arena gruesa;m3
+302;263;0,6;ma;ripio lavado 1:3;m3
+302;57;6,4;ma;cemento Portland x 50kg;bolsas
+302;27;22;mo;ayudante;h
+302;209;24;mo;oficial;h
+303;0;0;_;_;_
+303;25;0,7;ma;arena gruesa;m3
+303;16;2;ma;alambre negro Nº16;kg
+303;71;2;ma;"clavos 2""";kg
+303;263;0,6;ma;ripio lavado 1:3;m3
+303;57;5;ma;cemento Portland x 50kg;bolsas
+303;27;21;mo;ayudante;h
+303;209;23;mo;oficial;h
+304;0;0;_;_;_
+304;71;0,8;ma;"clavos 2""";kg
+304;25;0,7;ma;arena gruesa;m3
+304;16;0,8;ma;alambre negro Nº16;kg
+304;263;0,6;ma;ripio lavado 1:3;m3
+304;57;6;ma;cemento Portland x 50kg;bolsas
+304;27;20;mo;ayudante;h
+304;209;16;mo;oficial;h
+117;191;13;ma;mampost. de ladrillo cerámico portante 18x19x33;u
+305;0;0;_;_;_
+305;57;2,625;ma;cemento Portland x 50kg;bolsas
+305;25;0,45;ma;arena gruesa;m3
+305;219;0,9;ma;piedra bola;m3
+305;27;10;mo;ayudante;h
+305;209;2;mo;oficial;h
+306;0;0;_;_;_
+306;507;0,055;ma;cemento de albañilería x 40kg;bolsas
+306;25;0,012;ma;arena gruesa;m3
+306;161;30;ma;ladrillo común;u
+306;27;0,6;mo;ayudante;h
+306;209;0,85;mo;oficial;h
+307;0;0;_;_;_
+308;0;0;_;_;_
+309;0;0;_;_;_
+310;0;0;_;_;_
+311;0;0;_;_;_
+312;0;0;_;_;_
+307;46;0,292;ma;cal hidratada en bolsa;bolsas
+307;57;0,15;ma;cemento Portland x 50kg;bolsas
+307;24;0,035;ma;arena gruesa lavada;m3
+307;161;60;ma;ladrillo común;u
+307;27;7,1;mo;ayudante;h
+307;209;6,1;mo;oficial;h
+308;507;0,193;ma;cemento de albañilería x 40kg;bolsas
+308;24;0,043;ma;arena gruesa lavada;m3
+308;161;60;ma;ladrillo común;u
+308;209;6,1;mo;oficial;h
+308;27;7,1;mo;ayudante;h
+311;46;0,528;ma;cal hidratada en bolsa;bolsas
+311;57;0,138;ma;cemento Portland x 50kg;bolsas
+311;24;0,065;ma;arena gruesa lavada;m3
+311;209;6,1;mo;oficial;h
+312;507;0,273;ma;cemento de albañilería x 40kg;bolsas
+312;24;0,08;ma;arena gruesa lavada;m3
+312;162;60;ma;ladrillo común 0,20;u
+311;162;60;ma;ladrillo común 0,20;u
+311;27;7,1;mo;ayudante;h
+309;46;0,764;ma;cal hidratada en bolsa;bolsas
+312;209;6,1;mo;oficial;h
+312;27;7,1;mo;ayudante;h
+309;57;0,198;ma;cemento Portland x 50kg;bolsas
+309;24;0,09;ma;arena gruesa lavada;m3
+309;161;120;ma;ladrillo común;u
+309;27;2,2;mo;ayudante;h
+309;209;2,9;mo;oficial;h
+310;507;0,38;ma;cemento de albañilería x 40kg;bolsas
+310;24;0,115;ma;arena gruesa lavada;m3
+310;161;120;ma;ladrillo común;u
+310;27;7,1;mo;ayudante;h
+310;209;6,1;mo;oficial;h
+313;0;0;_;_;_
+313;507;0,07;ma;cemento de albañilería x 40kg;bolsas
+313;24;0,015;ma;arena gruesa lavada;m3
+313;190;15,5;ma;mampost. de ladrillo cerámico 8x18x33;u
+313;27;0,7;mo;ayudante;h
+313;209;0,95;mo;oficial;h
+314;0;0;_;_;_
+315;0;0;_;_;_
+314;507;0,063;ma;cemento de albañilería x 40kg;bolsas
+314;24;0,013;ma;arena gruesa lavada;m3
+314;189;13;ma;mampost. de ladrillo cerámico portante 12x19x33;u
+314;27;1,1;mo;ayudante;h
+314;209;1,7;mo;oficial;h
+315;507;0,075;ma;cemento de albañilería x 40kg;bolsas
+315;24;0,016;ma;arena gruesa lavada;m3
+315;191;13;ma;mampost. de ladrillo cerámico portante 18x19x33;u
+315;27;1,1;mo;ayudante;h
+315;209;1,7;mo;oficial;h
+316;0;0;_;_;_
+317;0;0;_;_;_
+318;0;0;_;_;_
+319;0;0;_;_;_
+316;46;0,3;ma;cal hidratada en bolsa;bolsas
+316;57;0,156;ma;cemento Portland x 50kg;bolsas
+316;24;0,036;ma;arena gruesa lavada;m3
+316;27;1,1;mo;ayudante;h
+316;209;1,7;mo;oficial;h
+319;507;0,21;ma;cemento de albañilería x 40kg;bolsas
+319;24;0,045;ma;arena gruesa lavada;m3
+319;209;1,7;mo;oficial;h
+319;27;1,1;mo;ayudante;h
+316;508;15,5;ma;mampost. de ladrillo cerámico tabique 18x18x33;u
+319;508;15,5;ma;mampost. de ladrillo cerámico tabique 18x18x33;u
+317;509;15,5;ma;mampost. de ladrillo cerámico tabique 12x18x33;u
+317;46;0,12;ma;cal hidratada en bolsa;bolsas
+317;57;0,063;ma;cemento Portland x 50kg;bolsas
+317;24;0,015;ma;arena gruesa lavada;m3
+317;209;1;mo;oficial;h
+317;27;0,8;mo;ayudante;h
+318;27;0,8;mo;ayudante;h
+318;209;1;mo;oficial;h
+318;509;15,5;ma;mampost. de ladrillo cerámico tabique 12x18x33;u
+318;24;0,015;ma;arena gruesa lavada;m3
+318;57;0,065;ma;cemento Portland x 50kg;bolsas
+117;24;0,015;ma;arena gruesa lavada;m3
+198;24;0,011;ma;arena gruesa lavada;m3
+198;41;13;ma;bloque de H° de 10 x 20 x 40;u
+198;27;0,45;mo;ayudante;h
+198;209;0,75;mo;oficial;h
+320;0;0;_;_;_
+321;0;0;_;_;_
+322;0;0;_;_;_
+322;524;1;ma;solera 70mm (largo:2.60m);u
+322;525;2;ma;montante 69mm (largo:2.60m);u
+322;529;4;ma;Tirafondo Zincado de 3/16 X 1.3/4;u
+322;528;4;ma;Tarugo Fisher Fijacion N°8;u
+323;0;0;_;_;_
+324;0;0;_;_;_
+324;375;1,05;ma;Placas Durlock 12.5 mm;m2
+324;527;15;ma;Tornillo T2  Aguja;u
+324;373;2;ma;cinta de papel Durlock;ml
+322;526;10;ma;Tornillo T1  Aguja;u
+325;0;0;_;_;_
+328;209;2;mo;oficial;h
+324;372;1;ma;masilla Durlock;kg
+324;27;0,7;mo;ayudante;h
+324;209;1,5;mo;oficial;h
+323;383;1,05;ma;Placas Durlock VERDE 12.5 mm;m2
+323;372;1;ma;masilla Durlock;kg
+323;373;2;ma;cinta de papel Durlock;ml
+323;527;15;ma;Tornillo T2  Aguja;u
+323;209;1,5;mo;oficial;h
+323;27;0,7;mo;ayudante;h
+325;428;10;ma;Tornillo Fix Madera  8 X 3 pulg;u
+325;313;6;ma;Tornillos Para Techo Autoperforantes Chapa A Madera 14 X 2 pulg;u
+325;316;1;ma;tyvek 1 x 30m;ml
+325;370;1;ma;"lana de vidrio de 2""";ml
+325;185;1;ma;"madera machimbrada pino 3/4""";m2
+326;0;0;_;_;_
+327;0;0;_;_;_
+326;530;1;ma;Griferías (baño tipo) global;gl
+327;531;1;ma;Griferías (baño toilette) global;gl
+326;532;1;ma;Instalacion sanitaria global (baño tipo);gl
+327;533;1;ma;Instalacion sanitaria global (baño toilette);gl
+328;0;0;_;_;_
+328;411;1,1;ma;Placa cementicia SUPERBOARD 15mm (1.20x2.40m);m2
+328;27;1;mo;ayudante;h
+322;27;1;mo;ayudante;h
+322;209;2;mo;oficial;h
+325;27;4;mo;ayudante;h
+199;27;4;mo;ayudante;h
+325;209;4;mo;oficial;h
+199;209;4;mo;oficial;h
+329;0;0;_;_;_
+34;27;1,6;mo;ayudante;h
+329;27;1,6;mo;ayudante;h
+329;209;1,6;mo;oficial;h
+329;534;1;ma;solera 35mm (largo:2.60m);u
+329;526;48;ma;Tornillo T1  Aguja;u
+330;0;0;_;_;_
+330;372;1;ma;masilla Durlock;kg
+330;373;2;ma;cinta de papel Durlock;ml
+330;527;15;ma;Tornillo T2  Aguja;u
+331;0;0;_;_;_
+330;535;1,05;ma;Placas Durlock 9 mm;m2
+330;209;1,5;mo;oficial;h
+330;27;0,7;mo;ayudante;h
+331;535;1,05;ma;Placas Durlock 9 mm;m2
+331;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+331;373;2;ma;cinta de papel Durlock;ml
+331;372;1;ma;masilla Durlock;kg
+331;27;0,7;mo;ayudante;h
+331;209;1,5;mo;oficial;h
+332;0;0;_;_;_
+332;535;1,05;ma;Placas Durlock 9 mm;m2
+332;374;15;ma;Tornillo T2 6x1 Punta mecha;u
+332;373;2;ma;cinta de papel Durlock;ml
+332;372;1;ma;masilla Durlock;kg
+332;27;0,9;mo;ayudante;h
+332;209;1,8;mo;oficial;h
+333;0;0;_;_;_
+333;57;1;ma;cemento Portland x 50kg;bolsas
+333;218;0,6;ma;perla de telgopor;m3
+333;25;0,14;ma;arena gruesa;m3
+333;209;2,5;mo;oficial;h
+333;27;7,5;mo;ayudante;h
+333;46;0,3;ma;cal hidratada en bolsa;bolsas
+334;0;0;_;_;_
+334;536;1;ma;Equipo de filtrado con casilla vulcano Vc-50 (p/pilleta nat.);gl
+334;209;40;mo;oficial;h
+335;0;0;_;_;_
+335;27;0,4;mo;ayudante;h
+335;209;0,6;mo;oficial;h
+335;537;0,084;ma;pintura para piletas x litro color;lts
+336;0;0;_;_;_
+337;0;0;_;_;_
+336;209;1,5;mo;oficial;h
+337;209;1,5;mo;oficial;h
+337;27;0,75;mo;ayudante;h
+336;27;0,75;mo;ayudante;h
+336;57;0,2;ma;cemento Portland x 50kg;bolsas
+336;25;0,03;ma;arena gruesa;m3
+336;139;0,7;ma;hidrófugo x litro;lts
+337;57;0,3;ma;cemento Portland x 50kg;bolsas
+337;25;0,045;ma;arena gruesa;m3
+337;139;1,05;ma;hidrófugo x litro;lts
+152;523;0;ma;.;.
+78;301;1;ma;Termotanque y artefactos;un
+152;0;0;_;_;_
+36;0;0;_;_;_
+62;0;0;_;_;_
+78;0;0;_;_;_
+36;0;0;_;_;_
+339;0;0;_;_;_
+340;0;0;_;_;_
+341;0;0;_;_;_
+340;523;0;ma;.;.
+203;27;5;mo;ayudante;h
+203;209;5,5;mo;oficial;h
+156;278;0,05;ma;STEEL PGC 200-1.24;ml
+342;577;1;ma;Instalacion sanitaria global 40-70m2;gl
+344;0;0;_;_;_
+344;578;1;ma;Instalacion gas global 40-70m2;gl
+345;0;0;_;_;_
+345;580;1;ma;ventana vidrio fijo 1.40 x 1.40 m;u
+345;27;2;mo;ayudante;h
+345;209;2;mo;oficial;h
+346;0;0;_;_;_
+347;0;0;_;_;_
+347;581;1;ma;ventana vidrio fijo 2.05 x 1.80 m;u
+347;27;2,5;mo;ayudante;h
+347;209;2,5;mo;oficial;h
+348;0;0;_;_;_
+202;13;1;ma;aislación térmica (lana de vidrio 50 mm);m2
+343;618;1;ma;Instalacion eléctrica global 50-70m2;gl
+381;0;0;_;_;_
+348;582;1;ma;ventana vidrio fijo 1.40 x 1.60 m;u
+348;27;2;mo;ayudante;h
+348;209;2;mo;oficial;h
+349;0;0;_;_;_
+349;583;1;ma;ventana desplaz 0.60 x 1.20 m;u
+349;27;2;mo;ayudante;h
+349;209;2;mo;oficial;h
+349;138;1;ma;herrajes completos;u
+350;0;0;_;_;_
+350;138;1;ma;herrajes completos;u
+350;584;1;ma;ventana desplaz 1.40 x 0.60 m;u
+350;27;2;mo;ayudante;h
+350;209;2;mo;oficial;h
+351;0;0;_;_;_
+351;585;1;ma;ventana corrediza 1.40 x 1.80m;u
+351;138;1;ma;herrajes completos;u
+351;27;2;mo;ayudante;h
+351;209;2;mo;oficial;h
+352;0;0;_;_;_
+352;586;1;ma;ventana gillotina 1.40 x 0.60 m;u
+352;138;1;ma;herrajes completos;u
+352;27;2;mo;ayudante;h
+352;209;2;mo;oficial;h
+353;0;0;_;_;_
+353;587;1;ma;ventana gillotina 1.60 x 0.50 m;u
+353;138;1;ma;herrajes completos;u
+353;27;2;mo;ayudante;h
+353;209;2;mo;oficial;h
+354;0;0;_;_;_
+354;588;1;ma;ventana banderola 0.40 x 1.40m;u
+354;138;1;ma;herrajes completos;u
+354;27;2;mo;ayudante;h
+354;209;2;mo;oficial;h
+253;27;0,4;mo;ayudante;h
+253;209;0,6;mo;oficial;h
+355;0;0;_;_;_
+355;269;1,6;ma;STEEL PGC 100-0.9;ml
+355;270;2,5;ma;STEEL PGC 150-0.9;ml
+355;274;1,5;ma;STEEL PGU 150-0.9;ml
+355;400;18;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+355;27;5;mo;ayudante;h
+355;209;5,5;mo;oficial;h
+356;0;0;_;_;_
+356;589;1;ma;ventana gillotina 1.00 x 0.60 m;u
+356;138;1;ma;herrajes completos;u
+356;27;2;mo;ayudante;h
+356;209;2;mo;oficial;h
+357;0;0;_;_;_
+357;590;1;ma;ventana gillotina 1.60 x 2.00 m;u
+357;138;1;ma;herrajes completos;u
+357;27;2;mo;ayudante;h
+357;209;2;mo;oficial;h
+358;0;0;_;_;_
+358;591;1;ma;ventana gillotina 1.60 x 0.70 m;u
+358;138;1;ma;herrajes completos;u
+358;27;2;mo;ayudante;h
+358;209;2;mo;oficial;h
+359;0;0;_;_;_
+359;592;1;ma;ventana gillotina 1.60 x 1.00 m;u
+359;138;1;ma;herrajes completos;u
+359;27;2;mo;ayudante;h
+359;209;2;mo;oficial;h
+360;0;0;_;_;_
+360;200;1,3;ma;material  de relleno;m3
+360;27;2,4;mo;ayudante;h
+361;0;0;_;_;_
+362;0;0;_;_;_
+363;0;0;_;_;_
+364;0;0;_;_;_
+365;0;0;_;_;_
+366;0;0;_;_;_
+367;0;0;_;_;_
+367;593;1;ma;puerta una hoja c/vidrio 0.75 x 2.05  m;u
+367;138;1;ma;herrajes completos;u
+367;27;2;mo;ayudante;h
+367;209;2;mo;oficial;h
+203;13;1;ma;aislación térmica (lana de vidrio 50 mm);m2
+368;0;0;_;_;_
+368;27;5;mo;ayudante;h
+368;209;5;mo;oficial;h
+368;11;1;ma;aislación térmica  (ISOLANT TBA 5 mm);ml
+369;0;0;_;_;_
+369;27;5;mo;ayudante;h
+369;209;5;mo;oficial;h
+369;10;1;ma;aislación térmica  (ISOLANT TBA 10 mm);ml
+363;523;0;ma;.;.
+361;523;0;ma;.;.
+370;0;0;_;_;_
+371;0;0;_;_;_
+371;598;1;ma;ventana corrediza 0.90 x 1.10m;u
+371;138;1;ma;herrajes completos;u
+371;27;2;mo;ayudante;h
+371;209;2;mo;oficial;h
+372;0;0;_;_;_
+372;138;1;ma;herrajes completos;u
+372;27;1;mo;ayudante;h
+372;209;1;mo;oficial;h
+372;599;1;ma;ventana banderola 0.50 x 0.50m;u
+370;600;3;ma;perfil galvanizado Omega (PGO) 12.5 x 0.90mm;ml
+370;602;30;ma;Tornillo Superboard 10 x 1 1/2” cabeza fresada punta mecha con alas- galvanizada;u
+370;603;1;ma;Masilla para exteriores SUPERBOARD;kg
+370;604;1;ma;Sellador elástico poliretánico;u
+373;0;0;_;_;_
+373;605;1,1;ma;Placa cementicia SUPERBOARD 8mm (1.20x2.40m);m2
+373;27;1;mo;ayudante;h
+373;209;2;mo;oficial;h
+158;13;1;ma;aislación térmica (lana de vidrio 50 mm);m2
+374;0;0;_;_;_
+374;27;1,5;mo;ayudante;h
+328;602;15;ma;Tornillo Superboard 10 x 1 1/2” cabeza fresada punta mecha con alas- galvanizada;u
+370;27;1;mo;ayudante;h
+374;209;2,3;mo;oficial;h
+374;24;0,02;ma;arena gruesa lavada;m3
+374;46;0,144;ma;cal hidratada en bolsa;bolsas
+374;57;0,037;ma;cemento Portland x 50kg;bolsas
+374;139;0,15;ma;hidrófugo x litro;lts
+40;263;0,12;ma;ripio lavado 1:3;m3
+375;0;0;_;_;_
+375;607;1,1;ma;Venecitas 30 x 30 cm;m2
+375;216;0,1;ma;pastina p/ceramicos color;kg
+375;27;0,6;mo;ayudante;h
+375;209;1,3;mo;oficial;h
+339;523;0;ma;.;.
+373;601;15;ma;Tornillo Superboard 8 x 1 1/4” autoperforante- autofresante punta mecha galv.;u
+375;606;2;ma;adhesivo Para Venecitas X 30 Kg;kg
+376;0;0;_;_;_
+377;0;0;_;_;_
+376;605;1,1;ma;Placa cementicia SUPERBOARD 8mm (1.20x2.40m);m2
+376;601;15;ma;Tornillo Superboard 8 x 1 1/4” autoperforante- autofresante punta mecha galv.;u
+376;603;0,7;ma;Masilla para exteriores SUPERBOARD;kg
+376;27;1;mo;ayudante;h
+376;209;2;mo;oficial;h
+377;411;1,1;ma;Placa cementicia SUPERBOARD 15mm (1.20x2.40m);m2
+377;602;15;ma;Tornillo Superboard 10 x 1 1/2” cabeza fresada punta mecha con alas- galvanizada;u
+377;27;1;mo;ayudante;h
+377;209;2;mo;oficial;h
+377;603;0,7;ma;Masilla para exteriores SUPERBOARD;kg
+378;0;0;_;_;_
+378;603;0,07;ma;Masilla para exteriores SUPERBOARD;kg
+378;27;1;mo;ayudante;h
+378;209;2;mo;oficial;h
+378;527;15;ma;Tornillo T2  Aguja;u
+370;527;15;ma;Tornillo T2  Aguja;u
+370;209;2;mo;oficial;h
+252;615;58,45;ma;Caño Estructural 50-50-2 (6m);ml
+378;597;1,1;ma;Placa SIDING cementicia SUPERBOARD 8mm (0.20x2.44m);m2
+370;597;1,1;ma;Placa SIDING cementicia SUPERBOARD 8mm (0.20x2.44m);m2
+248;523;1;ma;.;.
+379;524;1;ma;solera 70mm (largo:2.60m);u
+379;452;4;ma;Tornillo T3 Punta Mecha  6 X 1 1/2 pulg;u
+379;27;1;mo;ayudante;h
+379;209;2;mo;oficial;h
+379;526;10;ma;Tornillo T1  Aguja;u
+58;617;0,006;ma;arena fina;m3
+40;25;0,077;ma;arena gruesa;m3
+31;617;0,006;ma;arena fina;m3
+380;0;0;_;_;_
+380;576;1;ma;Instalacion eléctrica global 40-50m2;gl
+381;619;1;ma;Escalera caracol (metálica);u
+381;27;8;mo;ayudante;h
+381;209;10;mo;oficial;h
+272;27;80;mo;ayudante;h
+272;209;80;mo;oficial;h
+382;0;0;_;_;_
+383;0;0;_;_;_
+382;620;1,1;ma;Placa cementicia SUPERBOARD 10mm (1.20x2.40m);m2
+383;620;1,1;ma;Placa cementicia SUPERBOARD 10mm (1.20x2.40m);m2
+382;602;15;ma;Tornillo Superboard 10 x 1 1/2” cabeza fresada punta mecha con alas- galvanizada;u
+383;602;15;ma;Tornillo Superboard 10 x 1 1/2” cabeza fresada punta mecha con alas- galvanizada;u
+382;27;1;mo;ayudante;h
+382;209;2;mo;oficial;h
+383;209;2;mo;oficial;h
+383;27;1;mo;ayudante;h
+383;603;0,7;ma;Masilla para exteriores SUPERBOARD;kg
+384;0;0;_;_;_
+384;57;18;ma;cemento Portland x 50kg;bolsas
+384;25;5;ma;arena gruesa;m3
+384;425;12;ma;malla Sima 15x25 (4mm);m2
+384;263;0,5;ma;ripio lavado 1:3;m3
+384;621;18;ma;camión cisterna;m3
+232;622;13;ma;bloque de H° de 14 x 20 x 40;u
+385;0;0;_;_;_
+385;27;9,5;mo;ayudante;h
+385;209;9,5;mo;oficial;h
+385;623;1;ma;portón levadizos 2.40 x 2.05  m;u
+386;0;0;_;_;_
+386;27;4;mo;ayudante;h
+386;209;4;mo;oficial;h
+386;523;1;ma;.;.
+387;0;0;_;_;_
+387;27;2;mo;ayudante;h
+387;209;2;mo;oficial;h
+387;624;1,1;ma;Durmiente madera (ml);ml
+387;142;1,5;ma;Hierro redondo aletado (ø 10mm Long 12m) (Por barra);u
+388;0;0;_;_;_
+388;209;6;mo;oficial;h
+388;27;6;mo;ayudante;h
+388;625;1,1;ma;Vidrio Templado 10mm. Incoloro;m2
+389;0;0;_;_;_
+389;626;1;ma;Equipo Filtrado Gabinete - 40000 lts - Bomba Vulcano;u
+389;27;10;mo;ayudante;h
+389;209;12;mo;oficial;h
+390;0;0;_;_;_
+390;216;0,1;ma;pastina p/ceramicos color;kg
+390;4;4;ma;adhesivo p/piso cerámico;kg
+390;487;1,05;ma;Porcelanato Pulido Beige 60x60 - Rectificado;m2
+390;27;1,3;mo;ayudante;h
+390;209;2,5;mo;oficial;h
+391;0;0;_;_;_
+391;523;1;ma;.;.
+392;0;0;_;_;_
+392;523;1;ma;.;.
+391;209;2;mo;oficial;h
+391;27;2;mo;ayudante;h
+392;27;2;mo;ayudante;h
+392;209;2;mo;oficial;h
+393;0;0;_;_;_
+393;631;1;ma;Máquina excavadora;m3
+394;0;0;_;_;_
+394;233;1,5;ma;pintura asfáltica base acuosa (Ormiflex1 o similar);lts
+394;27;0,6;mo;ayudante;h
+395;0;0;_;_;_
+395;27;0,6;mo;ayudante;h
+395;209;0,6;mo;oficial;h
+395;233;1,5;ma;pintura asfáltica base acuosa (Ormiflex1 o similar);lts
+394;209;0,6;mo;oficial;h
+396;0;0;_;_;_
+396;209;2;mo;oficial;h
+396;27;2;mo;ayudante;h
+396;138;1;ma;herrajes completos;u
+396;646;1;ma;ventana corrediza 0.60 x 1.00m;u
+397;0;0;_;_;_
+397;647;1;ma;ventana corrediza 1.50 x 1.80m;u
+397;138;1;ma;herrajes completos;u
+397;27;2;mo;ayudante;h
+397;209;2;mo;oficial;h
+398;0;0;_;_;_
+398;648;1;ma;ventana corrediza 1.50 x 1.50m;u
+398;138;1;ma;herrajes completos;u
+398;27;2;mo;ayudante;h
+398;209;2;mo;oficial;h
+399;0;0;_;_;_
+399;649;1;ma;ventana abrir 1.00 x 0.60m;u
+399;138;1;ma;herrajes completos;u
+399;27;2;mo;ayudante;h
+399;209;2;mo;oficial;h
+400;0;0;_;_;_
+400;209;1,5;mo;oficial;h
+400;27;0,75;mo;ayudante;h
+400;650;1,1;ma;Piso Goma Altro Transito Comercial Ignifugo 2.5mm;m2
+400;651;0,37;ma;Adhesivo Doble Contacto p/ Pisos De Goma y Vinilicos;lt
+401;0;0;_;_;_
+401;652;1,1;ma;Zinguería desarrollo 40cm chapa n24 x ml (GL);ml
+401;209;1;mo;oficial;h
+402;0;0;_;_;_
+402;523;0;ma;.;.
+403;0;0;_;_;_
+403;270;4,5;ma;STEEL PGC 150-0.9;ml
+403;278;0,05;ma;STEEL PGC 200-1.24;ml
+403;274;1,7;ma;STEEL PGU 150-0.9;ml
+403;401;1,7;ma;Tornillo Hexagonal mecha 10 x 3/4 pulg;u
+403;400;16;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+403;27;5;mo;ayudante;h
+403;209;5,5;mo;oficial;h
+404;0;0;_;_;_
+405;0;0;_;_;_
+406;0;0;_;_;_
+404;16;0,2;ma;alambre negro Nº16;kg
+404;25;0,07;ma;arena gruesa;m3
+404;43;8;ma;bovedilla cerámica 12,5x40x25;u
+404;57;0,56;ma;cemento Portland x 50kg;bolsas
+404;71;0,1;ma;"clavos 2""";kg
+404;426;1,1;ma;malla Sima 15x25 (6mm);m2
+404;263;0,06;ma;ripio lavado 1:3;m3
+404;27;4,1;mo;ayudante;h
+404;209;5,1;mo;oficial;h
+405;16;0,2;ma;alambre negro Nº16;kg
+405;25;0,08;ma;arena gruesa;m3
+405;44;8;ma;bovedilla ceramica 16,5x40x25;u
+405;57;0,62;ma;cemento Portland x 50kg;bolsas
+405;71;0,1;ma;"clavos 2""";kg
+405;426;1,1;ma;malla Sima 15x25 (6mm);m2
+405;263;0,07;ma;ripio lavado 1:3;m3
+405;27;4,2;mo;ayudante;h
+405;209;5,2;mo;oficial;h
+406;16;0,2;ma;alambre negro Nº16;kg
+406;25;0,06;ma;arena gruesa;m3
+406;45;8;ma;bovedilla cerámica 9,5x40x25;u
+406;57;0,48;ma;cemento Portland x 50kg;bolsas
+406;71;0,1;ma;"clavos 2""";kg
+406;426;1,1;ma;malla Sima 15x25 (6mm);m2
+406;263;0,05;ma;ripio lavado 1:3;m3
+406;27;4;mo;ayudante;h
+406;209;5;mo;oficial;h
+407;0;0;_;_;_
+407;1;1;ma;abrasivos y pastas;gl
+408;0;0;_;_;_
+408;27;1;mo;ayudante;h
+408;209;0,2;mo;oficial;h
+408;668;1,1;ma;EPS 50 mm;m2
+408;669;5;ma;EPS fijaciones;u
+409;0;0;_;_;_
+409;670;1,1;ma;EPS 30 mm;m2
+409;669;5;ma;EPS fijaciones;u
+409;27;1;mo;ayudante;h
+409;209;0,2;mo;oficial;h
+410;0;0;_;_;_
+410;278;4,5;ma;STEEL PGC 200-1.24;ml
+410;275;1,7;ma;STEEL PGU 200-1.24;ml
+410;401;1,7;ma;Tornillo Hexagonal mecha 10 x 3/4 pulg;u
+410;400;16;ma;Tornillo T1 Punta Mecha 8 X 3/4 pulg;u
+410;27;5;mo;ayudante;h
+410;209;5;mo;oficial;h

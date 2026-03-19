@@ -35,6 +35,8 @@ export function ComputoCreate(arg1:string,arg2:number,arg3:string):Promise<dto.C
 
 export function ComputoCreateNewVersionFrom(arg1:string):Promise<dto.ComputoCreateResultDTO>;
 
+export function ComputoDeleteSeries(arg1:string):Promise<void>;
+
 export function ComputoGet(arg1:string):Promise<dto.ComputoGetDTO>;
 
 export function ComputoList():Promise<Array<dto.ComputoListRowDTO>>;
@@ -45,19 +47,25 @@ export function ComputoRubroItemsSetCantidad(arg1:string,arg2:number):Promise<vo
 
 export function ComputoRubroItemsTrash(arg1:string):Promise<void>;
 
+export function ComputoRubroTrashEmpty(arg1:string):Promise<void>;
+
 export function ComputoRubroTrashList(arg1:string):Promise<Array<dto.ComputoRubroItemTrashedDTO>>;
 
 export function ComputoRubroTrashRestore(arg1:string):Promise<void>;
 
 export function ComputoRubrosAdd(arg1:string,arg2:string):Promise<string>;
 
+export function ComputoRubrosDelete(arg1:string):Promise<void>;
+
 export function ComputoRubrosReorder(arg1:string,arg2:Array<string>):Promise<void>;
+
+export function ComputoSetComitenteDescripcion(arg1:string,arg2:string):Promise<void>;
 
 export function ComputoSetSuperficie(arg1:string,arg2:number):Promise<void>;
 
 export function DB():Promise<sql.DB>;
 
-export function ExportComputoCSVAndSave(arg1:string):Promise<void>;
+export function ExportComputoCSVAndSave(arg1:string,arg2:Array<string>):Promise<void>;
 
 export function Greet(arg1:string):Promise<string>;
 

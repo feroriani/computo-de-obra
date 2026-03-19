@@ -29,8 +29,26 @@ alwaysApply: false
 
 ## Scroll y performance (Wails/WebView)
 
-- **Layout base**: en `src/app/App.tsx` usar contenedor raíz `flex flex-col h-screen` y `<main className="flex-1 min-h-0 overflow-auto">` para que `flex-1` tenga altura real (evita recortes de paginadores/footers).
+- **Layout base**: en `src/app/App.tsx` usar contenedor raíz `flex flex-col h-screen overflow-hidden` y `<main className="flex-1 min-h-0 overflow-hidden">` para **evitar scroll global**. Cada pantalla define su(s) scroll(s) internos.
 - **Evitar `h-screen` anidado**: dentro de páginas renderizadas en `<main>`, preferir `h-full min-h-0` (no `h-screen`) para no “competir” con el header global.
 - **Scroll interno**: si hay listado + paginación visible, usar `flex` + `min-h-0` y dejar `overflow-y-auto` **solo** en el contenedor de filas/lista.
 - **Inputs en WebView**: si tipear se siente “trabado”, evitar `value/onChange` que actualice estado por tecla; preferir input **uncontrolled** + botón “Buscar” (submit) para disparar consultas.
 - **CSS caro**: `position: sticky` en tablas y sombras (`box-shadow`) en headers pueden causar jank en WebViews; preferir headers fuera del área scroll y `border-b` en vez de sombras.
+
+## Regla de diseño: Bloques de listados
+
+- **Objetivo**: cada listado debe vivir dentro de un panel con **header fijo** y **body scrolleable**, evitando scroll “envolvente” del page completo.
+- **Componente estándar**: usar `src/components/ListadoPanel.tsx` + `src/components/ScrollArea.tsx`.
+- **Patrón**:
+  - **Panel**: `ListadoPanel` (flex column, `min-h-0`).
+  - **Body scroll**: `ScrollArea` como único `overflow-y-auto` del bloque.
+  - **Horizontal**: para tablas, envolver con `div.overflow-x-auto` dentro del `ScrollArea`.
+- **Importante**: no usar `overflow-auto` en el contenedor de página; el scroll debe estar **solo** en `ScrollArea` de cada bloque (Rubros, Ítems, Listados, Catálogos, etc.).
+
+## Inputs y selects (claro / oscuro)
+
+- **Selects/inputs visibles (filtros y controles de pantalla):** deben usar una misma base de estilos para que el fondo no “salte” entre componentes y el modo oscuro quede consistente.
+- **Clase base recomendada para `<select>` (y aplicar también a `<input>` cuando aplique):**
+  - `rounded border border-slate-300 bg-white px-2 py-1 text-sm text-slate-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary [color-scheme:light] dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:[color-scheme:dark]`
+- **Disabled:** agregar `disabled:opacity-70` (y opcionalmente `cursor-not-allowed` si aplica).
+- **No usar estilos “propios”** como `focus:border-emerald-500` o variantes con clases distintas en los select de filtros: mantener consistencia con los selects ya correctos del proyecto.

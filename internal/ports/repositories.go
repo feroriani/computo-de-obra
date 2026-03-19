@@ -101,10 +101,14 @@ type ComputoRepository interface {
 	List(ctx context.Context) ([]ComputoListRow, error)
 	Create(ctx context.Context, in ComputoCreateInput) (*ComputoVersionRow, error)
 	GetHeader(ctx context.Context, versionID string) (*ComputoHeader, error)
+	UpdateDescripcion(ctx context.Context, versionID string, descripcion string) error
 	UpdateSuperficie(ctx context.Context, versionID string, superficieMilli int64) error
 	Confirm(ctx context.Context, versionID string, totalMaterial, totalMO, totalCentavos, costoM2 int64, rubros []SnapshotRubroData) error
 	GetSnapshotForVersion(ctx context.Context, versionID string) ([]SnapshotRubroWithLineas, error)
 	CreateNewVersionFrom(ctx context.Context, versionIDConfirmado string) (*ComputoVersionRow, error)
+	// DeleteSeries deletes a full computo series (CO-xxxx) and all its related data.
+	// It must break the `parent_version_id` FK (which has RESTRICT) before deleting versions.
+	DeleteSeries(ctx context.Context, seriesID string) error
 }
 
 // ComputoRubroRow is a rubro assigned to a computo version (for editor).
@@ -137,6 +141,9 @@ type ComputoRubroRepository interface {
 	ListByVersion(ctx context.Context, versionID string) ([]ComputoRubroRow, error)
 	Add(ctx context.Context, versionID, rubroID string) (computoRubroID string, err error)
 	Reorder(ctx context.Context, versionID string, computoRubroIDs []string) error
+	// Delete removes a computo_rubro from a draft version if it has no items (active or trashed).
+	// It should return a clear error if the version is not borrador or if there are related items.
+	Delete(ctx context.Context, computoRubroID string) error
 }
 
 // ComputoRubroItemRow is an item in a computo rubro (cantidad, item info).
@@ -165,6 +172,9 @@ type ComputoRubroItemRepository interface {
 	SetCantidad(ctx context.Context, computoRubroItemID string, cantidadMilli int64) error
 	Trash(ctx context.Context, computoRubroItemID string) error
 	Restore(ctx context.Context, computoRubroItemID string) error
+	// PurgeTrashedByComputoRubro permanently deletes trashed items (deleted_at IS NOT NULL)
+	// for the given computo rubro.
+	PurgeTrashedByComputoRubro(ctx context.Context, computoRubroID string) error
 }
 
 // ItemUnitCosts returns material and MO cost per unit of item (in centavos).

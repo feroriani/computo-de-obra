@@ -48,7 +48,7 @@ description: Applies project conventions and technical decisions for the Computo
 ## Fuente de verdad
 
 - **ROADMAP.md:** pasos a seguir, contrato API, entidades y flujo. Actualizar cuando se avance o se cambien decisiones.
-- **Esquema SQL:** `internal/infra/sqlite/migrations/*.sql`. Migraciones seed: **0004** rubros, **0005** ítems (`genitems`), **0006** mano de obra (`MANODEOBRA.txt`, pesos→centavos, id `…-6000-…`). Regenerar: `go run ./internal/infra/sqlite/cmd/genmanoobra`.
+- **Esquema SQL:** `internal/infra/sqlite/migrations/*.sql`. Seeds desde `docs/`: **0005** ítems, **0006** mano de obra, **0007** materiales, **0008** composición ítems (ignora separadores con `_` y ids 0; `dosaje` → `dosaje_milli`). Regenerar: `go run ./internal/infra/sqlite/cmd/genitems`, `genmanoobra`, `genmateriales`, `gencomposiciones`.
 - **Contrato API y DTOs:** ROADMAP sección 2 + `internal/app/dto/dto.go`.
 
 ## Actualizar esta skill

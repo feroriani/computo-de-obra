@@ -1,4 +1,4 @@
-// genitems reads ITEMS_.txt from repo root and writes 0005_seed_items_catalog.sql.
+// genitems reads docs/ITEMS_.txt and writes 0005_seed_items_catalog.sql.
 // Run from repo root: go run ./internal/infra/sqlite/cmd/genitems
 package main
 
@@ -13,7 +13,7 @@ import (
 
 func main() {
 	root := findRoot()
-	itemsPath := filepath.Join(root, "ITEMS_.txt")
+	itemsPath := filepath.Join(root, "docs", "ITEMS_.txt")
 	outPath := filepath.Join(root, "internal/infra/sqlite/migrations/0005_seed_items_catalog.sql")
 
 	f, err := os.Open(itemsPath)
@@ -30,7 +30,7 @@ func main() {
 	}
 	defer out.Close()
 
-	fmt.Fprintf(out, "-- Catálogo inicial de ítems (ITEMS_.txt). IDs fijos 00000000-0000-5000-8000-{codigo hex}.\n\n")
+	fmt.Fprintf(out, "-- Catálogo inicial de ítems (docs/ITEMS_.txt). id = código numérico del archivo.\n\n")
 
 	sc := bufio.NewScanner(f)
 	buf := make([]byte, 0, 64*1024)
@@ -55,7 +55,7 @@ func main() {
 		}
 		tarea := strings.TrimSpace(parts[1])
 		unidad := strings.TrimSpace(parts[2])
-		id := fmt.Sprintf("00000000-0000-5000-8000-%012x", idNum)
+		id := strconv.Itoa(idNum)
 		fmt.Fprintf(out, "INSERT OR IGNORE INTO item (id, tarea, unidad, created_at, updated_at) VALUES ('%s', '%s', '%s', '2025-03-17T00:00:00Z', '2025-03-17T00:00:00Z');\n",
 			id, sqlQuote(tarea), sqlQuote(unidad))
 		n++
