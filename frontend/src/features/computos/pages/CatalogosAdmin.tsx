@@ -7,7 +7,18 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  Plus,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  Edit,
+  Trash2,
+  X,
+  Settings2,
+} from "lucide-react";
+import { ToolButton } from "../../../components/ToolButton";
 import { ScrollArea } from "../../../components/ScrollArea";
 import {
   useReactTable,
@@ -136,22 +147,20 @@ function CatalogPaginationBar({
           : `${total} registro${total !== 1 ? "s" : ""} · Página ${page} de ${totalPages}`}
       </span>
       <div className="flex gap-2">
-        <button
-          type="button"
-          disabled={!canPrev || loading}
+        <ToolButton
+          icon={ChevronLeft}
+          label="Anterior"
           onClick={onPrev}
-          className="rounded border border-slate-300 px-3 py-1.5 text-slate-700 hover:bg-slate-50 disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
-        >
-          Anterior
-        </button>
-        <button
-          type="button"
-          disabled={!canNext || loading}
+          disabled={!canPrev || loading}
+          variant="secondary"
+        />
+        <ToolButton
+          icon={ChevronRight}
+          label="Siguiente"
           onClick={onNext}
-          className="rounded border border-slate-300 px-3 py-1.5 text-slate-700 hover:bg-slate-50 disabled:opacity-40 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
-        >
-          Siguiente
-        </button>
+          disabled={!canNext || loading}
+          variant="secondary"
+        />
       </div>
     </div>
   );
@@ -244,6 +253,7 @@ const searchButtonClass =
   "rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50 dark:bg-teal-600 dark:hover:bg-teal-700";
 
 export function CatalogosAdmin() {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<TabId>("rubros");
   const [error, setError] = useState("");
 
@@ -529,13 +539,14 @@ export function CatalogosAdmin() {
       <div className="flex h-full min-h-0 w-full flex-col">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link
-              to="/"
-              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
-              aria-label="Volver"
-            >
-              ← Volver
-            </Link>
+            <ToolButton
+              icon={ChevronLeft}
+              label="Volver"
+              onClick={() => navigate("/")}
+              variant="ghost"
+              showLabel
+              className="!px-0 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+            />
             <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100">
               Catálogos globales
             </h1>
@@ -589,9 +600,14 @@ export function CatalogosAdmin() {
                     if (e.key === "Escape") (e.currentTarget as HTMLInputElement).blur();
                   }}
                 />
-                <button type="submit" className={searchButtonClass} disabled={rubrosPg.loading}>
-                  Buscar
-                </button>
+                <ToolButton
+                  icon={Search}
+                  label="Buscar"
+                  type="submit"
+                  disabled={rubrosPg.loading}
+                  variant="primary"
+                  className="bg-emerald-600 hover:bg-emerald-700 dark:bg-teal-600 dark:hover:bg-teal-700"
+                />
               </form>
               <div className="min-h-0 flex-1">
               <RubrosTab
@@ -695,15 +711,13 @@ export function CatalogosAdmin() {
                     </select>
                   </label>
                   {selectedComputoVersionId && (
-                    <button
-                      type="button"
+                    <ToolButton
+                      icon={X}
+                      label="Quitar filtro"
                       onClick={() => setSelectedComputoVersionId(null)}
-                      className="rounded border border-slate-300 px-2 py-1 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
-                      aria-label="Quitar filtro por cómputo"
-                      title="Quitar filtro"
-                    >
-                      X
-                    </button>
+                      variant="ghost"
+                      className="h-8 w-8 !p-0 text-slate-700 dark:text-slate-200"
+                    />
                   )}
                 </div>
               </div>
@@ -846,15 +860,13 @@ export function CatalogosAdmin() {
                     </select>
                   </label>
                   {selectedComputoVersionId && (
-                    <button
-                      type="button"
+                    <ToolButton
+                      icon={X}
+                      label="Quitar filtro"
                       onClick={() => setSelectedComputoVersionId(null)}
-                      className="rounded border border-slate-300 px-2 py-1 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
-                      aria-label="Quitar filtro por cómputo"
-                      title="Quitar filtro"
-                    >
-                      X
-                    </button>
+                      variant="ghost"
+                      className="h-8 w-8 !p-0 text-slate-700 dark:text-slate-200"
+                    />
                   )}
                 </div>
               </div>
@@ -1141,17 +1153,17 @@ function RubrosTab({
         cell: ({ row }: { row: Row<RubroCatalogItemDTO> }) => {
           const r = row.original;
           return (
-            <div className="text-right">
-              <button
-                type="button"
+            <div className="flex justify-end gap-1">
+              <ToolButton
+                icon={Edit}
+                label="Editar"
                 onClick={() => onEdit(r)}
-                className="text-emerald-600 hover:underline dark:text-teal-400"
-              >
-                Editar
-              </button>
-              {" · "}
-              <button
-                type="button"
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-emerald-600 dark:text-teal-400"
+              />
+              <ToolButton
+                icon={Trash2}
+                label="Eliminar"
                 onClick={async () => {
                   if (!confirm("¿Eliminar este rubro?")) return;
                   setDeleting(r.id);
@@ -1159,10 +1171,9 @@ function RubrosTab({
                   setDeleting(null);
                 }}
                 disabled={deleting === r.id}
-                className="text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
-              >
-                Eliminar
-              </button>
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-red-600 dark:text-red-400"
+              />
             </div>
           );
         },
@@ -1183,13 +1194,14 @@ function RubrosTab({
   return (
     <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white shadow dark:border-slate-700 dark:bg-slate-800">
       <div className="flex justify-end border-b border-slate-200 p-3 dark:border-slate-700">
-        <button
-          type="button"
+        <ToolButton
+          icon={Plus}
+          label="Nuevo rubro"
           onClick={onAdd}
-          className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700 dark:bg-teal-600 dark:hover:bg-teal-700"
-        >
-          Nuevo rubro
-        </button>
+          variant="primary"
+          showLabel
+          className="bg-emerald-600 hover:bg-emerald-700 dark:bg-teal-600 dark:hover:bg-teal-700"
+        />
       </div>
       {!loading && items.length === 0 ? (
         <p className="p-6 text-center text-slate-500 dark:text-slate-400">{emptyHint}</p>
@@ -1275,16 +1287,16 @@ function MaterialesTab({
           const m = row.original;
           return (
             <div className="text-right">
-              <button
-                type="button"
+              <ToolButton
+                icon={Edit}
+                label="Editar"
                 onClick={() => onEdit(m)}
-                className="text-emerald-600 hover:underline dark:text-teal-400"
-              >
-                Editar
-              </button>
-              {" · "}
-              <button
-                type="button"
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-emerald-600 dark:text-teal-400"
+              />
+              <ToolButton
+                icon={Trash2}
+                label="Eliminar"
                 onClick={async () => {
                   if (!confirm("¿Eliminar este componente?")) return;
                   setDeleting(m.id);
@@ -1292,10 +1304,9 @@ function MaterialesTab({
                   setDeleting(null);
                 }}
                 disabled={deleting === m.id}
-                className="text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
-              >
-                Eliminar
-              </button>
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-red-600 dark:text-red-400"
+              />
             </div>
           );
         },
@@ -1407,16 +1418,16 @@ function ManoObraTab({
           const m = row.original;
           return (
             <div className="text-right">
-              <button
-                type="button"
+              <ToolButton
+                icon={Edit}
+                label="Editar"
                 onClick={() => onEdit(m)}
-                className="text-emerald-600 hover:underline dark:text-teal-400"
-              >
-                Editar
-              </button>
-              {" · "}
-              <button
-                type="button"
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-emerald-600 dark:text-teal-400"
+              />
+              <ToolButton
+                icon={Trash2}
+                label="Eliminar"
                 onClick={async () => {
                   if (!confirm("¿Eliminar este componente?")) return;
                   setDeleting(m.id);
@@ -1424,10 +1435,9 @@ function ManoObraTab({
                   setDeleting(null);
                 }}
                 disabled={deleting === m.id}
-                className="text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
-              >
-                Eliminar
-              </button>
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-red-600 dark:text-red-400"
+              />
             </div>
           );
         },
@@ -1532,25 +1542,24 @@ function ItemsTab({
         cell: ({ row }: { row: Row<ItemCatalogItemDTO> }) => {
           const i = row.original;
           return (
-            <div className="text-right">
-              <button
-                type="button"
+            <div className="flex justify-end gap-1">
+              <ToolButton
+                icon={Settings2}
+                label="Composición"
                 onClick={() => onComposicion(i)}
-                className="text-slate-600 hover:underline dark:text-slate-400 dark:hover:text-slate-200"
-              >
-                Composición
-              </button>
-              {" · "}
-              <button
-                type="button"
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-slate-600 dark:text-slate-400"
+              />
+              <ToolButton
+                icon={Edit}
+                label="Editar"
                 onClick={() => onEdit(i)}
-                className="text-emerald-600 hover:underline dark:text-teal-400"
-              >
-                Editar
-              </button>
-              {" · "}
-              <button
-                type="button"
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-emerald-600 dark:text-teal-400"
+              />
+              <ToolButton
+                icon={Trash2}
+                label="Eliminar"
                 onClick={async () => {
                   if (!confirm("¿Eliminar este ítem?")) return;
                   setDeleting(i.id);
@@ -1558,10 +1567,9 @@ function ItemsTab({
                   setDeleting(null);
                 }}
                 disabled={deleting === i.id}
-                className="text-red-600 hover:underline disabled:opacity-50 dark:text-red-400"
-              >
-                Eliminar
-              </button>
+                variant="ghost"
+                className="h-8 w-8 !p-0 text-red-600 dark:text-red-400"
+              />
             </div>
           );
         },
@@ -1582,13 +1590,14 @@ function ItemsTab({
   return (
     <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white shadow dark:border-slate-700 dark:bg-slate-800">
       <div className="flex justify-end border-b border-slate-200 p-3 dark:border-slate-700">
-        <button
-          type="button"
+        <ToolButton
+          icon={Plus}
+          label="Nuevo ítem"
           onClick={onAdd}
-          className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700 dark:bg-teal-600 dark:hover:bg-teal-700"
-        >
-          Nuevo ítem
-        </button>
+          variant="primary"
+          showLabel
+          className="bg-emerald-600 hover:bg-emerald-700 dark:bg-teal-600 dark:hover:bg-teal-700"
+        />
       </div>
       {!loading && items.length === 0 ? (
         <p className="p-6 text-center text-slate-500 dark:text-slate-400">{emptyHint}</p>
@@ -2053,16 +2062,16 @@ function ComposicionModal({
                       )}
                     </td>
                     <td className="px-3 py-1.5">
-                      <button
-                        type="button"
+                      <ToolButton
+                        icon={Trash2}
+                        label="Quitar"
                         onClick={async () => {
                           await onDeleteMaterial(item.id, row.componente_id);
                           onRefresh();
                         }}
-                        className="text-red-600 hover:underline text-xs dark:text-red-400"
-                      >
-                        Quitar
-                      </button>
+                        variant="ghost"
+                        className="h-7 w-7 !p-0 text-red-600 dark:text-red-400"
+                      />
                     </td>
                   </tr>
                 ))}
@@ -2089,13 +2098,13 @@ function ComposicionModal({
                   placeholder="Dosaje"
                   className="w-24 rounded border border-slate-300 px-2 py-1 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400"
                 />
-                <button
-                  type="button"
+                <ToolButton
+                  icon={Plus}
+                  label="Agregar"
                   onClick={handleAddMaterial}
-                  className="rounded bg-slate-200 px-2 py-1 text-sm hover:bg-slate-300 dark:bg-slate-600 dark:text-slate-100 dark:hover:bg-slate-500"
-                >
-                  Agregar
-                </button>
+                  variant="secondary"
+                  className="bg-slate-200 hover:bg-slate-300 dark:bg-slate-600 dark:text-slate-100 dark:hover:bg-slate-500"
+                />
               </div>
             )}
           </section>
@@ -2147,16 +2156,16 @@ function ComposicionModal({
                       )}
                     </td>
                     <td className="px-3 py-1.5">
-                      <button
-                        type="button"
+                      <ToolButton
+                        icon={Trash2}
+                        label="Quitar"
                         onClick={async () => {
                           await onDeleteManoObra(item.id, row.componente_id);
                           onRefresh();
                         }}
-                        className="text-red-600 hover:underline text-xs dark:text-red-400"
-                      >
-                        Quitar
-                      </button>
+                        variant="ghost"
+                        className="h-7 w-7 !p-0 text-red-600 dark:text-red-400"
+                      />
                     </td>
                   </tr>
                 ))}
@@ -2183,13 +2192,13 @@ function ComposicionModal({
                   placeholder="Dosaje"
                   className="w-24 rounded border border-slate-300 px-2 py-1 text-sm dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:placeholder-slate-400"
                 />
-                <button
-                  type="button"
+                <ToolButton
+                  icon={Plus}
+                  label="Agregar"
                   onClick={handleAddManoObra}
-                  className="rounded bg-slate-200 px-2 py-1 text-sm hover:bg-slate-300 dark:bg-slate-600 dark:text-slate-100 dark:hover:bg-slate-500"
-                >
-                  Agregar
-                </button>
+                  variant="secondary"
+                  className="bg-slate-200 hover:bg-slate-300 dark:bg-slate-600 dark:text-slate-100 dark:hover:bg-slate-500"
+                />
               </div>
             )}
           </section>

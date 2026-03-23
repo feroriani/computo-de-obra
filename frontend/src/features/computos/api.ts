@@ -52,9 +52,12 @@ import {
   ManoObraAll,
   BackupDB,
   ExportComputoCSVAndSave,
+  GetAppInfo,
 } from "../../../wailsjs/go/app/App";
 import type { dto } from "../../../wailsjs/go/models";
+import * as WailsApp from "../../../wailsjs/go/app/App";
 
+export type AppInfoDTO = dto.AppInfoDTO;
 export type ComputoListRowDTO = dto.ComputoListRowDTO;
 export type ComputoCreateResultDTO = dto.ComputoCreateResultDTO;
 export type ComputoGetDTO = dto.ComputoGetDTO;
@@ -368,4 +371,15 @@ export async function exportComputoCSVAndSave(
 ): Promise<void> {
   // Wails bindings for Go variadic parameters get exported as an array arg.
   return ExportComputoCSVAndSave(versionId, [itemId, itemTitle]);
+}
+
+/** Genera CSV del cómputo (rubros con ítems) y abre diálogo para guardar. */
+export async function exportComputoRubrosCSVAndSave(versionId: string): Promise<void> {
+  const fn = (WailsApp as any).ExportComputoRubrosCSVAndSave as undefined | ((arg1: string) => Promise<void>);
+  if (!fn) throw new Error("ExportComputoRubrosCSVAndSave no está disponible");
+  return fn(versionId);
+}
+
+export async function getAppInfo(): Promise<AppInfoDTO> {
+  return GetAppInfo();
 }

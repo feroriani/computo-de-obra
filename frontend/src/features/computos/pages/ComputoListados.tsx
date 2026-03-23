@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams, useParams } from "react-router-dom";
+import { Link, useSearchParams, useParams, useNavigate } from "react-router-dom";
+import { FileDown, RefreshCw, ChevronLeft } from "lucide-react";
+import { ToolButton } from "../../../components/ToolButton";
 import { ListadoPanel } from "../../../components/ListadoPanel";
 import { ScrollArea } from "../../../components/ScrollArea";
 import {
@@ -30,7 +32,13 @@ function formatCentavos(centavos: number): string {
 }
 
 function formatCantidad(milli: number): string {
-  return (milli / 1000).toFixed(3);
+  return (milli / 1000).toFixed(2);
+}
+
+function roundDiv(n: number, d: number): number {
+  if (d === 0) return 0;
+  if (n >= 0) return Math.floor((n + d / 2) / d);
+  return Math.ceil((n - d / 2) / d);
 }
 
 function parseTab(value: string | null): ListadosTab {
@@ -39,6 +47,7 @@ function parseTab(value: string | null): ListadosTab {
 
 export function ComputoListados() {
   const { versionId } = useParams<{ versionId: string }>();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [materiales, setMateriales] = useState<MaterialObraRowDTO[]>([]);
   const [manoObra, setManoObra] = useState<ManoObraObraRowDTO[]>([]);
@@ -205,9 +214,10 @@ export function ComputoListados() {
       componente_id: row.componente_id,
       descripcion: row.descripcion,
       unidad: row.unidad,
-      cantidad_milli: Math.floor((qtyItemMilli * row.dosaje_milli) / 1000),
-      total_centavos: Math.floor(
-        (qtyItemMilli * row.dosaje_milli * (costoMaterialById[row.componente_id] ?? 0)) / 1_000_000
+      cantidad_milli: roundDiv(qtyItemMilli * row.dosaje_milli, 1000),
+      total_centavos: roundDiv(
+        qtyItemMilli * row.dosaje_milli * (costoMaterialById[row.componente_id] ?? 0),
+        1_000_000
       ),
     }));
   }, [costoMaterialById, itemCantidadById, materiales, materialesByItem, selectedItemId]);
@@ -225,9 +235,10 @@ export function ComputoListados() {
       componente_id: row.componente_id,
       descripcion: row.descripcion,
       unidad: row.unidad,
-      cantidad_milli: Math.floor((qtyItemMilli * row.dosaje_milli) / 1000),
-      total_centavos: Math.floor(
-        (qtyItemMilli * row.dosaje_milli * (costoManoObraById[row.componente_id] ?? 0)) / 1_000_000
+      cantidad_milli: roundDiv(qtyItemMilli * row.dosaje_milli, 1000),
+      total_centavos: roundDiv(
+        qtyItemMilli * row.dosaje_milli * (costoManoObraById[row.componente_id] ?? 0),
+        1_000_000
       ),
     }));
   }, [costoManoObraById, itemCantidadById, manoObra, manoObraByItem, selectedItemId]);
@@ -256,29 +267,34 @@ export function ComputoListados() {
       <div className="flex h-full min-h-0 w-full flex-col">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Link to={`/computo/${versionId}`} className="text-primary hover:underline dark:text-teal-400">
-              ← Volver al editor
-            </Link>
+            <ToolButton
+              icon={ChevronLeft}
+              label="Volver al editor"
+              onClick={() => navigate(`/computo/${versionId}`)}
+              variant="ghost"
+              showLabel
+              className="!px-0 text-primary hover:underline dark:text-teal-400"
+            />
             <span className="font-mono text-sm text-slate-600 dark:text-slate-400">Versión {versionId}</span>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              type="button"
+            <ToolButton
+              icon={FileDown}
+              label={exportLoading ? "Exportando…" : "Exportar a CSV"}
               onClick={handleExportCSV}
               disabled={exportLoading}
-              className="rounded border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+              variant="secondary"
+              showLabel
               title="Exportar materiales y mano de obra a CSV"
-            >
-              {exportLoading ? "Exportando…" : "Exportar a CSV"}
-            </button>
-            <button
-              type="button"
+            />
+            <ToolButton
+              icon={RefreshCw}
+              label={loading ? "Actualizando…" : "Actualizar"}
               onClick={() => void loadListados()}
               disabled={loading}
-              className="rounded bg-slate-600 px-3 py-1.5 text-sm text-white hover:bg-slate-700 disabled:opacity-50 dark:bg-slate-500 dark:hover:bg-slate-600"
-            >
-              {loading ? "Actualizando…" : "Actualizar"}
-            </button>
+              variant="secondary"
+              showLabel
+            />
           </div>
         </div>
 

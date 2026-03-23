@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Plus, X } from "lucide-react";
+import { ToolButton } from "../../../components/ToolButton";
 import type { ComputoCreateResultDTO } from "../api";
 
 type Props = {
@@ -108,20 +110,21 @@ export function CreateComputoDialog({
             </p>
           )}
           <div className="flex justify-end gap-2 pt-2">
-            <button
-              type="button"
+            <ToolButton
+              icon={X}
+              label="Cancelar"
               onClick={onClose}
-              className="rounded border border-slate-300 bg-white px-4 py-2 text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
-            >
-              Cancelar
-            </button>
-            <button
+              variant="secondary"
+              showLabel
+            />
+            <ToolButton
+              icon={Plus}
+              label={loading ? "Creando…" : "Crear"}
               type="submit"
               disabled={loading}
-              className="rounded bg-primary px-4 py-2 text-white hover:bg-primary-dark disabled:opacity-50 dark:bg-teal-600 dark:hover:bg-teal-700"
-            >
-              {loading ? "Creando…" : "Crear"}
-            </button>
+              variant="primary"
+              showLabel
+            />
           </div>
         </form>
       </div>

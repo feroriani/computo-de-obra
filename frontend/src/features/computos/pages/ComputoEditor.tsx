@@ -1,5 +1,21 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import {
+  List,
+  FileDown,
+  Check,
+  Plus,
+  Undo2,
+  Redo2,
+  ArrowUp,
+  ArrowDown,
+  Trash2,
+  X,
+  Edit,
+  Copy,
+  ChevronLeft,
+} from "lucide-react";
+import { ToolButton } from "../../../components/ToolButton";
 import { ListadoPanel } from "../../../components/ListadoPanel";
 import { ScrollArea } from "../../../components/ScrollArea";
 import {
@@ -19,6 +35,7 @@ import {
   computoRubroTrashEmpty,
   computoSetComitenteDescripcion,
   computoSetSuperficie,
+  exportComputoRubrosCSVAndSave,
 } from "../api";
 import type {
   ComputoGetDTO,
@@ -102,31 +119,51 @@ function formatCentavos(centavos: number): string {
 }
 
 function formatCantidad(milli: number): string {
-  return (milli / 1000).toFixed(3);
+  return (milli / 1000).toFixed(2);
+}
+
+function roundDiv(n: number, d: number): number {
+  if (d === 0) return 0;
+  if (n >= 0) return Math.floor((n + d / 2) / d);
+  return Math.ceil((n - d / 2) / d);
 }
 
 function parseCantidadMilli(s: string): number | null {
   const n = parseFloat(s.replace(",", "."));
   if (Number.isNaN(n) || n < 0) return null;
-  return Math.round(n * 1000);
+  // Cantidades de ítems: 2 decimales visibles/editables, guardadas en milli.
+  return Math.round(n * 100) * 10;
+}
+
+function csvEscapeCell(cell: string): string {
+  const needsQuotes = cell.includes(";") || cell.includes('"') || cell.includes("\n") || cell.includes("\r");
+  if (!needsQuotes) return cell;
+  return `"${cell.replace(/"/g, '""')}"`;
+}
+
+function downloadCsv(filename: string, csvText: string) {
+  // BOM helps Excel interpret UTF-8 correctly (especially with non-ASCII characters).
+  const blob = new Blob(["\uFEFF" + csvText], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 function TrashIcon() {
   return (
-    <svg className="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-      <line x1="10" y1="11" x2="10" y2="17" />
-      <line x1="14" y1="11" x2="14" y2="17" />
-    </svg>
+    <Trash2 className="size-4 shrink-0" />
   );
 }
 
 function ClearInputIcon() {
   return (
-    <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
+    <X className="size-4" />
   );
 }
 
@@ -143,8 +180,8 @@ function deriveTotals(
     let subMO = 0;
     const items: EditorRubroItem[] = rubro.items.map((it) => {
       const cant = cantidadOverrides[it.id] ?? it.cantidad_milli;
-      const lineMat = Math.floor((cant * it.unit_material_centavos) / 1000);
-      const lineMO = Math.floor((cant * it.unit_mo_centavos) / 1000);
+      const lineMat = roundDiv(cant * it.unit_material_centavos, 1000);
+      const lineMO = roundDiv(cant * it.unit_mo_centavos, 1000);
       const lineTotal = lineMat + lineMO;
       subMat += lineMat;
       subMO += lineMO;
@@ -168,7 +205,7 @@ function deriveTotals(
     };
   });
   const totalCentavos = totalMaterial + totalMO;
-  const costoM2 = superficieMilli > 0 ? Math.floor((totalCentavos * 1000) / superficieMilli) : 0;
+  const costoM2 = superficieMilli > 0 ? roundDiv(totalCentavos * 1000, superficieMilli) : 0;
   return {
     rubros: outRubros,
     totales: {
@@ -202,6 +239,7 @@ export function ComputoEditor() {
   const [itemCatalog, setItemCatalog] = useState<ItemCatalogItemDTO[]>([]);
   const [trashedItems, setTrashedItems] = useState<ComputoRubroItemTrashedDTO[]>([]);
   const [actionLoading, setActionLoading] = useState(false);
+  const [exportCsvLoading, setExportCsvLoading] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [superficieM2Str, setSuperficieM2Str] = useState("");
   const [superficieSaving, setSuperficieSaving] = useState(false);
@@ -317,6 +355,22 @@ export function ComputoEditor() {
     if (!computo) return { rubros: [], totales: { total_material_centavos: 0, total_mo_centavos: 0, total_centavos: 0, costo_m2_centavos: 0 } };
     return deriveTotals(computo.rubros, cantidadOverrides, computo.header.superficie_milli);
   }, [computo, cantidadOverrides]);
+
+  const handleExportRubrosCSV = useCallback(async () => {
+    if (!versionId) return;
+    if (exportCsvLoading) return;
+
+    setExportCsvLoading(true);
+    try {
+      await exportComputoRubrosCSVAndSave(versionId);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (msg === "cancelado por el usuario") return;
+      setError(msg === "" ? "Error al exportar CSV" : msg);
+    } finally {
+      setExportCsvLoading(false);
+    }
+  }, [versionId, exportCsvLoading]);
 
   const selectedRubro = useMemo(
     () => rubros.find((r) => r.id === selectedRubroId) ?? null,
@@ -608,13 +662,14 @@ export function ComputoEditor() {
     <div className="h-full min-h-0 overflow-hidden bg-slate-50 p-6 dark:bg-slate-900">
       <div className="flex h-full min-h-0 w-full flex-col">
         <div className="mb-4 flex flex-wrap items-center gap-4">
-          <button
-            type="button"
+          <ToolButton
+            icon={ChevronLeft}
+            label="Volver a cómputos"
             onClick={() => navigate("/")}
-            className="text-primary hover:underline dark:text-teal-400"
-          >
-            ← Volver a cómputos
-          </button>
+            variant="ghost"
+            showLabel
+            className="!px-0 text-primary hover:underline dark:text-teal-400"
+          />
           <span className="font-mono text-slate-600 dark:text-slate-400">
             {h.codigo} v{h.version_n}
           </span>
@@ -627,63 +682,72 @@ export function ComputoEditor() {
           </span>
           <span className="flex items-baseline gap-2 text-slate-600 dark:text-slate-400">
             <span>{h.descripcion}</span>
-            <button
-              type="button"
+            <ToolButton
+              icon={Edit}
+              label="Editar comitente"
               onClick={openComitenteDialog}
-              className="text-sm text-primary hover:underline dark:text-teal-400"
-            >
-              Editar
-            </button>
+              variant="ghost"
+              className="h-6 w-6 !p-0 text-primary hover:text-primary-dark dark:text-teal-400 dark:hover:text-teal-300"
+            />
           </span>
           <span className="ml-auto flex items-center gap-2">
-            <Link
-              to={`/computo/${versionId}/listados`}
-              className="rounded border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
-            >
-              Ver listados
-            </Link>
+            <ToolButton
+              icon={List}
+              label="Ver listados"
+              onClick={() => navigate(`/computo/${versionId}/listados`)}
+              variant="secondary"
+              showLabel
+            />
+            <ToolButton
+              icon={FileDown}
+              label={exportCsvLoading ? "Exportando…" : "Exportar a CSV"}
+              onClick={handleExportRubrosCSV}
+              disabled={exportCsvLoading || rubros.length === 0}
+              variant="secondary"
+              showLabel
+              title="Exportar rubros con ítems a CSV"
+            />
             {isBorrador && (
-              <button
-                type="button"
+              <ToolButton
+                icon={Check}
+                label="Confirmar"
                 onClick={() => setConfirmDialogOpen(true)}
                 disabled={actionLoading}
-                className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white hover:bg-emerald-700 disabled:opacity-50"
-              >
-                Confirmar
-              </button>
+                variant="emerald"
+                showLabel
+              />
             )}
             {isConfirmado && (
-              <button
-                type="button"
+              <ToolButton
+                icon={Copy}
+                label="Nueva versión desde esta"
                 onClick={handleNewVersionFrom}
                 disabled={actionLoading}
-                className="rounded bg-primary px-3 py-1.5 text-sm text-white hover:bg-primary-dark disabled:opacity-50"
-              >
-                Nueva versión desde esta
-              </button>
+                variant="primary"
+                showLabel
+              />
             )}
-            <button
-              type="button"
+            <div className="mx-1 h-6 w-px bg-slate-300 dark:bg-slate-600" />
+            <ToolButton
+              icon={Undo2}
+              label="Deshacer"
               onClick={undo}
               disabled={!hasUndo}
-              className="rounded border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
-            >
-              Deshacer
-            </button>
-            <button
-              type="button"
+              variant="secondary"
+            />
+            <ToolButton
+              icon={Redo2}
+              label="Rehacer"
               onClick={redo}
               disabled={!hasRedo}
-              className="rounded border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
-            >
-              Rehacer
-            </button>
+              variant="secondary"
+            />
           </span>
         </div>
 
-        {actionLoading && (
+        {/* {actionLoading && (
           <div className="mb-2 text-sm text-slate-500 dark:text-slate-400">Guardando…</div>
-        )}
+        )} */}
 
         <div className="min-h-0 flex flex-1 flex-col gap-6 overflow-hidden">
           <div className="min-h-0 flex flex-1 flex-col gap-6 overflow-hidden lg:flex-row">
@@ -692,13 +756,14 @@ export function ComputoEditor() {
             title="Rubros"
             right={
               isBorrador ? (
-                <button
-                  type="button"
+                <ToolButton
+                  icon={Plus}
+                  label="Rubro"
                   onClick={handleAddRubroOpen}
-                  className="rounded bg-primary px-2 py-1 text-xs text-white hover:bg-primary-dark"
-                >
-                  + Rubro
-                </button>
+                  variant="primary"
+                  showLabel
+                  className="!py-1 !px-2 text-xs"
+                />
               ) : null
             }
             className="min-h-0 overflow-hidden lg:w-1/3"
@@ -714,25 +779,23 @@ export function ComputoEditor() {
                   {rubros.map((r, idx) => (
                     <li key={r.id} className="flex items-center gap-1">
                       {isBorrador && (
-                        <span className="flex shrink-0">
-                          <button
-                            type="button"
+                        <span className="flex shrink-0 ml-1">
+                          <ToolButton
+                            icon={ArrowUp}
+                            label="Subir"
                             onClick={() => handleMoveRubro(idx, "up")}
                             disabled={idx === 0}
-                            className="px-1 text-slate-400 hover:text-slate-600 disabled:opacity-30 dark:hover:text-slate-200"
-                            aria-label="Subir"
-                          >
-                            ↑
-                          </button>
-                          <button
-                            type="button"
+                            variant="ghost"
+                            className="h-7 w-7 !p-0"
+                          />
+                          <ToolButton
+                            icon={ArrowDown}
+                            label="Bajar"
                             onClick={() => handleMoveRubro(idx, "down")}
                             disabled={idx === rubros.length - 1}
-                            className="px-1 text-slate-400 hover:text-slate-600 disabled:opacity-30 dark:hover:text-slate-200"
-                            aria-label="Bajar"
-                          >
-                            ↓
-                          </button>
+                            variant="ghost"
+                            className="h-7 w-7 !p-0"
+                          />
                         </span>
                       )}
                       <button
@@ -750,15 +813,13 @@ export function ComputoEditor() {
                         </span>
                       </button>
                       {isBorrador && (
-                        <button
-                          type="button"
+                        <ToolButton
+                          icon={Trash2}
+                          label="Eliminar rubro"
                           onClick={() => handleDeleteRubro(r.id)}
-                          className="mr-2 shrink-0 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
-                          title="Eliminar rubro"
-                          aria-label="Eliminar rubro"
-                        >
-                          <TrashIcon />
-                        </button>
+                          variant="ghost"
+                          className="mr-2 h-8 w-8 !p-0 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
+                        />
                       )}
                     </li>
                   ))}
@@ -772,13 +833,14 @@ export function ComputoEditor() {
             title={selectedRubro ? selectedRubro.nombre : "Seleccioná un rubro"}
             right={
               isBorrador && selectedRubro ? (
-                <button
-                  type="button"
+                <ToolButton
+                  icon={Plus}
+                  label="Ítem"
                   onClick={handleAddItemOpen}
-                  className="rounded bg-primary px-2 py-1 text-xs text-white hover:bg-primary-dark"
-                >
-                  + Ítem
-                </button>
+                  variant="primary"
+                  showLabel
+                  className="!py-1 !px-2 text-xs"
+                />
               ) : null
             }
             className="min-h-0 overflow-hidden lg:flex-1"
@@ -861,15 +923,13 @@ export function ComputoEditor() {
                           </td>
                           {isBorrador && (
                             <td className="px-2 py-2">
-                              <button
-                                type="button"
+                              <ToolButton
+                                icon={Trash2}
+                                label="Enviar a papelera"
                                 onClick={() => handleTrashItem(it.id)}
-                                className="text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
-                                title="Enviar a papelera"
-                                aria-label="Enviar a papelera"
-                              >
-                                <TrashIcon />
-                              </button>
+                                variant="ghost"
+                                className="h-8 w-8 !p-0 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
+                              />
                             </td>
                           )}
                         </tr>
@@ -887,7 +947,7 @@ export function ComputoEditor() {
                     {trashedItems.map((t) => (
                       <li key={t.id} className="flex items-center justify-between rounded bg-slate-50 px-2 py-1 dark:bg-slate-700">
                         <span className="truncate text-slate-700 dark:text-slate-200">{t.tarea}</span>
-                        <span className="ml-2 shrink-0 text-slate-500 dark:text-slate-400">{(t.cantidad_milli / 1000).toFixed(3)} {t.unidad}</span>
+                        <span className="ml-2 shrink-0 text-slate-500 dark:text-slate-400">{(t.cantidad_milli / 1000).toFixed(2)} {t.unidad}</span>
                         <button
                           type="button"
                           onClick={() => handleRestoreItem(t.id)}
@@ -956,15 +1016,13 @@ export function ComputoEditor() {
                             />
                             <div className="pointer-events-none relative -mt-9 mb-2 h-9">
                               {addRubroSearch.trim() && (
-                                <button
-                                  type="button"
+                                <ToolButton
+                                  icon={X}
+                                  label="Limpiar búsqueda"
                                   onClick={() => setAddRubroSearch("")}
-                                  className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-600 dark:hover:text-slate-200"
-                                  aria-label="Limpiar búsqueda de rubros"
-                                  title="Limpiar búsqueda"
-                                >
-                                  <ClearInputIcon />
-                                </button>
+                                  variant="ghost"
+                                  className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 !p-0 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-600 dark:hover:text-slate-200"
+                                />
                               )}
                             </div>
                             <ul className="max-h-80 overflow-y-auto rounded border border-slate-200 dark:border-slate-600">
@@ -1041,15 +1099,13 @@ export function ComputoEditor() {
                     />
                     <div className="pointer-events-none relative -mt-9 mb-2 h-9">
                       {addItemSearch.trim() && (
-                        <button
-                          type="button"
+                        <ToolButton
+                          icon={X}
+                          label="Limpiar búsqueda"
                           onClick={() => setAddItemSearch("")}
-                          className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-600 dark:hover:text-slate-200"
-                          aria-label="Limpiar búsqueda de ítems"
-                          title="Limpiar búsqueda"
-                        >
-                          <ClearInputIcon />
-                        </button>
+                          variant="ghost"
+                          className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 !p-0 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-600 dark:hover:text-slate-200"
+                        />
                       )}
                     </div>
                     <ul className="max-h-80 overflow-y-auto rounded border border-slate-200 dark:border-slate-600">
@@ -1098,16 +1154,16 @@ export function ComputoEditor() {
               <span className="font-semibold text-slate-900 dark:text-slate-100">{formatCentavos(totales.costo_m2_centavos)}</span>
             </div>
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="font-semiboldtext-slate-500 dark:text-slate-400">
+              <span className="text-slate-500 dark:text-slate-400">
                 Superficie <span className="font-semibold text-slate-900 dark:text-slate-100">{(h.superficie_milli / 1000).toLocaleString("es-AR", { minimumFractionDigits: 0, maximumFractionDigits: 3 })} m²</span>
               </span>
-              <button
-                type="button"
+              <ToolButton
+                icon={Edit}
+                label="Editar superficie"
                 onClick={openSuperficieDialog}
-                className="text-sm text-primary hover:underline dark:text-teal-400"
-              >
-                Editar
-              </button>
+                variant="ghost"
+                className="h-6 w-6 !p-0 text-primary hover:text-primary-dark dark:text-teal-400 dark:hover:text-teal-300"
+              />
             </div>
           </div>
         </div>

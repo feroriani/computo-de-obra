@@ -49,10 +49,10 @@ func MaterialsAll(
 				if comp == nil {
 					continue
 				}
-				// quantity in milli: (item_qty_milli * dosaje_milli) / 1000
-				qtyMilli := (it.CantidadMilli * m.DosajeMilli) / 1000
-				// cost: (item_qty_milli * dosaje_milli * unit_centavos) / 1_000_000
-				cost := (it.CantidadMilli * m.DosajeMilli * comp.CostoCentavos) / 1_000_000
+				// quantity in milli: round((item_qty_milli * dosaje_milli) / 1000)
+				qtyMilli := roundDiv(it.CantidadMilli*m.DosajeMilli, 1000)
+				// cost: round((item_qty_milli * dosaje_milli * unit_centavos) / 1_000_000)
+				cost := roundDiv(it.CantidadMilli*m.DosajeMilli*comp.CostoCentavos, 1_000_000)
 
 				if byID[m.ComponenteID] == nil {
 					byID[m.ComponenteID] = &agg{descripcion: comp.Descripcion, unidad: comp.Unidad}
@@ -123,8 +123,8 @@ func ManoObraAll(
 				if comp == nil {
 					continue
 				}
-				qtyMilli := (it.CantidadMilli * mo.DosajeMilli) / 1000
-				cost := (it.CantidadMilli * mo.DosajeMilli * comp.CostoCentavos) / 1_000_000
+				qtyMilli := roundDiv(it.CantidadMilli*mo.DosajeMilli, 1000)
+				cost := roundDiv(it.CantidadMilli*mo.DosajeMilli*comp.CostoCentavos, 1_000_000)
 
 				if byID[mo.ComponenteID] == nil {
 					byID[mo.ComponenteID] = &agg{descripcion: comp.Descripcion, unidad: comp.Unidad}
@@ -212,8 +212,8 @@ func MaterialsByItem(
 			continue
 		}
 
-		qtyMilli := (itemQtyMilli * m.DosajeMilli) / 1000
-		cost := (itemQtyMilli * m.DosajeMilli * comp.CostoCentavos) / 1_000_000
+		qtyMilli := roundDiv(itemQtyMilli*m.DosajeMilli, 1000)
+		cost := roundDiv(itemQtyMilli*m.DosajeMilli*comp.CostoCentavos, 1_000_000)
 
 		if byID[m.ComponenteID] == nil {
 			byID[m.ComponenteID] = &agg{descripcion: comp.Descripcion, unidad: comp.Unidad}
@@ -298,8 +298,8 @@ func ManoObraByItem(
 			continue
 		}
 
-		qtyMilli := (itemQtyMilli * mo.DosajeMilli) / 1000
-		cost := (itemQtyMilli * mo.DosajeMilli * comp.CostoCentavos) / 1_000_000
+		qtyMilli := roundDiv(itemQtyMilli*mo.DosajeMilli, 1000)
+		cost := roundDiv(itemQtyMilli*mo.DosajeMilli*comp.CostoCentavos, 1_000_000)
 
 		if byID[mo.ComponenteID] == nil {
 			byID[mo.ComponenteID] = &agg{descripcion: comp.Descripcion, unidad: comp.Unidad}

@@ -67,6 +67,10 @@ export function DB():Promise<sql.DB>;
 
 export function ExportComputoCSVAndSave(arg1:string,arg2:Array<string>):Promise<void>;
 
+export function ExportComputoRubrosCSVAndSave(arg1:string):Promise<void>;
+
+export function GetAppInfo():Promise<dto.AppInfoDTO>;
+
 export function Greet(arg1:string):Promise<string>;
 
 export function ItemCatalogCreate(arg1:string,arg2:string):Promise<string>;

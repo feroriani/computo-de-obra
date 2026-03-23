@@ -65,9 +65,9 @@ func Get(
 			if err != nil {
 				return nil, err
 			}
-			// line = (cantidad_milli * unit_centavos) / 1000
-			lineMat := (it.CantidadMilli * unit.MaterialCentavos) / 1000
-			lineMO := (it.CantidadMilli * unit.MOCentavos) / 1000
+			// line = round((cantidad_milli * unit_centavos) / 1000)
+			lineMat := roundDiv(it.CantidadMilli*unit.MaterialCentavos, 1000)
+			lineMO := roundDiv(it.CantidadMilli*unit.MOCentavos, 1000)
 			lineTotal := lineMat + lineMO
 			subMat += lineMat
 			subMO += lineMO
@@ -96,7 +96,7 @@ func Get(
 	out.Totales.TotalMOCentavos = totalMO
 	out.Totales.TotalCentavos = totalMaterial + totalMO
 	if header.SuperficieMilli > 0 {
-		out.Totales.CostoM2Centavos = (out.Totales.TotalCentavos * 1000) / header.SuperficieMilli
+		out.Totales.CostoM2Centavos = roundDiv(out.Totales.TotalCentavos*1000, header.SuperficieMilli)
 	}
 
 	return out, nil

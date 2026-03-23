@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Plus, Trash2, FolderOpen, Book } from "lucide-react";
+import { ToolButton } from "../../../components/ToolButton";
 import { listComputos, createComputo, deleteComputoSeries } from "../api";
 import type { ComputoListRowDTO, ComputoCreateResultDTO } from "../api";
 import { CreateComputoDialog } from "../components/CreateComputoDialog";
@@ -76,22 +78,24 @@ export function ComputosList() {
       <div className="flex h-full min-h-0 w-full flex-col">
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-slate-800 dark:text-slate-100">
-            Cómputos de obra
+            Cómputo de obra
           </h1>
           <div className="flex items-center gap-3">
-            <Link
-              to="/catalogos"
+            <ToolButton
+              icon={Book}
+              label="Catálogos"
+              onClick={() => navigate("/catalogos")}
+              variant="ghost"
+              showLabel
               className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
-            >
-              Catálogos
-            </Link>
-            <button
-              type="button"
+            />
+            <ToolButton
+              icon={Plus}
+              label="Nuevo cómputo"
               onClick={() => setDialogOpen(true)}
-              className="rounded bg-primary px-4 py-2 text-white hover:bg-primary-dark"
-            >
-              Nuevo cómputo
-            </button>
+              variant="primary"
+              showLabel
+            />
           </div>
         </div>
 
@@ -163,23 +167,22 @@ export function ComputosList() {
                           {formatCentavos(row.costo_m2_centavos)}
                         </td>
                         <td className="px-4 py-2 text-right">
-                          <button
-                            type="button"
+                          <ToolButton
+                            icon={Trash2}
+                            label="Eliminar cómputo"
                             onClick={() => setDeleteDialog({ series_id: row.series_id, codigo: row.codigo })}
-                            className="mr-3 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
-                            title="Eliminar cómputo"
-                            aria-label="Eliminar cómputo"
+                            variant="ghost"
+                            className="mr-3 h-8 w-8 !p-0 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
                             disabled={deleteLoading}
-                          >
-                            <TrashIcon />
-                          </button>
-                          <button
-                            type="button"
+                          />
+                          <ToolButton
+                            icon={FolderOpen}
+                            label="Abrir"
                             onClick={() => navigate(`/computo/${row.version_id}`)}
+                            variant="ghost"
+                            showLabel
                             className="text-primary hover:underline"
-                          >
-                            Abrir
-                          </button>
+                          />
                         </td>
                       </tr>
                     ))}

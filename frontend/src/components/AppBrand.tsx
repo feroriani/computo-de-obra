@@ -10,10 +10,10 @@ export function AppBrand() {
     >
       <img
         src={appIcon}
-        alt="Icono de Cómputos de obra"
+        alt="Icono de Cómputo de obra"
         className="size-7 shrink-0 rounded-sm"
       />
-      <span>Cómputos de obra</span>
+      <span>Cómputo de obra</span>
     </Link>
   );
 }

@@ -1,5 +1,12 @@
 package dto
 
+// AppInfoDTO contains basic information about the application.
+type AppInfoDTO struct {
+	Name    string `json:"name"`
+	Version string `json:"version"`
+	Author  string `json:"author"`
+}
+
 // ComputoListRowDTO is sent to the frontend for the computos list.
 type ComputoListRowDTO struct {
 	SeriesID        string  `json:"series_id"`

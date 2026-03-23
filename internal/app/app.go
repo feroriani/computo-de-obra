@@ -7,10 +7,8 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strconv"
 	"strings"
 	"time"
-	"unicode"
 
 	"changeme/internal/app/dto"
 	"changeme/internal/infra/sqlite"
@@ -23,6 +21,68 @@ import (
 )
 
 const appName = "computo-de-obra"
+
+func formatScaledEs(value int64, scale int64, decimals int) string {
+	sign := ""
+	if value < 0 {
+		sign = "-"
+		value = -value
+	}
+	intPart := value / scale
+	frac := value % scale
+	return fmt.Sprintf("%s%d,%0*d", sign, intPart, decimals, frac)
+}
+
+func roundMilliToCenti(milli int64) int64 {
+	if milli >= 0 {
+		return (milli + 5) / 10
+	}
+	return (milli - 5) / 10
+}
+
+func sanitizeFilenamePart(s string, fallback string) string {
+	s = strings.TrimSpace(strings.ToLower(s))
+	if s == "" {
+		return fallback
+	}
+	replacer := strings.NewReplacer(
+		"á", "a", "à", "a", "ä", "a", "â", "a",
+		"é", "e", "è", "e", "ë", "e", "ê", "e",
+		"í", "i", "ì", "i", "ï", "i", "î", "i",
+		"ó", "o", "ò", "o", "ö", "o", "ô", "o",
+		"ú", "u", "ù", "u", "ü", "u", "û", "u",
+		"ñ", "n", "ç", "c",
+	)
+	s = replacer.Replace(s)
+	s = strings.ReplaceAll(s, " ", "_")
+
+	var b strings.Builder
+	lastUnderscore := false
+	for _, r := range s {
+		allowed := (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') || r == '-' || r == '_'
+		if !allowed {
+			r = '_'
+		}
+		if r == '_' {
+			if lastUnderscore {
+				continue
+			}
+			lastUnderscore = true
+		} else {
+			lastUnderscore = false
+		}
+		b.WriteRune(r)
+	}
+
+	out := strings.Trim(b.String(), "_")
+	if out == "" {
+		return fallback
+	}
+	if len(out) > 40 {
+		return out[:40]
+	}
+	return out
+}
 
 // App is the Wails application struct (bindings).
 type App struct {
@@ -72,6 +132,15 @@ func (a *App) Startup(ctx context.Context) {
 // DB returns the database connection (may be nil if startup failed).
 func (a *App) DB() *sql.DB {
 	return a.db
+}
+
+// GetAppInfo returns application information from wails.json.
+func (a *App) GetAppInfo() dto.AppInfoDTO {
+	return dto.AppInfoDTO{
+		Name:    "Cómputo de Obra",
+		Version: "0.1.0",
+		Author:  "Fernando Oriani",
+	}
 }
 
 // ComputoList returns all computos for the list screen.
@@ -600,30 +669,6 @@ func (a *App) ExportComputoCSVAndSave(versionID string, rest []string) error {
 		listTitle = fmt.Sprintf("Listado de Ítem: %s", title)
 	}
 
-	sanitizeFilenamePart := func(s string) string {
-		s = strings.TrimSpace(s)
-		if s == "" {
-			return "item"
-		}
-		s = strings.ReplaceAll(s, " ", "_")
-		s = strings.Map(func(r rune) rune {
-			switch {
-			case r == '-' || r == '_' || unicode.IsLetter(r) || unicode.IsDigit(r):
-				return r
-			default:
-				return '_'
-			}
-		}, s)
-		s = strings.Trim(s, "_")
-		if s == "" {
-			return "item"
-		}
-		if len(s) > 40 {
-			return s[:40]
-		}
-		return s
-	}
-
 	var (
 		mats []dto.MaterialObraRowDTO
 		mo   []dto.ManoObraObraRowDTO
@@ -683,44 +728,172 @@ func (a *App) ExportComputoCSVAndSave(versionID string, rest []string) error {
 	w := csv.NewWriter(&buf)
 	w.Comma = ';' // Excel en español suele usar punto y coma
 
+	// Hint explícito para Excel: usar ';' como separador de columnas.
+	_ = w.Write([]string{"sep=;"})
 	_ = w.Write([]string{listTitle, fmt.Sprintf("%s v%d", header.Codigo, header.VersionN)})
+	_ = w.Write([]string{"Comitente", strings.TrimSpace(header.Descripcion)})
+	_ = w.Write([]string{"Fecha", header.FechaInicio.Format("2006-01-02")})
 	_ = w.Write(nil)
 	_ = w.Write([]string{"Materiales"})
+	_ = w.Write(nil)
 	_ = w.Write([]string{"Descripción", "Unidad", "Cantidad", "Total (ARS)"})
 	var matsSubtotalCentavos int64
 	for _, r := range mats {
 		matsSubtotalCentavos += r.TotalCentavos
-		qty := strconv.FormatFloat(float64(r.CantidadMilli)/1000, 'f', 3, 64)
-		total := strconv.FormatFloat(float64(r.TotalCentavos)/100, 'f', 2, 64)
+		qty := formatScaledEs(roundMilliToCenti(r.CantidadMilli), 100, 2)
+		total := formatScaledEs(r.TotalCentavos, 100, 2)
 		_ = w.Write([]string{r.Descripcion, r.Unidad, qty, total})
 	}
-	_ = w.Write([]string{"Subtotal materiales", "", "", strconv.FormatFloat(float64(matsSubtotalCentavos)/100, 'f', 2, 64)})
+	_ = w.Write([]string{"Subtotal materiales", "", "", formatScaledEs(matsSubtotalCentavos, 100, 2)})
 	_ = w.Write(nil)
 	_ = w.Write([]string{"Mano de obra"})
+	_ = w.Write(nil)
 	_ = w.Write([]string{"Descripción", "Unidad", "Cantidad", "Total (ARS)"})
 	var moSubtotalCentavos int64
 	for _, r := range mo {
 		moSubtotalCentavos += r.TotalCentavos
-		qty := strconv.FormatFloat(float64(r.CantidadMilli)/1000, 'f', 3, 64)
-		total := strconv.FormatFloat(float64(r.TotalCentavos)/100, 'f', 2, 64)
+		qty := formatScaledEs(roundMilliToCenti(r.CantidadMilli), 100, 2)
+		total := formatScaledEs(r.TotalCentavos, 100, 2)
 		_ = w.Write([]string{r.Descripcion, r.Unidad, qty, total})
 	}
-	_ = w.Write([]string{"Subtotal mano de obra", "", "", strconv.FormatFloat(float64(moSubtotalCentavos)/100, 'f', 2, 64)})
+	_ = w.Write([]string{"Subtotal mano de obra", "", "", formatScaledEs(moSubtotalCentavos, 100, 2)})
 	_ = w.Write(nil)
-	_ = w.Write([]string{"Total materiales + mano de obra", "", "", strconv.FormatFloat(float64(matsSubtotalCentavos+moSubtotalCentavos)/100, 'f', 2, 64)})
+	_ = w.Write([]string{"Total materiales + mano de obra", "", "", formatScaledEs(matsSubtotalCentavos+moSubtotalCentavos, 100, 2)})
 	w.Flush()
 	if w.Error() != nil {
 		return w.Error()
 	}
 
-	defaultFilename := fmt.Sprintf("%s_v%d_%s_export.csv", header.Codigo, header.VersionN, sanitizeFilenamePart("Toda_la_obra"))
+	comitenteFile := sanitizeFilenamePart(header.Descripcion, "comitente")
+	defaultFilename := fmt.Sprintf(
+		"%s_v%d_%s_%s_export.csv",
+		header.Codigo,
+		header.VersionN,
+		comitenteFile,
+		sanitizeFilenamePart("toda_la_obra", "obra"),
+	)
 	if strings.TrimSpace(itemID) != "" && itemID != allItemsSentinel {
-		defaultFilename = fmt.Sprintf("%s_v%d_%s_export.csv", header.Codigo, header.VersionN, sanitizeFilenamePart(itemTitle))
+		defaultFilename = fmt.Sprintf(
+			"%s_v%d_%s_%s_export.csv",
+			header.Codigo,
+			header.VersionN,
+			comitenteFile,
+			sanitizeFilenamePart(itemTitle, "item"),
+		)
 	}
 
 	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
 		DefaultFilename: defaultFilename,
 		Title:           "Exportar cómputo a CSV",
+		Filters: []runtime.FileFilter{
+			{DisplayName: "CSV (*.csv)", Pattern: "*.csv"},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	if path == "" {
+		return fmt.Errorf("cancelado por el usuario")
+	}
+	return os.WriteFile(path, []byte(buf.String()), 0644)
+}
+
+// ExportComputoRubrosCSVAndSave generates a CSV with rubros and their items (and totals)
+// for the given version, opens a save dialog, and writes the file.
+func (a *App) ExportComputoRubrosCSVAndSave(versionID string) error {
+	if a.computoRepo == nil || a.rubroRepo == nil || a.rubroItemRepo == nil || a.itemUnitCostsRepo == nil {
+		return fmt.Errorf("database not ready")
+	}
+
+	// Use the same use-case as the editor to ensure line totals and obra totals match.
+	comp, err := computos.Get(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo, versionID)
+	if err != nil {
+		return err
+	}
+	if comp == nil {
+		return fmt.Errorf("cómputo no encontrado: %s", versionID)
+	}
+
+	header := comp.Header
+
+	var buf strings.Builder
+	w := csv.NewWriter(&buf)
+	w.Comma = ';' // Excel en español suele usar punto y coma
+
+	// Hint explícito para Excel: usar ';' como separador de columnas.
+	_ = w.Write([]string{"sep=;"})
+	title := fmt.Sprintf("Cómputo de Obra - %s v%d", header.Codigo, header.VersionN)
+	comitente := strings.TrimSpace(header.Descripcion)
+	fecha := strings.TrimSpace(header.FechaInicio)
+
+	_ = w.Write([]string{title})
+	_ = w.Write([]string{"Comitente", comitente})
+	_ = w.Write([]string{"Fecha", fecha})
+	_ = w.Write(nil)
+
+	_ = w.Write([]string{
+		"Rubro",
+		"Tarea",
+		"Unidad",
+		"Cantidad",
+		"Materiales (ARS)",
+		"Mano de obra (ARS)",
+		"Total (ARS)",
+		"Costo/m² (ARS)",
+	})
+
+	toQty := func(milli int64) string {
+		return formatScaledEs(roundMilliToCenti(milli), 100, 2)
+	}
+	toARS := func(centavos int64) string {
+		return formatScaledEs(centavos, 100, 2)
+	}
+
+	// Group by rubro: one row with rubro name, followed by item rows.
+	for _, r := range comp.Rubros {
+		_ = w.Write([]string{r.Nombre, "", "", "", "", "", "", ""})
+		for _, it := range r.Items {
+			_ = w.Write([]string{
+				"",
+				it.Tarea,
+				it.Unidad,
+				toQty(it.CantidadMilli),
+				toARS(it.LineMaterialCentavos),
+				toARS(it.LineMOCentavos),
+				toARS(it.LineTotalCentavos),
+				"",
+			})
+		}
+	}
+
+	_ = w.Write(nil)
+	_ = w.Write([]string{
+		"TOTALES",
+		"",
+		"",
+		"",
+		toARS(comp.Totales.TotalMaterialCentavos),
+		toARS(comp.Totales.TotalMOCentavos),
+		toARS(comp.Totales.TotalCentavos),
+		toARS(comp.Totales.CostoM2Centavos),
+	})
+
+	w.Flush()
+	if w.Error() != nil {
+		return w.Error()
+	}
+
+	comitenteFile := sanitizeFilenamePart(header.Descripcion, "comitente")
+	defaultFilename := fmt.Sprintf(
+		"%s_v%d_%s_%s_export.csv",
+		header.Codigo,
+		header.VersionN,
+		comitenteFile,
+		sanitizeFilenamePart("rubros_con_items", "rubros"),
+	)
+	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+		DefaultFilename: defaultFilename,
+		Title:           "Exportar cómputo (rubros + ítems) a CSV",
 		Filters: []runtime.FileFilter{
 			{DisplayName: "CSV (*.csv)", Pattern: "*.csv"},
 		},

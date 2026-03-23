@@ -130,6 +130,14 @@ export function ExportComputoCSVAndSave(arg1, arg2) {
   return window['go']['app']['App']['ExportComputoCSVAndSave'](arg1, arg2);
 }
 
+export function ExportComputoRubrosCSVAndSave(arg1) {
+  return window['go']['app']['App']['ExportComputoRubrosCSVAndSave'](arg1);
+}
+
+export function GetAppInfo() {
+  return window['go']['app']['App']['GetAppInfo']();
+}
+
 export function Greet(arg1) {
   return window['go']['app']['App']['Greet'](arg1);
 }
