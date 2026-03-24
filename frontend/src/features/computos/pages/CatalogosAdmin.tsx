@@ -4,6 +4,7 @@ import {
   useCallback,
   useRef,
   useMemo,
+  memo,
   type FormEvent,
   type ReactNode,
 } from "react";
@@ -2005,8 +2006,8 @@ function ComposicionModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="max-h-[90vh] w-full max-w-2xl overflow-auto rounded-lg bg-white shadow-xl dark:bg-slate-800">
-        <div className="sticky top-0 border-b border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-lg bg-white shadow-xl dark:bg-slate-800">
+        <div className="border-b border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
             Composición: {item.tarea} ({item.unidad})
           </h2>
@@ -2014,71 +2015,76 @@ function ComposicionModal({
             Dosaje en unidades por ítem (3 decimales). Costo ítem = Σ(dosaje × costo componente).
           </p>
         </div>
-        <div className="p-4 space-y-6">
-          <section>
+
+        <div className="flex flex-1 flex-col min-h-0 overflow-hidden">
+          <div className="flex-1 min-h-0 flex flex-col p-4 border-b border-slate-100 dark:border-slate-700">
             <h3 className="mb-2 font-medium text-slate-700 dark:text-slate-200">Materiales</h3>
-            <table className="w-full text-sm">
-              <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
-                <tr>
-                  <th className="px-3 py-1.5 text-left font-medium">Descripción</th>
-                  <th className="px-3 py-1.5 text-left font-medium">Unidad</th>
-                  <th className="px-3 py-1.5 text-right font-medium">Dosaje</th>
-                  <th className="w-20 px-3 py-1.5" />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                {materials.map((row) => (
-                  <tr key={row.componente_id} className={rowClassName()}>
-                    <td className="px-3 py-1.5 text-slate-800 dark:text-slate-200">{row.descripcion}</td>
-                    <td className="px-3 py-1.5 text-slate-800 dark:text-slate-200">{row.unidad}</td>
-                    <td className="px-3 py-1.5 text-right">
-                      {editingDosaje?.type === "material" &&
-                      editingDosaje?.componenteId === row.componente_id ? (
-                        <input
-                          type="text"
-                          value={editingDosaje.value}
-                          onChange={(e) =>
-                            setEditingDosaje((p) => (p ? { ...p, value: e.target.value } : null))
-                          }
-                          onBlur={saveDosaje}
-                          onKeyDown={(e) => e.key === "Enter" && saveDosaje()}
-                          className="w-20 rounded border border-slate-300 px-1 py-0.5 text-right dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-                          autoFocus
-                        />
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setEditingDosaje({
-                              type: "material",
-                              componenteId: row.componente_id,
-                              value: formatDosaje(row.dosaje_milli),
-                            })
-                          }
-                          className="text-slate-700 hover:underline dark:text-slate-300 dark:hover:text-slate-100"
-                        >
-                          {formatDosaje(row.dosaje_milli)}
-                        </button>
-                      )}
-                    </td>
-                    <td className="px-3 py-1.5">
-                      <ToolButton
-                        icon={Trash2}
-                        label="Quitar"
-                        onClick={async () => {
-                          await onDeleteMaterial(item.id, row.componente_id);
-                          onRefresh();
-                        }}
-                        variant="ghost"
-                        className="h-7 w-7 !p-0 text-red-600 dark:text-red-400"
-                      />
-                    </td>
+            <ScrollArea className="flex-1">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 sticky top-0 z-10">
+                  <tr>
+                    <th className="px-3 py-1.5 text-left font-medium">Descripción</th>
+                    <th className="px-3 py-1.5 text-left font-medium">Unidad</th>
+                    <th className="px-3 py-1.5 text-right font-medium">Dosaje</th>
+                    <th className="w-20 px-3 py-1.5" />
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                  {materials.map((row) => (
+                    <tr key={row.componente_id} className={rowClassName()}>
+                      <td className="px-3 py-1.5 text-slate-800 dark:text-slate-200">
+                        {row.descripcion}
+                      </td>
+                      <td className="px-3 py-1.5 text-slate-800 dark:text-slate-200">{row.unidad}</td>
+                      <td className="px-3 py-1.5 text-right">
+                        {editingDosaje?.type === "material" &&
+                        editingDosaje?.componenteId === row.componente_id ? (
+                          <input
+                            type="text"
+                            value={editingDosaje.value}
+                            onChange={(e) =>
+                              setEditingDosaje((p) => (p ? { ...p, value: e.target.value } : null))
+                            }
+                            onBlur={saveDosaje}
+                            onKeyDown={(e) => e.key === "Enter" && saveDosaje()}
+                            className="w-20 rounded border border-slate-300 px-1 py-0.5 text-right dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                            autoFocus
+                          />
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setEditingDosaje({
+                                type: "material",
+                                componenteId: row.componente_id,
+                                value: formatDosaje(row.dosaje_milli),
+                              })
+                            }
+                            className="text-slate-700 hover:underline dark:text-slate-300 dark:hover:text-slate-100"
+                          >
+                            {formatDosaje(row.dosaje_milli)}
+                          </button>
+                        )}
+                      </td>
+                      <td className="px-3 py-1.5">
+                        <ToolButton
+                          icon={Trash2}
+                          label="Quitar"
+                          onClick={async () => {
+                            await onDeleteMaterial(item.id, row.componente_id);
+                            onRefresh();
+                          }}
+                          variant="ghost"
+                          className="h-7 w-7 !p-0 text-red-600 dark:text-red-400"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </ScrollArea>
             {availableMateriales.length > 0 && (
-              <div className="mt-2 flex flex-wrap items-center gap-2">
+              <div className="mt-2 flex flex-wrap items-center gap-2 pt-2">
                 <select
                   value={addMaterialSelect}
                   onChange={(e) => setAddMaterialSelect(e.target.value)}
@@ -2107,72 +2113,76 @@ function ComposicionModal({
                 />
               </div>
             )}
-          </section>
+          </div>
 
-          <section>
+          <div className="flex-1 min-h-0 flex flex-col p-4">
             <h3 className="mb-2 font-medium text-slate-700 dark:text-slate-200">Mano de obra</h3>
-            <table className="w-full text-sm">
-              <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
-                <tr>
-                  <th className="px-3 py-1.5 text-left font-medium">Descripción</th>
-                  <th className="px-3 py-1.5 text-left font-medium">Unidad</th>
-                  <th className="px-3 py-1.5 text-right font-medium">Dosaje</th>
-                  <th className="w-20 px-3 py-1.5" />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                {manoObra.map((row) => (
-                  <tr key={row.componente_id} className={rowClassName()}>
-                    <td className="px-3 py-1.5 text-slate-800 dark:text-slate-200">{row.descripcion}</td>
-                    <td className="px-3 py-1.5 text-slate-800 dark:text-slate-200">{row.unidad}</td>
-                    <td className="px-3 py-1.5 text-right">
-                      {editingDosaje?.type === "mo" &&
-                      editingDosaje?.componenteId === row.componente_id ? (
-                        <input
-                          type="text"
-                          value={editingDosaje.value}
-                          onChange={(e) =>
-                            setEditingDosaje((p) => (p ? { ...p, value: e.target.value } : null))
-                          }
-                          onBlur={saveDosaje}
-                          onKeyDown={(e) => e.key === "Enter" && saveDosaje()}
-                          className="w-20 rounded border border-slate-300 px-1 py-0.5 text-right dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
-                          autoFocus
-                        />
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setEditingDosaje({
-                              type: "mo",
-                              componenteId: row.componente_id,
-                              value: formatDosaje(row.dosaje_milli),
-                            })
-                          }
-                          className="text-slate-700 hover:underline dark:text-slate-300 dark:hover:text-slate-100"
-                        >
-                          {formatDosaje(row.dosaje_milli)}
-                        </button>
-                      )}
-                    </td>
-                    <td className="px-3 py-1.5">
-                      <ToolButton
-                        icon={Trash2}
-                        label="Quitar"
-                        onClick={async () => {
-                          await onDeleteManoObra(item.id, row.componente_id);
-                          onRefresh();
-                        }}
-                        variant="ghost"
-                        className="h-7 w-7 !p-0 text-red-600 dark:text-red-400"
-                      />
-                    </td>
+            <ScrollArea className="flex-1">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 sticky top-0 z-10">
+                  <tr>
+                    <th className="px-3 py-1.5 text-left font-medium">Descripción</th>
+                    <th className="px-3 py-1.5 text-left font-medium">Unidad</th>
+                    <th className="px-3 py-1.5 text-right font-medium">Dosaje</th>
+                    <th className="w-20 px-3 py-1.5" />
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                  {manoObra.map((row) => (
+                    <tr key={row.componente_id} className={rowClassName()}>
+                      <td className="px-3 py-1.5 text-slate-800 dark:text-slate-200">
+                        {row.descripcion}
+                      </td>
+                      <td className="px-3 py-1.5 text-slate-800 dark:text-slate-200">{row.unidad}</td>
+                      <td className="px-3 py-1.5 text-right">
+                        {editingDosaje?.type === "mo" &&
+                        editingDosaje?.componenteId === row.componente_id ? (
+                          <input
+                            type="text"
+                            value={editingDosaje.value}
+                            onChange={(e) =>
+                              setEditingDosaje((p) => (p ? { ...p, value: e.target.value } : null))
+                            }
+                            onBlur={saveDosaje}
+                            onKeyDown={(e) => e.key === "Enter" && saveDosaje()}
+                            className="w-20 rounded border border-slate-300 px-1 py-0.5 text-right dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100"
+                            autoFocus
+                          />
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setEditingDosaje({
+                                type: "mo",
+                                componenteId: row.componente_id,
+                                value: formatDosaje(row.dosaje_milli),
+                              })
+                            }
+                            className="text-slate-700 hover:underline dark:text-slate-300 dark:hover:text-slate-100"
+                          >
+                            {formatDosaje(row.dosaje_milli)}
+                          </button>
+                        )}
+                      </td>
+                      <td className="px-3 py-1.5">
+                        <ToolButton
+                          icon={Trash2}
+                          label="Quitar"
+                          onClick={async () => {
+                            await onDeleteManoObra(item.id, row.componente_id);
+                            onRefresh();
+                          }}
+                          variant="ghost"
+                          className="h-7 w-7 !p-0 text-red-600 dark:text-red-400"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </ScrollArea>
             {availableManoObra.length > 0 && (
-              <div className="mt-2 flex flex-wrap items-center gap-2">
+              <div className="mt-2 flex flex-wrap items-center gap-2 pt-2">
                 <select
                   value={addManoObraSelect}
                   onChange={(e) => setAddManoObraSelect(e.target.value)}
@@ -2201,8 +2211,9 @@ function ComposicionModal({
                 />
               </div>
             )}
-          </section>
+          </div>
         </div>
+
         <div className="border-t border-slate-200 p-4 dark:border-slate-700">
           <button
             type="button"

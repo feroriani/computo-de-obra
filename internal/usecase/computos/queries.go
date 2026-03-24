@@ -16,6 +16,7 @@ func MaterialsAll(
 	rubroItemRepo ports.ComputoRubroItemRepository,
 	itemCompRepo ports.ItemCompositionRepository,
 	compMaterialRepo ports.ComponenteMaterialRepository,
+	extraRepo ports.ComputoItemMaterialExtraRepository,
 	versionID string,
 ) ([]dto.MaterialObraRowDTO, error) {
 	rubros, err := rubroRepo.ListByVersion(ctx, versionID)
@@ -60,6 +61,21 @@ func MaterialsAll(
 				byID[m.ComponenteID].cantidadMilli += qtyMilli
 				byID[m.ComponenteID].totalCentavos += cost
 			}
+		}
+	}
+
+	if extraRepo != nil {
+		extras, err := extraRepo.ListByVersion(ctx, versionID)
+		if err != nil {
+			return nil, err
+		}
+		for _, ex := range extras {
+			cost := roundDiv(ex.CantidadMilli*ex.CostoCentavos, 1000)
+			if byID[ex.ComponenteID] == nil {
+				byID[ex.ComponenteID] = &agg{descripcion: ex.Descripcion, unidad: ex.Unidad}
+			}
+			byID[ex.ComponenteID].cantidadMilli += ex.CantidadMilli
+			byID[ex.ComponenteID].totalCentavos += cost
 		}
 	}
 
@@ -164,6 +180,7 @@ func MaterialsByItem(
 	itemID string,
 	itemCompRepo ports.ItemCompositionRepository,
 	compMaterialRepo ports.ComponenteMaterialRepository,
+	extraRepo ports.ComputoItemMaterialExtraRepository,
 	versionID string,
 ) ([]dto.MaterialObraRowDTO, error) {
 	rubros, err := rubroRepo.ListByVersion(ctx, versionID)
@@ -186,11 +203,6 @@ func MaterialsByItem(
 		}
 	}
 
-	// Mimic frontend behavior: if item quantity is 0, show an empty table.
-	if itemQtyMilli == 0 {
-		return []dto.MaterialObraRowDTO{}, nil
-	}
-
 	type agg struct {
 		descripcion   string
 		unidad        string
@@ -199,27 +211,44 @@ func MaterialsByItem(
 	}
 	byID := make(map[string]*agg)
 
-	mats, err := itemCompRepo.ListMaterials(ctx, itemID)
-	if err != nil {
-		return nil, err
-	}
-	for _, m := range mats {
-		comp, err := compMaterialRepo.Get(ctx, m.ComponenteID)
+	if itemQtyMilli > 0 {
+		mats, err := itemCompRepo.ListMaterials(ctx, itemID)
 		if err != nil {
 			return nil, err
 		}
-		if comp == nil {
-			continue
-		}
+		for _, m := range mats {
+			comp, err := compMaterialRepo.Get(ctx, m.ComponenteID)
+			if err != nil {
+				return nil, err
+			}
+			if comp == nil {
+				continue
+			}
 
-		qtyMilli := roundDiv(itemQtyMilli*m.DosajeMilli, 1000)
-		cost := roundDiv(itemQtyMilli*m.DosajeMilli*comp.CostoCentavos, 1_000_000)
+			qtyMilli := roundDiv(itemQtyMilli*m.DosajeMilli, 1000)
+			cost := roundDiv(itemQtyMilli*m.DosajeMilli*comp.CostoCentavos, 1_000_000)
 
-		if byID[m.ComponenteID] == nil {
-			byID[m.ComponenteID] = &agg{descripcion: comp.Descripcion, unidad: comp.Unidad}
+			if byID[m.ComponenteID] == nil {
+				byID[m.ComponenteID] = &agg{descripcion: comp.Descripcion, unidad: comp.Unidad}
+			}
+			byID[m.ComponenteID].cantidadMilli += qtyMilli
+			byID[m.ComponenteID].totalCentavos += cost
 		}
-		byID[m.ComponenteID].cantidadMilli += qtyMilli
-		byID[m.ComponenteID].totalCentavos += cost
+	}
+
+	if extraRepo != nil {
+		extras, err := extraRepo.ListByVersionItem(ctx, versionID, itemID)
+		if err != nil {
+			return nil, err
+		}
+		for _, ex := range extras {
+			cost := roundDiv(ex.CantidadMilli*ex.CostoCentavos, 1000)
+			if byID[ex.ComponenteID] == nil {
+				byID[ex.ComponenteID] = &agg{descripcion: ex.Descripcion, unidad: ex.Unidad}
+			}
+			byID[ex.ComponenteID].cantidadMilli += ex.CantidadMilli
+			byID[ex.ComponenteID].totalCentavos += cost
+		}
 	}
 
 	ids := make([]string, 0, len(byID))

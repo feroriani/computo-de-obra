@@ -289,6 +289,28 @@ export namespace dto {
 		}
 	}
 	
+	export class ComputoItemMaterialExtraRowDTO {
+	    item_id: string;
+	    componente_id: string;
+	    descripcion: string;
+	    unidad: string;
+	    cantidad_milli: number;
+	    total_centavos: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ComputoItemMaterialExtraRowDTO(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.item_id = source["item_id"];
+	        this.componente_id = source["componente_id"];
+	        this.descripcion = source["descripcion"];
+	        this.unidad = source["unidad"];
+	        this.cantidad_milli = source["cantidad_milli"];
+	        this.total_centavos = source["total_centavos"];
+	    }
+	}
 	export class ComputoListRowDTO {
 	    series_id: string;
 	    version_id: string;

@@ -97,6 +97,7 @@ type App struct {
 	componenteMaterialRepo ports.ComponenteMaterialRepository
 	componenteManoObraRepo ports.ComponenteManoObraRepository
 	itemCompositionRepo    ports.ItemCompositionRepository
+	itemMaterialExtraRepo  ports.ComputoItemMaterialExtraRepository
 }
 
 // NewApp creates a new App.
@@ -127,6 +128,7 @@ func (a *App) Startup(ctx context.Context) {
 	a.componenteMaterialRepo = repositories.NewComponenteMaterialRepo(db)
 	a.componenteManoObraRepo = repositories.NewComponenteManoObraRepo(db)
 	a.itemCompositionRepo = repositories.NewItemCompositionRepo(db)
+	a.itemMaterialExtraRepo = repositories.NewComputoItemMaterialExtraRepo(db)
 }
 
 // DB returns the database connection (may be nil if startup failed).
@@ -148,7 +150,7 @@ func (a *App) ComputoList() ([]dto.ComputoListRowDTO, error) {
 	if a.computoRepo == nil || a.rubroRepo == nil || a.rubroItemRepo == nil || a.itemUnitCostsRepo == nil {
 		return nil, fmt.Errorf("database not ready")
 	}
-	rows, err := computos.List(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo)
+	rows, err := computos.List(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo, a.itemMaterialExtraRepo)
 	if err != nil {
 		return nil, err
 	}
@@ -202,7 +204,7 @@ func (a *App) ComputoGet(versionID string) (*dto.ComputoGetDTO, error) {
 	if a.computoRepo == nil {
 		return nil, fmt.Errorf("database not ready")
 	}
-	return computos.Get(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo, versionID)
+	return computos.Get(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo, a.itemMaterialExtraRepo, versionID)
 }
 
 // ComputoSetComitenteDescripcion updates descripcion/comitente for a computo version.
@@ -501,6 +503,45 @@ func (a *App) ItemCompositionDeleteManoObra(itemID string, componenteID string) 
 	return computos.ItemCompositionDeleteManoObra(a.ctx, a.itemCompositionRepo, itemID, componenteID)
 }
 
+// ComputoItemMaterialExtraList returns custom material rows for one version + item.
+func (a *App) ComputoItemMaterialExtraList(versionID string, itemID string) ([]dto.ComputoItemMaterialExtraRowDTO, error) {
+	if a.itemMaterialExtraRepo == nil {
+		return nil, fmt.Errorf("database not ready")
+	}
+	return computos.ComputoItemMaterialExtraList(a.ctx, a.itemMaterialExtraRepo, versionID, itemID)
+}
+
+// ComputoItemMaterialExtraAdd adds one custom material quantity for version + item.
+func (a *App) ComputoItemMaterialExtraAdd(versionID string, itemID string, componenteID string, cantidadMilli int64) error {
+	if a.itemMaterialExtraRepo == nil || a.computoRepo == nil {
+		return fmt.Errorf("database not ready")
+	}
+	return computos.ComputoItemMaterialExtraAdd(
+		a.ctx,
+		a.computoRepo,
+		a.itemMaterialExtraRepo,
+		versionID,
+		itemID,
+		componenteID,
+		cantidadMilli,
+	)
+}
+
+// ComputoItemMaterialExtraDelete removes one custom material quantity for version + item + componente.
+func (a *App) ComputoItemMaterialExtraDelete(versionID string, itemID string, componenteID string) error {
+	if a.itemMaterialExtraRepo == nil || a.computoRepo == nil {
+		return fmt.Errorf("database not ready")
+	}
+	return computos.ComputoItemMaterialExtraDelete(
+		a.ctx,
+		a.computoRepo,
+		a.itemMaterialExtraRepo,
+		versionID,
+		itemID,
+		componenteID,
+	)
+}
+
 // ComputoRubroItemsAdd adds an item to a computo rubro. Returns the new computo_rubro_item id.
 func (a *App) ComputoRubroItemsAdd(computoRubroID string, itemID string, cantidadMilli int64) (string, error) {
 	if a.rubroItemRepo == nil {
@@ -554,7 +595,7 @@ func (a *App) ComputoConfirm(versionID string) error {
 	if a.computoRepo == nil {
 		return fmt.Errorf("database not ready")
 	}
-	return computos.Confirm(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo, versionID)
+	return computos.Confirm(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo, a.itemMaterialExtraRepo, versionID)
 }
 
 // ComputoCreateNewVersionFrom clones a confirmed version into a new borrador and returns the new version.
@@ -588,7 +629,15 @@ func (a *App) MaterialsAll(versionID string) ([]dto.MaterialObraRowDTO, error) {
 	if a.rubroRepo == nil {
 		return nil, fmt.Errorf("database not ready")
 	}
-	return computos.MaterialsAll(a.ctx, a.rubroRepo, a.rubroItemRepo, a.itemCompositionRepo, a.componenteMaterialRepo, versionID)
+	return computos.MaterialsAll(
+		a.ctx,
+		a.rubroRepo,
+		a.rubroItemRepo,
+		a.itemCompositionRepo,
+		a.componenteMaterialRepo,
+		a.itemMaterialExtraRepo,
+		versionID,
+	)
 }
 
 // ManoObraAll returns aggregated labor for the computo version (listado por obra).
@@ -681,6 +730,7 @@ func (a *App) ExportComputoCSVAndSave(versionID string, rest []string) error {
 			a.rubroItemRepo,
 			a.itemCompositionRepo,
 			a.componenteMaterialRepo,
+			a.itemMaterialExtraRepo,
 			versionID,
 		)
 		if err != nil {
@@ -705,6 +755,7 @@ func (a *App) ExportComputoCSVAndSave(versionID string, rest []string) error {
 			itemID,
 			a.itemCompositionRepo,
 			a.componenteMaterialRepo,
+			a.itemMaterialExtraRepo,
 			versionID,
 		)
 		if err != nil {
@@ -806,7 +857,15 @@ func (a *App) ExportComputoRubrosCSVAndSave(versionID string) error {
 	}
 
 	// Use the same use-case as the editor to ensure line totals and obra totals match.
-	comp, err := computos.Get(a.ctx, a.computoRepo, a.rubroRepo, a.rubroItemRepo, a.itemUnitCostsRepo, versionID)
+	comp, err := computos.Get(
+		a.ctx,
+		a.computoRepo,
+		a.rubroRepo,
+		a.rubroItemRepo,
+		a.itemUnitCostsRepo,
+		a.itemMaterialExtraRepo,
+		versionID,
+	)
 	if err != nil {
 		return err
 	}

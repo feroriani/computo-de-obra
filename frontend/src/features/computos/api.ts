@@ -42,6 +42,9 @@ import {
   ItemCompositionSetManoObraDosaje,
   ItemCompositionDeleteMaterial,
   ItemCompositionDeleteManoObra,
+  ComputoItemMaterialExtraList,
+  ComputoItemMaterialExtraAdd,
+  ComputoItemMaterialExtraDelete,
   ComputoRubroItemsAdd,
   ComputoRubroItemsSetCantidad,
   ComputoRubroItemsTrash,
@@ -74,6 +77,7 @@ export type ItemMaterialRowDTO = dto.ItemMaterialRowDTO;
 export type ItemManoObraRowDTO = dto.ItemManoObraRowDTO;
 export type MaterialObraRowDTO = dto.MaterialObraRowDTO;
 export type ManoObraObraRowDTO = dto.ManoObraObraRowDTO;
+export type ComputoItemMaterialExtraRowDTO = dto.ComputoItemMaterialExtraRowDTO;
 
 export async function listComputos(): Promise<ComputoListRowDTO[]> {
   return ComputoList();
@@ -346,6 +350,30 @@ export async function itemCompositionDeleteManoObra(
   componenteId: string
 ): Promise<void> {
   return ItemCompositionDeleteManoObra(itemId, componenteId);
+}
+
+export async function computoItemMaterialExtraList(
+  versionId: string,
+  itemId: string
+): Promise<ComputoItemMaterialExtraRowDTO[]> {
+  return ComputoItemMaterialExtraList(versionId, itemId);
+}
+
+export async function computoItemMaterialExtraAdd(
+  versionId: string,
+  itemId: string,
+  componenteId: string,
+  cantidadMilli: number
+): Promise<void> {
+  return ComputoItemMaterialExtraAdd(versionId, itemId, componenteId, cantidadMilli);
+}
+
+export async function computoItemMaterialExtraDelete(
+  versionId: string,
+  itemId: string,
+  componenteId: string
+): Promise<void> {
+  return ComputoItemMaterialExtraDelete(versionId, itemId, componenteId);
 }
 
 /** Listado de materiales agregados por obra (versión). */

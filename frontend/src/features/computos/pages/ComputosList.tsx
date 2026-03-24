@@ -166,23 +166,25 @@ export function ComputosList() {
                         <td className="px-4 py-2 text-slate-700">
                           {formatCentavos(row.costo_m2_centavos)}
                         </td>
-                        <td className="px-4 py-2 text-right">
-                          <ToolButton
-                            icon={Trash2}
-                            label="Eliminar cómputo"
-                            onClick={() => setDeleteDialog({ series_id: row.series_id, codigo: row.codigo })}
-                            variant="ghost"
-                            className="mr-3 h-8 w-8 !p-0 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
-                            disabled={deleteLoading}
-                          />
-                          <ToolButton
-                            icon={FolderOpen}
-                            label="Abrir"
-                            onClick={() => navigate(`/computo/${row.version_id}`)}
-                            variant="ghost"
-                            showLabel
-                            className="text-primary hover:underline"
-                          />
+                        <td className="whitespace-nowrap px-4 py-2 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <ToolButton
+                              icon={Trash2}
+                              label="Eliminar cómputo"
+                              onClick={() => setDeleteDialog({ series_id: row.series_id, codigo: row.codigo })}
+                              variant="ghost"
+                              className="h-8 w-8 !p-0 text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
+                              disabled={deleteLoading}
+                            />
+                            <ToolButton
+                              icon={FolderOpen}
+                              label="Abrir"
+                              onClick={() => navigate(`/computo/${row.version_id}`)}
+                              variant="ghost"
+                              showLabel
+                              className="text-primary hover:underline"
+                            />
+                          </div>
                         </td>
                       </tr>
                     ))}

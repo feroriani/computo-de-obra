@@ -39,6 +39,12 @@ export function ComputoDeleteSeries(arg1:string):Promise<void>;
 
 export function ComputoGet(arg1:string):Promise<dto.ComputoGetDTO>;
 
+export function ComputoItemMaterialExtraAdd(arg1:string,arg2:string,arg3:string,arg4:number):Promise<void>;
+
+export function ComputoItemMaterialExtraDelete(arg1:string,arg2:string,arg3:string):Promise<void>;
+
+export function ComputoItemMaterialExtraList(arg1:string,arg2:string):Promise<Array<dto.ComputoItemMaterialExtraRowDTO>>;
+
 export function ComputoList():Promise<Array<dto.ComputoListRowDTO>>;
 
 export function ComputoRubroItemsAdd(arg1:string,arg2:string,arg3:number):Promise<string>;

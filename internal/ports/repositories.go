@@ -7,16 +7,16 @@ import (
 
 // ComputoListRow is a single row for the computos list.
 type ComputoListRow struct {
-	SeriesID           string
-	VersionID          string
-	Codigo             string
-	VersionN           int
-	Estado             string
-	Descripcion        string
-	FechaInicio        time.Time
-	SuperficieMilli    int64
-	TotalCentavos      *int64
-	CostoM2Centavos    *int64
+	SeriesID        string
+	VersionID       string
+	Codigo          string
+	VersionN        int
+	Estado          string
+	Descripcion     string
+	FechaInicio     time.Time
+	SuperficieMilli int64
+	TotalCentavos   *int64
+	CostoM2Centavos *int64
 }
 
 // ComputoCreateInput is input for creating a new computo (first version).
@@ -55,7 +55,7 @@ type SnapshotLineaData struct {
 	CantidadMilli        int64
 	UnitMaterialCentavos int64
 	UnitMOCentavos       int64
-	LineMaterialCentavos  int64
+	LineMaterialCentavos int64
 	LineMOCentavos       int64
 	LineTotalCentavos    int64
 }
@@ -91,7 +91,7 @@ type SnapshotLineaRow struct {
 	CantidadMilli        int64
 	UnitMaterialCentavos int64
 	UnitMOCentavos       int64
-	LineMaterialCentavos  int64
+	LineMaterialCentavos int64
 	LineMOCentavos       int64
 	LineTotalCentavos    int64
 }
@@ -113,10 +113,10 @@ type ComputoRepository interface {
 
 // ComputoRubroRow is a rubro assigned to a computo version (for editor).
 type ComputoRubroRow struct {
-	ID       string
-	RubroID  string
-	Nombre   string
-	Orden    int
+	ID      string
+	RubroID string
+	Nombre  string
+	Orden   int
 }
 
 // RubroCatalogRow is a row from the global rubro catalog (for selectors).
@@ -204,10 +204,10 @@ type ItemRepository interface {
 
 // ComponenteMaterialRow is a row from the global componente_material catalog.
 type ComponenteMaterialRow struct {
-	ID             string
-	Descripcion    string
-	Unidad         string
-	CostoCentavos  int64
+	ID            string
+	Descripcion   string
+	Unidad        string
+	CostoCentavos int64
 }
 
 // ComponenteMaterialRepository is CRUD for componente_material.
@@ -222,10 +222,10 @@ type ComponenteMaterialRepository interface {
 
 // ComponenteManoObraRow is a row from the global componente_mano_obra catalog.
 type ComponenteManoObraRow struct {
-	ID             string
-	Descripcion    string
-	Unidad         string
-	CostoCentavos  int64
+	ID            string
+	Descripcion   string
+	Unidad        string
+	CostoCentavos int64
 }
 
 // ComponenteManoObraRepository is CRUD for componente_mano_obra.
@@ -256,6 +256,19 @@ type ItemManoObraRow struct {
 	DosajeMilli  int64
 }
 
+// ComputoItemMaterialExtraRow is a custom material line per computo version + item.
+// cantidad_milli is a fixed quantity (not dosaje).
+type ComputoItemMaterialExtraRow struct {
+	ID            string
+	VersionID     string
+	ItemID        string
+	ComponenteID  string
+	Descripcion   string
+	Unidad        string
+	CostoCentavos int64
+	CantidadMilli int64
+}
+
 // ItemCompositionRepository manages item_material and item_mano_obra (dosaje_milli).
 type ItemCompositionRepository interface {
 	ListMaterials(ctx context.Context, itemID string) ([]ItemMaterialRow, error)
@@ -266,4 +279,13 @@ type ItemCompositionRepository interface {
 	SetManoObraDosaje(ctx context.Context, itemID, componenteID string, dosajeMilli int64) error
 	DeleteMaterial(ctx context.Context, itemID, componenteID string) error
 	DeleteManoObra(ctx context.Context, itemID, componenteID string) error
+}
+
+// ComputoItemMaterialExtraRepository manages custom material quantities per version + item.
+type ComputoItemMaterialExtraRepository interface {
+	ListByVersionItem(ctx context.Context, versionID, itemID string) ([]ComputoItemMaterialExtraRow, error)
+	ListByVersion(ctx context.Context, versionID string) ([]ComputoItemMaterialExtraRow, error)
+	Add(ctx context.Context, versionID, itemID, componenteID string, cantidadMilli int64) error
+	Delete(ctx context.Context, versionID, itemID, componenteID string) error
+	CopyByVersion(ctx context.Context, srcVersionID, dstVersionID string) error
 }

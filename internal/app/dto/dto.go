@@ -9,16 +9,16 @@ type AppInfoDTO struct {
 
 // ComputoListRowDTO is sent to the frontend for the computos list.
 type ComputoListRowDTO struct {
-	SeriesID        string  `json:"series_id"`
-	VersionID       string  `json:"version_id"`
-	Codigo          string  `json:"codigo"`
-	VersionN        int     `json:"version_n"`
-	Estado          string  `json:"estado"`
-	Descripcion     string  `json:"descripcion"`
-	FechaInicio     string  `json:"fecha_inicio"` // ISO date
-	SuperficieMilli int64   `json:"superficie_milli"`
-	TotalCentavos   *int64  `json:"total_centavos,omitempty"`
-	CostoM2Centavos *int64  `json:"costo_m2_centavos,omitempty"`
+	SeriesID        string `json:"series_id"`
+	VersionID       string `json:"version_id"`
+	Codigo          string `json:"codigo"`
+	VersionN        int    `json:"version_n"`
+	Estado          string `json:"estado"`
+	Descripcion     string `json:"descripcion"`
+	FechaInicio     string `json:"fecha_inicio"` // ISO date
+	SuperficieMilli int64  `json:"superficie_milli"`
+	TotalCentavos   *int64 `json:"total_centavos,omitempty"`
+	CostoM2Centavos *int64 `json:"costo_m2_centavos,omitempty"`
 }
 
 // ComputoCreateRequest is the request to create a new computo.
@@ -39,9 +39,9 @@ type ComputoCreateResultDTO struct {
 
 // ComputoGetDTO is the full computo for the editor (header + rubros with items + totals).
 type ComputoGetDTO struct {
-	Header  ComputoHeaderDTO   `json:"header"`
-	Rubros  []ComputoRubroDTO  `json:"rubros"`
-	Totales ComputoTotalesDTO  `json:"totales"`
+	Header  ComputoHeaderDTO  `json:"header"`
+	Rubros  []ComputoRubroDTO `json:"rubros"`
+	Totales ComputoTotalesDTO `json:"totales"`
 }
 
 // ComputoHeaderDTO is the computo version header.
@@ -58,14 +58,14 @@ type ComputoHeaderDTO struct {
 
 // ComputoRubroDTO is a rubro in the computo with its items and subtotals.
 type ComputoRubroDTO struct {
-	ID                    string               `json:"id"`
-	RubroID               string               `json:"rubro_id"`
-	Nombre                string               `json:"nombre"`
-	Orden                 int                  `json:"orden"`
-	Items                 []ComputoRubroItemDTO `json:"items"`
-	SubtotalMaterialCentavos int64            `json:"subtotal_material_centavos"`
-	SubtotalMOCentavos    int64                `json:"subtotal_mo_centavos"`
-	SubtotalCentavos      int64                `json:"subtotal_centavos"`
+	ID                       string                `json:"id"`
+	RubroID                  string                `json:"rubro_id"`
+	Nombre                   string                `json:"nombre"`
+	Orden                    int                   `json:"orden"`
+	Items                    []ComputoRubroItemDTO `json:"items"`
+	SubtotalMaterialCentavos int64                 `json:"subtotal_material_centavos"`
+	SubtotalMOCentavos       int64                 `json:"subtotal_mo_centavos"`
+	SubtotalCentavos         int64                 `json:"subtotal_centavos"`
 }
 
 // ComputoRubroItemDTO is an item line with quantity and computed costs.
@@ -117,11 +117,11 @@ type ItemCatalogPageDTO struct {
 
 // ComputoRubroItemTrashedDTO is a trashed item (for papelera list).
 type ComputoRubroItemTrashedDTO struct {
-	ID             string `json:"id"`
-	ItemID         string `json:"item_id"`
-	Tarea          string `json:"tarea"`
-	Unidad         string `json:"unidad"`
-	CantidadMilli  int64  `json:"cantidad_milli"`
+	ID            string `json:"id"`
+	ItemID        string `json:"item_id"`
+	Tarea         string `json:"tarea"`
+	Unidad        string `json:"unidad"`
+	CantidadMilli int64  `json:"cantidad_milli"`
 }
 
 // --- Catálogos globales (CRUD) ---
@@ -224,18 +224,28 @@ type ItemManoObraRowDTO struct {
 
 // MaterialObraRowDTO is an aggregated material line for a computo version (listado por obra).
 type MaterialObraRowDTO struct {
-	ComponenteID   string `json:"componente_id"`
-	Descripcion    string `json:"descripcion"`
-	Unidad         string `json:"unidad"`
-	CantidadMilli  int64  `json:"cantidad_milli"`
-	TotalCentavos  int64  `json:"total_centavos"`
+	ComponenteID  string `json:"componente_id"`
+	Descripcion   string `json:"descripcion"`
+	Unidad        string `json:"unidad"`
+	CantidadMilli int64  `json:"cantidad_milli"`
+	TotalCentavos int64  `json:"total_centavos"`
+}
+
+// ComputoItemMaterialExtraRowDTO is a custom material line per computo version + item.
+type ComputoItemMaterialExtraRowDTO struct {
+	ItemID        string `json:"item_id"`
+	ComponenteID  string `json:"componente_id"`
+	Descripcion   string `json:"descripcion"`
+	Unidad        string `json:"unidad"`
+	CantidadMilli int64  `json:"cantidad_milli"`
+	TotalCentavos int64  `json:"total_centavos"`
 }
 
 // ManoObraObraRowDTO is an aggregated labor line for a computo version (listado por obra).
 type ManoObraObraRowDTO struct {
-	ComponenteID   string `json:"componente_id"`
-	Descripcion    string `json:"descripcion"`
-	Unidad         string `json:"unidad"`
-	CantidadMilli  int64  `json:"cantidad_milli"`
-	TotalCentavos  int64  `json:"total_centavos"`
+	ComponenteID  string `json:"componente_id"`
+	Descripcion   string `json:"descripcion"`
+	Unidad        string `json:"unidad"`
+	CantidadMilli int64  `json:"cantidad_milli"`
+	TotalCentavos int64  `json:"total_centavos"`
 }

@@ -13,6 +13,7 @@ func List(
 	rubroRepo ports.ComputoRubroRepository,
 	rubroItemRepo ports.ComputoRubroItemRepository,
 	unitCostsRepo ports.ItemRepository,
+	extraRepo ports.ComputoItemMaterialExtraRepository,
 ) ([]ports.ComputoListRow, error) {
 	rows, err := repo.List(ctx)
 	if err != nil {
@@ -26,7 +27,7 @@ func List(
 			continue
 		}
 
-		getDTO, err := Get(ctx, repo, rubroRepo, rubroItemRepo, unitCostsRepo, rows[i].VersionID)
+		getDTO, err := Get(ctx, repo, rubroRepo, rubroItemRepo, unitCostsRepo, extraRepo, rows[i].VersionID)
 		if err != nil {
 			return nil, err
 		}

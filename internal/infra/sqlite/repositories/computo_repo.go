@@ -463,6 +463,38 @@ func (r *ComputoRepo) CreateNewVersionFrom(ctx context.Context, versionIDConfirm
 		}
 	}
 
+	extraRows, err := tx.QueryContext(ctx, `
+		SELECT item_id, componente_id, cantidad_milli
+		FROM computo_item_material_extra
+		WHERE version_id = ?
+	`, versionIDConfirmado)
+	if err != nil {
+		return nil, err
+	}
+	for extraRows.Next() {
+		var itemID string
+		var componenteID string
+		var cantidadMilli int64
+		if err := extraRows.Scan(&itemID, &componenteID, &cantidadMilli); err != nil {
+			_ = extraRows.Close()
+			return nil, err
+		}
+		if _, err := tx.ExecContext(ctx, `
+			INSERT INTO computo_item_material_extra (id, version_id, item_id, componente_id, cantidad_milli, created_at, updated_at)
+			VALUES (?, ?, ?, ?, ?, ?, ?)
+		`, uuid.New().String(), newVersionID, itemID, componenteID, cantidadMilli, now, now); err != nil {
+			_ = extraRows.Close()
+			return nil, err
+		}
+	}
+	if err := extraRows.Err(); err != nil {
+		_ = extraRows.Close()
+		return nil, err
+	}
+	if err := extraRows.Close(); err != nil {
+		return nil, err
+	}
+
 	if err := tx.Commit(); err != nil {
 		return nil, err
 	}

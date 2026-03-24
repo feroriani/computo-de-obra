@@ -14,9 +14,10 @@ func Confirm(
 	rubroRepo ports.ComputoRubroRepository,
 	itemRepo ports.ComputoRubroItemRepository,
 	unitCostsRepo ports.ItemRepository,
+	extraRepo ports.ComputoItemMaterialExtraRepository,
 	versionID string,
 ) error {
-	dto, err := Get(ctx, computoRepo, rubroRepo, itemRepo, unitCostsRepo, versionID)
+	dto, err := Get(ctx, computoRepo, rubroRepo, itemRepo, unitCostsRepo, extraRepo, versionID)
 	if err != nil {
 		return err
 	}
@@ -35,7 +36,7 @@ func Confirm(
 				CantidadMilli:        it.CantidadMilli,
 				UnitMaterialCentavos: it.UnitMaterialCentavos,
 				UnitMOCentavos:       it.UnitMOCentavos,
-				LineMaterialCentavos:  it.LineMaterialCentavos,
+				LineMaterialCentavos: it.LineMaterialCentavos,
 				LineMOCentavos:       it.LineMOCentavos,
 				LineTotalCentavos:    it.LineTotalCentavos,
 			})

@@ -74,6 +74,18 @@ export function ComputoGet(arg1) {
   return window['go']['app']['App']['ComputoGet'](arg1);
 }
 
+export function ComputoItemMaterialExtraAdd(arg1, arg2, arg3, arg4) {
+  return window['go']['app']['App']['ComputoItemMaterialExtraAdd'](arg1, arg2, arg3, arg4);
+}
+
+export function ComputoItemMaterialExtraDelete(arg1, arg2, arg3) {
+  return window['go']['app']['App']['ComputoItemMaterialExtraDelete'](arg1, arg2, arg3);
+}
+
+export function ComputoItemMaterialExtraList(arg1, arg2) {
+  return window['go']['app']['App']['ComputoItemMaterialExtraList'](arg1, arg2);
+}
+
 export function ComputoList() {
   return window['go']['app']['App']['ComputoList']();
 }

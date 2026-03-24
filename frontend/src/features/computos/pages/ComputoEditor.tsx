@@ -237,8 +237,30 @@ export function ComputoEditor() {
   const [addItemSearch, setAddItemSearch] = useState("");
   const [rubroCatalog, setRubroCatalog] = useState<RubroCatalogItemDTO[]>([]);
   const [itemCatalog, setItemCatalog] = useState<ItemCatalogItemDTO[]>([]);
-  const [trashedItems, setTrashedItems] = useState<ComputoRubroItemTrashedDTO[]>([]);
+  const [trashDrawerOpen, setTrashDrawerOpen] = useState(false);
+  const [allTrashedItems, setAllTrashedItems] = useState<(ComputoRubroItemTrashedDTO & { rubro_id: string })[]>([]);
   const [actionLoading, setActionLoading] = useState(false);
+
+  const loadAllTrashedItems = useCallback(async () => {
+    if (!computo?.rubros) return;
+    try {
+      const allPromises = computo.rubros.map(async (r) => {
+        const items = await computoRubroTrashList(r.id);
+        return items.map(it => ({ ...it, rubro_id: r.id }));
+      });
+      const results = await Promise.all(allPromises);
+      setAllTrashedItems(results.flat());
+    } catch (e) {
+      console.error("Error loading all trashed items:", e);
+    }
+  }, [computo?.rubros]);
+
+  useEffect(() => {
+    if (trashDrawerOpen) {
+      loadAllTrashedItems();
+    }
+  }, [trashDrawerOpen, loadAllTrashedItems]);
+
   const [exportCsvLoading, setExportCsvLoading] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [superficieM2Str, setSuperficieM2Str] = useState("");
@@ -283,16 +305,19 @@ export function ComputoEditor() {
       .finally(() => setLoading(false));
   }, [versionId]);
 
-  // Load trashed items when selected rubro changes
+  // Load trashed items for the selected rubro (for the inline trash, which we'll remove soon)
+  // and also for the global trash if needed.
   useEffect(() => {
     if (!selectedRubroId) {
-      setTrashedItems([]);
       return;
     }
+    // We still keep this for now to avoid breaking existing logic while we transition
     computoRubroTrashList(selectedRubroId)
-      .then(setTrashedItems)
-      .catch(() => setTrashedItems([]));
-  }, [selectedRubroId]);
+      .then((items) => {
+        if (trashDrawerOpen) loadAllTrashedItems();
+      })
+      .catch(() => {});
+  }, [selectedRubroId, trashDrawerOpen, loadAllTrashedItems]);
 
   const openSuperficieDialog = useCallback(() => {
     if (computo?.header) {
@@ -506,8 +531,7 @@ export function ComputoEditor() {
       }
 
       try {
-        // If it's not the currently selected rubro, we still need to validate papelera.
-        const trash = computoRubroId === selectedRubroId ? trashedItems : await computoRubroTrashList(computoRubroId);
+        const trash = await computoRubroTrashList(computoRubroId);
         if (trash.length > 0) {
           setRubroTrashAction({ id: rubro.id, nombre: rubro.nombre, count: trash.length });
           return;
@@ -518,7 +542,7 @@ export function ComputoEditor() {
 
       setRubroDeleteConfirm({ id: rubro.id, nombre: rubro.nombre });
     },
-    [isBorrador, rubros, selectedRubroId, trashedItems, loadComputo]
+    [isBorrador, rubros, loadComputo]
   );
 
   const handleEmptyRubroTrash = useCallback(async () => {
@@ -526,10 +550,7 @@ export function ComputoEditor() {
     setActionLoading(true);
     try {
       await computoRubroTrashEmpty(rubroTrashAction.id);
-      // Ensure UI reflects trash emptied (especially if rubro is selected).
-      if (selectedRubroId === rubroTrashAction.id) {
-        setTrashedItems([]);
-      }
+      loadAllTrashedItems();
       setRubroTrashAction(null);
     } catch (e) {
       setRubroTrashAction(null);
@@ -537,7 +558,7 @@ export function ComputoEditor() {
     } finally {
       setActionLoading(false);
     }
-  }, [rubroTrashAction, selectedRubroId]);
+  }, [rubroTrashAction, loadAllTrashedItems]);
 
   const confirmDeleteRubro = useCallback(async () => {
     if (!rubroDeleteConfirm) return;
@@ -590,34 +611,30 @@ export function ComputoEditor() {
 
   const handleTrashItem = useCallback(
     (computoRubroItemId: string) => {
-      if (!selectedRubroId) return;
       setActionLoading(true);
       computoRubroItemsTrash(computoRubroItemId)
         .then(() => {
           loadComputo();
-          return computoRubroTrashList(selectedRubroId);
+          loadAllTrashedItems();
         })
-        .then(setTrashedItems)
         .catch((e) => setError(e instanceof Error ? e.message : "Error al enviar a papelera"))
         .finally(() => setActionLoading(false));
     },
-    [selectedRubroId, loadComputo]
+    [loadComputo, loadAllTrashedItems]
   );
 
   const handleRestoreItem = useCallback(
     (computoRubroItemId: string) => {
-      if (!selectedRubroId) return;
       setActionLoading(true);
       computoRubroTrashRestore(computoRubroItemId)
         .then(() => {
           loadComputo();
-          return computoRubroTrashList(selectedRubroId);
+          loadAllTrashedItems();
         })
-        .then(setTrashedItems)
         .catch((e) => setError(e instanceof Error ? e.message : "Error al restaurar"))
         .finally(() => setActionLoading(false));
     },
-    [selectedRubroId, loadComputo]
+    [loadComputo, loadAllTrashedItems]
   );
 
   const handleCantidadBlur = useCallback(
@@ -727,6 +744,14 @@ export function ComputoEditor() {
                 showLabel
               />
             )}
+            <ToolButton
+              icon={Trash2}
+              label="Papelera"
+              onClick={() => setTrashDrawerOpen(true)}
+              variant="secondary"
+              showLabel
+              title="Ver ítems eliminados"
+            />
             <div className="mx-1 h-6 w-px bg-slate-300 dark:bg-slate-600" />
             <ToolButton
               icon={Undo2}
@@ -939,27 +964,6 @@ export function ComputoEditor() {
               ) : selectedRubro ? (
                 <p className="px-4 py-6 text-slate-500 dark:text-slate-400">Este rubro no tiene ítems. Agregá uno desde el catálogo.</p>
               ) : null}
-              {/* Papelera del rubro */}
-              {isBorrador && selectedRubro && trashedItems.length > 0 && (
-                <div id="rubro-trash" className="border-t border-slate-200 px-4 py-3 dark:border-slate-700">
-                  <h3 className="mb-2 text-sm font-medium text-slate-600 dark:text-slate-400">Papelera</h3>
-                  <ul className="space-y-1 text-sm">
-                    {trashedItems.map((t) => (
-                      <li key={t.id} className="flex items-center justify-between rounded bg-slate-50 px-2 py-1 dark:bg-slate-700">
-                        <span className="truncate text-slate-700 dark:text-slate-200">{t.tarea}</span>
-                        <span className="ml-2 shrink-0 text-slate-500 dark:text-slate-400">{(t.cantidad_milli / 1000).toFixed(2)} {t.unidad}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleRestoreItem(t.id)}
-                          className="ml-2 shrink-0 text-primary hover:underline"
-                        >
-                          Restaurar
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
             </ScrollArea>
           </ListadoPanel>
           </div>
@@ -1394,6 +1398,77 @@ export function ComputoEditor() {
               Para eliminar el rubro, primero restaurá esos ítems o vaciá la papelera (eliminación definitiva).
             </p>
           </Modal>
+        )}
+
+        {/* Drawer de Papelera */}
+        {trashDrawerOpen && (
+          <div className="fixed inset-0 z-40 flex justify-end bg-black/20 backdrop-blur-sm" onClick={() => setTrashDrawerOpen(false)}>
+            <div
+              className="h-full w-full max-w-md border-l border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-800"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex h-full flex-col">
+                <div className="flex items-center justify-between border-b border-slate-200 px-4 py-4 dark:border-slate-700">
+                  <h2 className="text-lg font-medium text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                    <Trash2 className="size-5 text-slate-400" />
+                    Papelera global
+                  </h2>
+                  <button
+                    onClick={() => setTrashDrawerOpen(false)}
+                    className="rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200"
+                  >
+                    <X className="size-6" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <ScrollArea mode="auto" className="h-full p-4">
+                    {allTrashedItems.length === 0 ? (
+                      <div className="flex h-full flex-col items-center justify-center text-slate-500 dark:text-slate-400">
+                        <Trash2 className="mb-2 size-12 opacity-20" />
+                        <p>La papelera está vacía</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {allTrashedItems.map((item) => {
+                          const rubro = rubros.find(r => r.id === item.rubro_id);
+                          return (
+                            <div
+                              key={item.id}
+                              className="group rounded-lg border border-slate-200 bg-slate-50 p-3 transition-colors hover:border-primary/30 dark:border-slate-700 dark:bg-slate-900/50"
+                            >
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0 flex-1">
+                                  <p className="font-medium text-slate-800 dark:text-slate-200 truncate">
+                                    {item.tarea}
+                                  </p>
+                                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                    {rubro?.nombre || "Rubro desconocido"} • {formatCantidad(item.cantidad_milli)} {item.unidad}
+                                  </p>
+                                </div>
+                                <button
+                                  onClick={() => handleRestoreItem(item.id)}
+                                  className="shrink-0 rounded bg-white px-2 py-1 text-xs font-medium text-primary shadow-sm border border-slate-200 hover:bg-primary hover:text-white transition-all dark:bg-slate-800 dark:border-slate-600 dark:text-teal-400 dark:hover:bg-teal-600 dark:hover:text-white"
+                                >
+                                  Restaurar
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </ScrollArea>
+                </div>
+                {allTrashedItems.length > 0 && (
+                  <div className="border-t border-slate-200 p-4 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 text-center">
+                      Los ítems en la papelera no afectan los totales de la obra.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         )}
 
         {rubroDeleteMsg && (
