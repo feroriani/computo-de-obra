@@ -146,6 +146,10 @@ export function ExportComputoRubrosCSVAndSave(arg1) {
   return window['go']['app']['App']['ExportComputoRubrosCSVAndSave'](arg1);
 }
 
+export function ExportQuickItemEstimateCSVAndSave(arg1, arg2) {
+  return window['go']['app']['App']['ExportQuickItemEstimateCSVAndSave'](arg1, arg2);
+}
+
 export function GetAppInfo() {
   return window['go']['app']['App']['GetAppInfo']();
 }
@@ -216,6 +220,10 @@ export function ManoObraAll(arg1) {
 
 export function MaterialsAll(arg1) {
   return window['go']['app']['App']['MaterialsAll'](arg1);
+}
+
+export function QuickItemEstimate(arg1, arg2) {
+  return window['go']['app']['App']['QuickItemEstimate'](arg1, arg2);
 }
 
 export function RubroCatalogCreate(arg1) {

@@ -18,7 +18,7 @@ Definir arquitectura, modelo de datos y flujo de la app de escritorio (Wails), e
 
 ### Frontend (React + Vite + Tailwind)
 - **Estructura:** `src/app/App.tsx` (HashRouter, rutas); `src/features/computos/` (api.ts, pages, components).
-- **Rutas:** `/` → lista de cómputos; `/computo/:versionId` → editor (placeholder).
+- **Rutas:** `/` → lista de cómputos; `/computo/:versionId` → editor; `/consulta-rapida` → calculadora rápida por ítem.
 - **Pantalla principal:** tabla (código, versión, descripción, fecha, m², estado, total, costo/m²), botón “Nuevo cómputo”, “Abrir” por fila. Diálogo crear: descripción, superficie (m²), fecha inicio; al crear redirige a `/computo/:versionId`.
 - **Bindings:** Wails genera `wailsjs/go/app/App` (funciones) y `wailsjs/go/models` (namespace `dto` con DTOs). En `features/computos/api.ts` se importan funciones de App y tipos de models; se reexportan tipos para el resto del frontend.
 
@@ -50,7 +50,7 @@ Definir arquitectura, modelo de datos y flujo de la app de escritorio (Wails), e
    Backend: `ComputoConfirm(versionID)` (calcular totales y persistir en tablas computo_snapshot*); `ComputoCreateNewVersionFrom(versionIDConfirmado)` (clonar desde snapshot a nuevo borrador). Frontend: botón Confirmar (solo borrador), botón “Nueva versión desde esta” (solo confirmados); barra de app con selector de tema claro/oscuro (persistido en localStorage).
 
 5. **Consultas y export** ✅  
-   Listados materiales/mano de obra (por ítem y por obra): **por ítem** ya existía; **por obra**: MaterialsAll(versionID), ManoObraAll(versionID); en el editor, sección «Listados por obra» con pestañas Materiales / Mano de obra. **Export CSV**: ExportComputoCSVAndSave(versionID) genera CSV (materiales + mano de obra) con separador `;`, abre diálogo «Guardar como» y escribe el archivo; botón «Exportar a CSV» en la sección listados. **Materiales extra por versión+ítem:** impactan en listados, export CSV y totales de obra manteniendo la estructura de subtotales/totales actual. **Backup manual**: BackupDB() abre diálogo y copia `computo.db` a la ruta elegida; botón «Backup DB» en la barra superior. Pendiente opcional: export Excel/PDF (mismo contenido que CSV).
+   Listados materiales/mano de obra (por ítem y por obra): **por ítem** ya existía; **por obra**: MaterialsAll(versionID), ManoObraAll(versionID); en el editor, sección «Listados por obra» con pestañas Materiales / Mano de obra. **Export CSV**: ExportComputoCSVAndSave(versionID) genera CSV (materiales + mano de obra) con separador `;`, abre diálogo «Guardar como» y escribe el archivo; botón «Exportar a CSV» en la sección listados. **Consulta rápida (sin persistencia):** `QuickItemEstimate(itemID, cantidadMilli)` calcula materiales/MO para un ítem sin crear cómputo ni guardar en DB, con pantalla `/consulta-rapida`; `ExportQuickItemEstimateCSVAndSave(itemID, cantidadMilli)` exporta ese resultado a CSV. **Materiales extra por versión+ítem:** impactan en listados, export CSV y totales de obra manteniendo la estructura de subtotales/totales actual. **Backup manual**: BackupDB() abre diálogo y copia `computo.db` a la ruta elegida; botón «Backup DB» en la barra superior. Pendiente opcional: export Excel/PDF (mismo contenido que CSV).
 
 6. **Opcional (más adelante)**  
    Sync con Turso: pull en otro equipo, push de cambios; IDs y `updated_at` ya preparados.

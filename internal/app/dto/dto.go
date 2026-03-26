@@ -249,3 +249,16 @@ type ManoObraObraRowDTO struct {
 	CantidadMilli int64  `json:"cantidad_milli"`
 	TotalCentavos int64  `json:"total_centavos"`
 }
+
+// QuickItemEstimateDTO is a non-persistent quick query for one item and quantity.
+type QuickItemEstimateDTO struct {
+	ItemID                   string               `json:"item_id"`
+	ItemTarea                string               `json:"item_tarea"`
+	ItemUnidad               string               `json:"item_unidad"`
+	CantidadMilli            int64                `json:"cantidad_milli"`
+	Materiales               []MaterialObraRowDTO `json:"materiales"`
+	ManoObra                 []ManoObraObraRowDTO `json:"mano_obra"`
+	SubtotalMaterialCentavos int64                `json:"subtotal_material_centavos"`
+	SubtotalMOCentavos       int64                `json:"subtotal_mo_centavos"`
+	TotalCentavos            int64                `json:"total_centavos"`
+}

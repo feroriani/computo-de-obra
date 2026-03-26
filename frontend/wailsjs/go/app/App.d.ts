@@ -75,6 +75,8 @@ export function ExportComputoCSVAndSave(arg1:string,arg2:Array<string>):Promise<
 
 export function ExportComputoRubrosCSVAndSave(arg1:string):Promise<void>;
 
+export function ExportQuickItemEstimateCSVAndSave(arg1:string,arg2:number):Promise<void>;
+
 export function GetAppInfo():Promise<dto.AppInfoDTO>;
 
 export function Greet(arg1:string):Promise<string>;
@@ -110,6 +112,8 @@ export function ItemCompositionSetMaterialDosaje(arg1:string,arg2:string,arg3:nu
 export function ManoObraAll(arg1:string):Promise<Array<dto.ManoObraObraRowDTO>>;
 
 export function MaterialsAll(arg1:string):Promise<Array<dto.MaterialObraRowDTO>>;
+
+export function QuickItemEstimate(arg1:string,arg2:number):Promise<dto.QuickItemEstimateDTO>;
 
 export function RubroCatalogCreate(arg1:string):Promise<string>;
 

@@ -78,6 +78,17 @@ export type ItemManoObraRowDTO = dto.ItemManoObraRowDTO;
 export type MaterialObraRowDTO = dto.MaterialObraRowDTO;
 export type ManoObraObraRowDTO = dto.ManoObraObraRowDTO;
 export type ComputoItemMaterialExtraRowDTO = dto.ComputoItemMaterialExtraRowDTO;
+export type QuickItemEstimateDTO = {
+  item_id: string;
+  item_tarea: string;
+  item_unidad: string;
+  cantidad_milli: number;
+  materiales: MaterialObraRowDTO[];
+  mano_obra: ManoObraObraRowDTO[];
+  subtotal_material_centavos: number;
+  subtotal_mo_centavos: number;
+  total_centavos: number;
+};
 
 export async function listComputos(): Promise<ComputoListRowDTO[]> {
   return ComputoList();
@@ -406,6 +417,30 @@ export async function exportComputoRubrosCSVAndSave(versionId: string): Promise<
   const fn = (WailsApp as any).ExportComputoRubrosCSVAndSave as undefined | ((arg1: string) => Promise<void>);
   if (!fn) throw new Error("ExportComputoRubrosCSVAndSave no está disponible");
   return fn(versionId);
+}
+
+/** Consulta rápida de un ítem por cantidad (no persiste en base de datos). */
+export async function quickItemEstimate(itemId: string, cantidadMilli: number): Promise<QuickItemEstimateDTO> {
+  const fn = (WailsApp as any).QuickItemEstimate as undefined | ((arg1: string, arg2: number) => Promise<QuickItemEstimateDTO>);
+  if (fn) return fn(itemId, cantidadMilli);
+  const runtimeFn = (window as any)?.go?.app?.App?.QuickItemEstimate as
+    | undefined
+    | ((arg1: string, arg2: number) => Promise<QuickItemEstimateDTO>);
+  if (!runtimeFn) throw new Error("QuickItemEstimate no está disponible");
+  return runtimeFn(itemId, cantidadMilli);
+}
+
+/** Exporta a CSV la consulta rápida de un ítem (sin persistencia). */
+export async function exportQuickItemEstimateCSVAndSave(itemId: string, cantidadMilli: number): Promise<void> {
+  const fn = (WailsApp as any).ExportQuickItemEstimateCSVAndSave as
+    | undefined
+    | ((arg1: string, arg2: number) => Promise<void>);
+  if (fn) return fn(itemId, cantidadMilli);
+  const runtimeFn = (window as any)?.go?.app?.App?.ExportQuickItemEstimateCSVAndSave as
+    | undefined
+    | ((arg1: string, arg2: number) => Promise<void>);
+  if (!runtimeFn) throw new Error("ExportQuickItemEstimateCSVAndSave no está disponible");
+  return runtimeFn(itemId, cantidadMilli);
 }
 
 export async function getAppInfo(): Promise<AppInfoDTO> {

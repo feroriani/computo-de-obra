@@ -648,6 +648,22 @@ func (a *App) ManoObraAll(versionID string) ([]dto.ManoObraObraRowDTO, error) {
 	return computos.ManoObraAll(a.ctx, a.rubroRepo, a.rubroItemRepo, a.itemCompositionRepo, a.componenteManoObraRepo, versionID)
 }
 
+// QuickItemEstimate calculates a non-persistent estimate for one item and quantity.
+func (a *App) QuickItemEstimate(itemID string, cantidadMilli int64) (*dto.QuickItemEstimateDTO, error) {
+	if a.itemUnitCostsRepo == nil || a.itemCompositionRepo == nil || a.componenteMaterialRepo == nil || a.componenteManoObraRepo == nil {
+		return nil, fmt.Errorf("database not ready")
+	}
+	return computos.QuickItemEstimate(
+		a.ctx,
+		a.itemUnitCostsRepo,
+		a.itemCompositionRepo,
+		a.componenteMaterialRepo,
+		a.componenteManoObraRepo,
+		itemID,
+		cantidadMilli,
+	)
+}
+
 // BackupDB opens a save dialog and copies the database file to the chosen path.
 // Returns an error if the dialog is cancelled or the copy fails.
 func (a *App) BackupDB() error {
@@ -836,6 +852,70 @@ func (a *App) ExportComputoCSVAndSave(versionID string, rest []string) error {
 	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
 		DefaultFilename: defaultFilename,
 		Title:           "Exportar cómputo a CSV",
+		Filters: []runtime.FileFilter{
+			{DisplayName: "CSV (*.csv)", Pattern: "*.csv"},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	if path == "" {
+		return fmt.Errorf("cancelado por el usuario")
+	}
+	return os.WriteFile(path, []byte(buf.String()), 0644)
+}
+
+// ExportQuickItemEstimateCSVAndSave generates a CSV for a non-persistent quick item estimate.
+func (a *App) ExportQuickItemEstimateCSVAndSave(itemID string, cantidadMilli int64) error {
+	estimate, err := a.QuickItemEstimate(itemID, cantidadMilli)
+	if err != nil {
+		return err
+	}
+
+	var buf strings.Builder
+	w := csv.NewWriter(&buf)
+	w.Comma = ';' // Excel en español suele usar punto y coma
+
+	_ = w.Write([]string{"sep=;"})
+	_ = w.Write([]string{"Consulta rápida de ítem"})
+	_ = w.Write([]string{"Ítem", estimate.ItemTarea})
+	_ = w.Write([]string{"Unidad", estimate.ItemUnidad})
+	_ = w.Write([]string{"Cantidad", formatScaledEs(roundMilliToCenti(estimate.CantidadMilli), 100, 2)})
+	_ = w.Write(nil)
+	_ = w.Write([]string{"Materiales"})
+	_ = w.Write(nil)
+	_ = w.Write([]string{"Descripción", "Unidad", "Cantidad", "Total (ARS)"})
+	for _, r := range estimate.Materiales {
+		qty := formatScaledEs(roundMilliToCenti(r.CantidadMilli), 100, 2)
+		total := formatScaledEs(r.TotalCentavos, 100, 2)
+		_ = w.Write([]string{r.Descripcion, r.Unidad, qty, total})
+	}
+	_ = w.Write([]string{"Subtotal materiales", "", "", formatScaledEs(estimate.SubtotalMaterialCentavos, 100, 2)})
+	_ = w.Write(nil)
+	_ = w.Write([]string{"Mano de obra"})
+	_ = w.Write(nil)
+	_ = w.Write([]string{"Descripción", "Unidad", "Cantidad", "Total (ARS)"})
+	for _, r := range estimate.ManoObra {
+		qty := formatScaledEs(roundMilliToCenti(r.CantidadMilli), 100, 2)
+		total := formatScaledEs(r.TotalCentavos, 100, 2)
+		_ = w.Write([]string{r.Descripcion, r.Unidad, qty, total})
+	}
+	_ = w.Write([]string{"Subtotal mano de obra", "", "", formatScaledEs(estimate.SubtotalMOCentavos, 100, 2)})
+	_ = w.Write(nil)
+	_ = w.Write([]string{"Total materiales + mano de obra", "", "", formatScaledEs(estimate.TotalCentavos, 100, 2)})
+	w.Flush()
+	if w.Error() != nil {
+		return w.Error()
+	}
+
+	defaultFilename := fmt.Sprintf(
+		"consulta_rapida_%s_%s.csv",
+		sanitizeFilenamePart(estimate.ItemTarea, "item"),
+		sanitizeFilenamePart(formatScaledEs(roundMilliToCenti(estimate.CantidadMilli), 100, 2), "cantidad"),
+	)
+	path, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+		DefaultFilename: defaultFilename,
+		Title:           "Exportar consulta rápida a CSV",
 		Filters: []runtime.FileFilter{
 			{DisplayName: "CSV (*.csv)", Pattern: "*.csv"},
 		},

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { Plus, Trash2, FolderOpen, Book } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Plus, Trash2, FolderOpen, Book, Calculator } from "lucide-react";
 import { ToolButton } from "../../../components/ToolButton";
 import { listComputos, createComputo, deleteComputoSeries } from "../api";
 import type { ComputoListRowDTO, ComputoCreateResultDTO } from "../api";
@@ -81,6 +81,14 @@ export function ComputosList() {
             Cómputo de obra
           </h1>
           <div className="flex items-center gap-3">
+            <ToolButton
+              icon={Calculator}
+              label="Consulta rápida"
+              onClick={() => navigate("/consulta-rapida")}
+              variant="ghost"
+              showLabel
+              className="text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+            />
             <ToolButton
               icon={Book}
               label="Catálogos"

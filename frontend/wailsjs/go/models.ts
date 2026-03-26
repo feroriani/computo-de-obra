@@ -492,6 +492,52 @@ export namespace dto {
 	        this.total_centavos = source["total_centavos"];
 	    }
 	}
+	export class QuickItemEstimateDTO {
+	    item_id: string;
+	    item_tarea: string;
+	    item_unidad: string;
+	    cantidad_milli: number;
+	    materiales: MaterialObraRowDTO[];
+	    mano_obra: ManoObraObraRowDTO[];
+	    subtotal_material_centavos: number;
+	    subtotal_mo_centavos: number;
+	    total_centavos: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new QuickItemEstimateDTO(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.item_id = source["item_id"];
+	        this.item_tarea = source["item_tarea"];
+	        this.item_unidad = source["item_unidad"];
+	        this.cantidad_milli = source["cantidad_milli"];
+	        this.materiales = this.convertValues(source["materiales"], MaterialObraRowDTO);
+	        this.mano_obra = this.convertValues(source["mano_obra"], ManoObraObraRowDTO);
+	        this.subtotal_material_centavos = source["subtotal_material_centavos"];
+	        this.subtotal_mo_centavos = source["subtotal_mo_centavos"];
+	        this.total_centavos = source["total_centavos"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class RubroCatalogItemDTO {
 	    id: string;
 	    nombre: string;

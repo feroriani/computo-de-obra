@@ -10,6 +10,7 @@ import { ComputosList } from "../features/computos/pages/ComputosList";
 import { ComputoEditor } from "../features/computos/pages/ComputoEditor";
 import { ComputoListados } from "../features/computos/pages/ComputoListados";
 import { CatalogosAdmin } from "../features/computos/pages/CatalogosAdmin";
+import { QuickItemCalculator } from "../features/computos/pages/QuickItemCalculator";
 import { backupDB } from "../features/computos/api";
 
 function SettingsIcon() {
@@ -123,6 +124,7 @@ function AppLayout() {
           <Route path="/" element={<ComputosList />} />
           <Route path="/computo/:versionId" element={<ComputoEditor />} />
           <Route path="/computo/:versionId/listados" element={<ComputoListados />} />
+          <Route path="/consulta-rapida" element={<QuickItemCalculator />} />
           <Route path="/catalogos" element={<CatalogosAdmin />} />
           <Route path="/configuracion" element={<Configuracion />} />
         </Routes>
