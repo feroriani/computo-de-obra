@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { ToolButton } from "../../../components/ToolButton";
 import { ScrollArea } from "../../../components/ScrollArea";
+import { useBlockBackgroundScroll } from "../../../hooks/useBlockBackgroundScroll";
 import {
   useReactTable,
   getCoreRowModel,
@@ -107,8 +108,16 @@ function thClass(columnId: string): string {
 }
 
 /** Scroll solo en filas; buscador y paginación quedan fuera (en el padre). */
-function CatalogTableBodyScroll({ children }: { children: ReactNode }) {
-  return <ScrollArea containWheel className="overflow-x-auto">{children}</ScrollArea>;
+function CatalogTableBodyScroll({ children, blocked = false }: { children: ReactNode; blocked?: boolean }) {
+  return (
+    <ScrollArea
+      mode={blocked ? "never" : "auto"}
+      containWheel={!blocked}
+      className={`overflow-x-auto ${blocked ? "pointer-events-none" : ""}`}
+    >
+      {children}
+    </ScrollArea>
+  );
 }
 
 function rowClassName(): string {
@@ -535,6 +544,15 @@ export function CatalogosAdmin() {
     { id: "items", label: "Ítems" },
   ];
 
+  const hasBlockingOverlay =
+    rubroModal.open ||
+    materialModal.open ||
+    manoObraModal.open ||
+    itemModal.open ||
+    composicionModal.open;
+
+  useBlockBackgroundScroll(hasBlockingOverlay);
+
   return (
     <div className="h-full min-h-0 overflow-hidden bg-slate-50 p-6 dark:bg-slate-900">
       <div className="flex h-full min-h-0 w-full flex-col">
@@ -555,7 +573,7 @@ export function CatalogosAdmin() {
         </div>
 
         {error && (
-          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-200">
+          <div className="mb-4 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900 dark:text-red-200">
             {error}
           </div>
         )}
@@ -614,6 +632,7 @@ export function CatalogosAdmin() {
               <RubrosTab
                 items={rubrosPg.items}
                 loading={rubrosPg.loading}
+                blocked={hasBlockingOverlay}
                 emptyHint={
                   rubrosPg.qApplied
                     ? "Sin resultados para la búsqueda."
@@ -726,6 +745,7 @@ export function CatalogosAdmin() {
               <MaterialesTab
                 items={filterActive ? computoMaterialPaged : matPg.items}
                 loading={filterActive ? filterLoading : matPg.loading}
+                blocked={hasBlockingOverlay}
                 emptyHint={
                   filterActive
                     ? matFilterQApplied
@@ -875,6 +895,7 @@ export function CatalogosAdmin() {
               <ManoObraTab
                 items={filterActive ? computoManoObraPaged : moPg.items}
                 loading={filterActive ? filterLoading : moPg.loading}
+                blocked={hasBlockingOverlay}
                 emptyHint={
                   filterActive
                     ? moFilterQApplied
@@ -967,6 +988,7 @@ export function CatalogosAdmin() {
               <ItemsTab
                 items={itemsPg.items}
                 loading={itemsPg.loading}
+                blocked={hasBlockingOverlay}
                 emptyHint={
                   itemsPg.qApplied
                     ? "Sin resultados para la búsqueda."
@@ -1127,6 +1149,7 @@ export function CatalogosAdmin() {
 function RubrosTab({
   items,
   loading,
+  blocked,
   emptyHint,
   onAdd,
   onEdit,
@@ -1134,6 +1157,7 @@ function RubrosTab({
 }: {
   items: RubroCatalogItemDTO[];
   loading: boolean;
+  blocked: boolean;
   emptyHint: string;
   onAdd: () => void;
   onEdit: (r: RubroCatalogItemDTO) => void;
@@ -1193,7 +1217,7 @@ function RubrosTab({
   const colCount = columns.length;
 
   return (
-    <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white shadow dark:border-slate-700 dark:bg-slate-800">
+    <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
       <div className="flex justify-end border-b border-slate-200 p-3 dark:border-slate-700">
         <ToolButton
           icon={Plus}
@@ -1214,7 +1238,7 @@ function RubrosTab({
             <div className="px-4 py-2 text-right">Acciones</div>
           </div>
 
-          <CatalogTableBodyScroll>
+          <CatalogTableBodyScroll blocked={blocked}>
             {loading && items.length === 0 ? (
               <div className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">Cargando…</div>
             ) : (
@@ -1246,6 +1270,7 @@ function RubrosTab({
 function MaterialesTab({
   items,
   loading,
+  blocked,
   emptyHint,
   onAdd,
   onEdit,
@@ -1253,6 +1278,7 @@ function MaterialesTab({
 }: {
   items: ComponenteMaterialItemDTO[];
   loading: boolean;
+  blocked: boolean;
   emptyHint: string;
   onAdd: () => void;
   onEdit: (m: ComponenteMaterialItemDTO) => void;
@@ -1287,7 +1313,7 @@ function MaterialesTab({
         cell: ({ row }: { row: Row<ComponenteMaterialItemDTO> }) => {
           const m = row.original;
           return (
-            <div className="text-right">
+            <div className="flex justify-end gap-1">
               <ToolButton
                 icon={Edit}
                 label="Editar"
@@ -1328,7 +1354,7 @@ function MaterialesTab({
     id === "acciones" || id === "costo_centavos" ? "text-right" : "";
 
   return (
-    <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white shadow dark:border-slate-700 dark:bg-slate-800">
+    <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
       <div className="flex justify-end border-b border-slate-200 p-3 dark:border-slate-700">
         <button
           type="button"
@@ -1348,7 +1374,7 @@ function MaterialesTab({
             <div className="px-4 py-2 text-right">Costo</div>
             <div className="px-4 py-2 text-right">Acciones</div>
           </div>
-          <CatalogTableBodyScroll>
+          <CatalogTableBodyScroll blocked={blocked}>
             {loading && items.length === 0 ? (
               <div className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">Cargando…</div>
             ) : (
@@ -1377,6 +1403,7 @@ function MaterialesTab({
 function ManoObraTab({
   items,
   loading,
+  blocked,
   emptyHint,
   onAdd,
   onEdit,
@@ -1384,6 +1411,7 @@ function ManoObraTab({
 }: {
   items: ComponenteManoObraItemDTO[];
   loading: boolean;
+  blocked: boolean;
   emptyHint: string;
   onAdd: () => void;
   onEdit: (m: ComponenteManoObraItemDTO) => void;
@@ -1418,7 +1446,7 @@ function ManoObraTab({
         cell: ({ row }: { row: Row<ComponenteManoObraItemDTO> }) => {
           const m = row.original;
           return (
-            <div className="text-right">
+            <div className="flex justify-end gap-1">
               <ToolButton
                 icon={Edit}
                 label="Editar"
@@ -1459,7 +1487,7 @@ function ManoObraTab({
     id === "acciones" || id === "costo_centavos" ? "text-right" : "";
 
   return (
-    <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white shadow dark:border-slate-700 dark:bg-slate-800">
+    <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
       <div className="flex justify-end border-b border-slate-200 p-3 dark:border-slate-700">
         <button
           type="button"
@@ -1479,7 +1507,7 @@ function ManoObraTab({
             <div className="px-4 py-2 text-right">Costo</div>
             <div className="px-4 py-2 text-right">Acciones</div>
           </div>
-          <CatalogTableBodyScroll>
+          <CatalogTableBodyScroll blocked={blocked}>
             {loading && items.length === 0 ? (
               <div className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">Cargando…</div>
             ) : (
@@ -1508,6 +1536,7 @@ function ManoObraTab({
 function ItemsTab({
   items,
   loading,
+  blocked,
   emptyHint,
   onAdd,
   onEdit,
@@ -1516,6 +1545,7 @@ function ItemsTab({
 }: {
   items: ItemCatalogItemDTO[];
   loading: boolean;
+  blocked: boolean;
   emptyHint: string;
   onAdd: () => void;
   onEdit: (i: ItemCatalogItemDTO) => void;
@@ -1589,7 +1619,7 @@ function ItemsTab({
   const colCount = columns.length;
 
   return (
-    <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white shadow dark:border-slate-700 dark:bg-slate-800">
+    <div className="flex h-full flex-col rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
       <div className="flex justify-end border-b border-slate-200 p-3 dark:border-slate-700">
         <ToolButton
           icon={Plus}
@@ -1609,7 +1639,7 @@ function ItemsTab({
             <div className="px-4 py-2 text-left">Unidad</div>
             <div className="px-4 py-2 text-right">Acciones</div>
           </div>
-          <CatalogTableBodyScroll>
+          <CatalogTableBodyScroll blocked={blocked}>
             {loading && items.length === 0 ? (
               <div className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">Cargando…</div>
             ) : (
@@ -1654,7 +1684,7 @@ function RubroFormModal({
   useEffect(() => setValue(nombre), [nombre]);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800">
+      <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
         <h2 className="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100">
           {id ? "Editar rubro" : "Nuevo rubro"}
         </h2>
@@ -1724,7 +1754,7 @@ function ComponenteMaterialFormModal({
   }, [descripcion, unidad, costoCentavos]);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800">
+      <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
         <h2 className="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100">
           {id ? "Editar componente material" : "Nuevo componente material"}
         </h2>
@@ -1808,7 +1838,7 @@ function ComponenteManoObraFormModal({
   }, [descripcion, unidad, costoCentavos]);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800">
+      <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
         <h2 className="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100">
           {id ? "Editar componente mano de obra" : "Nuevo componente mano de obra"}
         </h2>
@@ -1882,7 +1912,7 @@ function ItemFormModal({
   }, [tarea, unidad]);
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800">
+      <div className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
         <h2 className="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100">
           {id ? "Editar ítem" : "Nuevo ítem"}
         </h2>
@@ -2006,7 +2036,7 @@ function ComposicionModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-lg bg-white shadow-xl dark:bg-slate-800">
+      <div className="flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
         <div className="border-b border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
           <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
             Composición: {item.tarea} ({item.unidad})
@@ -2021,7 +2051,7 @@ function ComposicionModal({
             <h3 className="mb-2 font-medium text-slate-700 dark:text-slate-200">Materiales</h3>
             <ScrollArea className="flex-1">
               <table className="w-full text-sm">
-                <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 sticky top-0 z-10">
+                <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
                   <tr>
                     <th className="px-3 py-1.5 text-left font-medium">Descripción</th>
                     <th className="px-3 py-1.5 text-left font-medium">Unidad</th>
@@ -2119,7 +2149,7 @@ function ComposicionModal({
             <h3 className="mb-2 font-medium text-slate-700 dark:text-slate-200">Mano de obra</h3>
             <ScrollArea className="flex-1">
               <table className="w-full text-sm">
-                <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 sticky top-0 z-10">
+                <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
                   <tr>
                     <th className="px-3 py-1.5 text-left font-medium">Descripción</th>
                     <th className="px-3 py-1.5 text-left font-medium">Unidad</th>

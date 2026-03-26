@@ -3,6 +3,7 @@ import { Info, X, Github, ExternalLink } from "lucide-react";
 import { ToolButton } from "./ToolButton";
 import { getAppInfo, type AppInfoDTO } from "../features/computos/api";
 import appIcon from "../assets/images/appicon.png";
+import { useBlockBackgroundScroll } from "../hooks/useBlockBackgroundScroll";
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface AboutModalProps {
 
 export function AboutModal({ isOpen, onClose }: AboutModalProps) {
   const [info, setAppInfo] = useState<AppInfoDTO | null>(null);
+  useBlockBackgroundScroll(isOpen);
 
   useEffect(() => {
     if (isOpen) {
@@ -22,22 +24,22 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-sm overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl animate-in zoom-in-95 duration-200 dark:border-slate-700 dark:bg-slate-800"
+        className="w-full max-w-sm overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="relative flex flex-col items-center px-6 pt-10 pb-6 text-center">
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200 transition-colors"
+            className="absolute top-4 right-4 rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-700 dark:hover:text-slate-200"
           >
             <X size={20} />
           </button>
 
-          <div className="mb-4 rounded-2xl bg-slate-50 p-3 shadow-inner dark:bg-slate-900/50">
+          <div className="mb-4 rounded-2xl bg-slate-50 p-3 dark:bg-slate-900">
             <img
               src={appIcon}
               alt={info?.name || "Cómputo de obra"}
@@ -53,7 +55,7 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
           </p>
 
           <div className="mt-6 w-full space-y-4">
-            <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-4 dark:border-slate-700/50 dark:bg-slate-900/30">
+            <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900">
               <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 Desarrollado por
               </p>

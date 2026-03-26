@@ -22,7 +22,7 @@ alwaysApply: false
 
 - **Tema:** la app soporta modo claro y modo oscuro. Tailwind usa `darkMode: "class"`; el tema se persiste en `localStorage` (clave `computo-theme`, valores `light` | `dark`). Contexto en `src/contexts/ThemeContext.tsx`, selector en `src/components/ThemeToggle.tsx`.
 - **Clases en modo oscuro:** todo componente visible (páginas, listas, tablas, modales, formularios) debe incluir variantes `dark:` para que se vea correctamente en ambos temas. No dejar pantallas o diálogos solo con estilos de modo claro.
-- **Modales/diálogos:** overlay `bg-black/50`; contenedor del contenido: `bg-white dark:bg-slate-800`, bordes `dark:border-slate-700` cuando aplique. Títulos: `text-slate-800 dark:text-slate-100`. Labels: `text-slate-700 dark:text-slate-300`.
+- **Modales/diálogos (WebKit/Wails):** overlay **opaco** `bg-black` (evitar `bg-black/50`, `opacity-*`, `backdrop-blur`). Contenedor: `bg-white dark:bg-slate-800` + `border` (`dark:border-slate-700`). Evitar `shadow-*` en modales/drawers. Títulos: `text-slate-800 dark:text-slate-100`. Labels: `text-slate-700 dark:text-slate-300`.
 - **Inputs en modales:** `border-slate-300 dark:border-slate-600`, `dark:bg-slate-700`, `dark:text-slate-100`, `dark:placeholder-slate-400`. Botón secundario (Cancelar): `dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600`. Botón primario (Guardar/Crear): `dark:bg-teal-600 dark:hover:bg-teal-700` (o `bg-primary` con variante dark si se prefiere teal).
 - **Tablas y tarjetas:** fondo de tarjeta `dark:bg-slate-800`, cabecera de tabla `dark:bg-slate-700 dark:text-slate-200`, filas `dark:divide-slate-700`, hover `dark:hover:bg-slate-700`, texto de celdas `dark:text-slate-200`. Mensajes de error: `dark:text-red-400` o `dark:border-red-800 dark:bg-red-900/30 dark:text-red-200` en cajas.
 - **Enlaces de acción:** Editar/primary `dark:text-teal-400`; Eliminar/danger `dark:text-red-400`. Al añadir nuevos diálogos o pantallas, aplicar estas convenciones para mantener consistencia visual.
@@ -33,7 +33,11 @@ alwaysApply: false
 - **Evitar `h-screen` anidado**: dentro de páginas renderizadas en `<main>`, preferir `h-full min-h-0` (no `h-screen`) para no “competir” con el header global.
 - **Scroll interno**: si hay listado + paginación visible, usar `flex` + `min-h-0` y dejar `overflow-y-auto` **solo** en el contenedor de filas/lista.
 - **Inputs en WebView**: si tipear se siente “trabado”, evitar `value/onChange` que actualice estado por tecla; preferir input **uncontrolled** + botón “Buscar” (submit) para disparar consultas.
-- **CSS caro**: `position: sticky` en tablas y sombras (`box-shadow`) en headers pueden causar jank en WebViews; preferir headers fuera del área scroll y `border-b` en vez de sombras.
+- **CSS caro**: evitar transparencias (`bg-*/xx`), `filter`, `backdrop-blur`, `opacity-*`, transiciones/animaciones (`transition-*`, `animate-*`) y sombras (`shadow-*`) en contenedores grandes o scrolleables. `position: sticky` en tablas puede causar jank; preferir headers fuera del área scroll y `border-b`.
+- **Modales y scrollbars**: cuando haya modal/drawer abierto, **bloquear el scroll de fondo** de forma explícita:
+  - usar `useBlockBackgroundScroll(isOpen)` (`src/hooks/useBlockBackgroundScroll.ts`) para bloquear `body/html`.
+  - poner los `ScrollArea` de fondo en `mode="never"` + `pointer-events-none` mientras el overlay esté activo.
+  - Esto evita el “fade” lento de scrollbars en WebKit.
 
 ## Regla de diseño: Bloques de listados
 

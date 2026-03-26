@@ -25,7 +25,7 @@ export const ToolButton = ({
   type = 'button',
 }: ToolButtonProps) => {
   const baseStyles =
-    'flex items-center justify-center gap-2 px-3 py-1.5 rounded-md transition-all duration-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+    'flex items-center justify-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variants = {
     primary:
@@ -41,26 +41,15 @@ export const ToolButton = ({
   };
 
   return (
-    <div className="group relative inline-flex">
-      <button
-        type={type}
-        onClick={onClick}
-        disabled={disabled}
-        className={`${baseStyles} ${variants[variant]} ${className}`}
-        title={showLabel ? undefined : (title || label)}
-      >
-        <Icon size={18} className="shrink-0" />
-        {showLabel && <span>{label}</span>}
-      </button>
-
-      {/* Tooltip simple con Tailwind */}
-      {!showLabel && (
-        <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-slate-900 px-2 py-1 text-xs text-white opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 dark:bg-slate-800 border border-slate-700 shadow-lg">
-          {title || label}
-          {/* Flecha del tooltip */}
-          <div className="absolute top-full left-1/2 -mt-1 -translate-x-1/2 border-4 border-transparent border-t-slate-900 dark:border-t-slate-800"></div>
-        </div>
-      )}
-    </div>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseStyles} ${variants[variant]} ${className}`}
+      title={showLabel ? undefined : (title || label)}
+    >
+      <Icon size={18} className="shrink-0" />
+      {showLabel && <span>{label}</span>}
+    </button>
   );
 };

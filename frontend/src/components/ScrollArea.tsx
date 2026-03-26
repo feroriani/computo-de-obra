@@ -82,7 +82,7 @@ export function ScrollArea({
 
   const overflowClass =
     mode === "never"
-      ? "overflow-y-hidden"
+      ? "overflow-hidden"
       : mode === "always"
         ? "overflow-y-scroll"
         : "overflow-y-auto";

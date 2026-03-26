@@ -63,7 +63,7 @@ export function CreateComputoDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-slate-800">
+      <div className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
         <h2 className="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100">
           Nuevo cómputo
         </h2>

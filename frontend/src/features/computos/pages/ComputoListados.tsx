@@ -4,6 +4,7 @@ import { FileDown, RefreshCw, ChevronLeft, Plus, Trash2 } from "lucide-react";
 import { ToolButton } from "../../../components/ToolButton";
 import { ListadoPanel } from "../../../components/ListadoPanel";
 import { ScrollArea } from "../../../components/ScrollArea";
+import { useBlockBackgroundScroll } from "../../../hooks/useBlockBackgroundScroll";
 import {
   componenteManoObraList,
   componenteMaterialList,
@@ -69,13 +70,13 @@ function Modal({
 }) {
   return (
     <div
-      className="fixed inset-0 z-30 flex items-center justify-center bg-black/50 p-4"
+      className="fixed inset-0 z-30 flex items-center justify-center bg-black p-4"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800"
+        className="w-full max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
@@ -117,6 +118,7 @@ export function ComputoListados() {
   const [addMaterialSaving, setAddMaterialSaving] = useState(false);
   const [deleteMaterialId, setDeleteMaterialId] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const hasBlockingOverlay = addMaterialOpen;
   const activeTab = useMemo(() => parseTab(searchParams.get("tab")), [searchParams]);
   const selectedItemId = useMemo(() => {
     const itemParam = searchParams.get("item");
@@ -128,6 +130,8 @@ export function ComputoListados() {
     if (selectedItemId === ALL_ITEMS_VALUE) return "";
     return itemOptions.find((it) => it.id === selectedItemId)?.tarea ?? selectedItemId;
   }, [itemOptions, selectedItemId]);
+
+  useBlockBackgroundScroll(hasBlockingOverlay);
 
   const setTab = useCallback((tab: ListadosTab) => {
     setSearchParams((prev) => {
@@ -537,7 +541,11 @@ export function ComputoListados() {
             {loading || loadingItemData ? (
               <p className="px-1 py-2 text-sm text-slate-500 dark:text-slate-400">Cargando listados…</p>
             ) : hasData ? (
-              <ScrollArea mode="auto" containWheel className="h-0 p-0">
+              <ScrollArea
+                mode={hasBlockingOverlay ? "never" : "auto"}
+                containWheel={!hasBlockingOverlay}
+                className={`h-0 p-0 ${hasBlockingOverlay ? "pointer-events-none" : ""}`}
+              >
                 {activeTab === "materiales" && (
                   <table className="min-w-[720px] w-full text-left text-sm">
                     <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">

@@ -18,6 +18,7 @@ import {
 import { ToolButton } from "../../../components/ToolButton";
 import { ListadoPanel } from "../../../components/ListadoPanel";
 import { ScrollArea } from "../../../components/ScrollArea";
+import { useBlockBackgroundScroll } from "../../../hooks/useBlockBackgroundScroll";
 import {
   getComputo,
   computoConfirm,
@@ -98,7 +99,7 @@ function Modal({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800"
+        className="w-full max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
@@ -271,6 +272,19 @@ export function ComputoEditor() {
   const [comitenteSaving, setComitenteSaving] = useState(false);
   const [comitenteMsg, setComitenteMsg] = useState<string | null>(null);
   const [comitenteDialogOpen, setComitenteDialogOpen] = useState(false);
+
+  const hasBlockingOverlay =
+    addRubroOpen ||
+    addItemOpen ||
+    superficieDialogOpen ||
+    comitenteDialogOpen ||
+    confirmDialogOpen ||
+    Boolean(rubroDeleteConfirm) ||
+    Boolean(rubroTrashAction) ||
+    Boolean(rubroDeleteMsg) ||
+    trashDrawerOpen;
+
+  useBlockBackgroundScroll(hasBlockingOverlay);
 
   const loadComputo = useCallback((silent = false) => {
     if (!versionId) return;
@@ -794,7 +808,11 @@ export function ComputoEditor() {
             className="min-h-0 overflow-hidden lg:w-1/3"
             bodyClassName="p-0"
           >
-            <ScrollArea mode="auto" containWheel className="h-0 p-0">
+            <ScrollArea
+              mode={hasBlockingOverlay ? "never" : "auto"}
+              containWheel={!hasBlockingOverlay}
+              className={`h-0 p-0 ${hasBlockingOverlay ? "pointer-events-none" : ""}`}
+            >
               {rubros.length === 0 ? (
                 <div className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">
                   Sin rubros. Agregá uno desde el catálogo.
@@ -871,7 +889,11 @@ export function ComputoEditor() {
             className="min-h-0 overflow-hidden lg:flex-1"
             bodyClassName="p-0"
           >
-            <ScrollArea mode="auto" containWheel className="h-0 p-0">
+            <ScrollArea
+              mode={hasBlockingOverlay ? "never" : "auto"}
+              containWheel={!hasBlockingOverlay}
+              className={`h-0 p-0 ${hasBlockingOverlay ? "pointer-events-none" : ""}`}
+            >
               {selectedRubro && selectedRubro.items.length > 0 ? (
                   <table className="min-w-[900px] w-full text-left text-sm">
                     <thead className="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
@@ -972,7 +994,7 @@ export function ComputoEditor() {
         {addRubroOpen && (
           <Modal
             title="Agregar rubro"
-            zClassName="z-10"
+            zClassName="z-50"
             onClose={() => {
               setAddRubroOpen(false);
               setAddRubroSearch("");
@@ -1059,7 +1081,7 @@ export function ComputoEditor() {
         {addItemOpen && (
           <Modal
             title="Agregar ítem"
-            zClassName="z-10"
+            zClassName="z-50"
             onClose={() => {
               setAddItemOpen(false);
               setAddItemSearch("");
@@ -1174,14 +1196,14 @@ export function ComputoEditor() {
 
         {superficieDialogOpen && (
           <div
-            className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
             role="dialog"
             aria-modal="true"
             aria-labelledby="superficie-dialog-title"
             onClick={() => !superficieSaving && setSuperficieDialogOpen(false)}
           >
             <div
-              className="w-full max-w-md rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800"
+              className="w-full max-w-md rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
@@ -1402,9 +1424,9 @@ export function ComputoEditor() {
 
         {/* Drawer de Papelera */}
         {trashDrawerOpen && (
-          <div className="fixed inset-0 z-40 flex justify-end bg-black/20 backdrop-blur-sm" onClick={() => setTrashDrawerOpen(false)}>
+          <div className="fixed inset-0 z-50 flex justify-end bg-black/50" onClick={() => setTrashDrawerOpen(false)}>
             <div
-              className="h-full w-full max-w-md border-l border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-800"
+              className="h-full w-full max-w-md border-l border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex h-full flex-col">
@@ -1434,7 +1456,7 @@ export function ComputoEditor() {
                           return (
                             <div
                               key={item.id}
-                              className="group rounded-lg border border-slate-200 bg-slate-50 p-3 transition-colors hover:border-primary/30 dark:border-slate-700 dark:bg-slate-900/50"
+                              className="group rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900"
                             >
                               <div className="flex items-start justify-between gap-2">
                                 <div className="min-w-0 flex-1">
@@ -1447,7 +1469,7 @@ export function ComputoEditor() {
                                 </div>
                                 <button
                                   onClick={() => handleRestoreItem(item.id)}
-                                  className="shrink-0 rounded bg-white px-2 py-1 text-xs font-medium text-primary shadow-sm border border-slate-200 hover:bg-primary hover:text-white transition-all dark:bg-slate-800 dark:border-slate-600 dark:text-teal-400 dark:hover:bg-teal-600 dark:hover:text-white"
+                                  className="shrink-0 rounded border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-primary hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-teal-400 dark:hover:bg-slate-700"
                                 >
                                   Restaurar
                                 </button>
@@ -1460,7 +1482,7 @@ export function ComputoEditor() {
                   </ScrollArea>
                 </div>
                 {allTrashedItems.length > 0 && (
-                  <div className="border-t border-slate-200 p-4 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+                  <div className="border-t border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900">
                     <p className="text-xs text-slate-500 dark:text-slate-400 text-center">
                       Los ítems en la papelera no afectan los totales de la obra.
                     </p>
